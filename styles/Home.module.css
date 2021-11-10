@@ -1,6 +1,6 @@
 .container {
-  min-height: 100vh;
-  padding: 0 0.5rem;
+  /* min-height: 100vh; */
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -119,3 +119,4 @@
     flex-direction: column;
   }
 }
+

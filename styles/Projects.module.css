@@ -5,7 +5,18 @@
     position: fixed;
     display: flex;
     justify-content: center;
-    border: 5px solid red;
+    /* border: 5px solid red; */
+}
+
+.projectsContainer2 {
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+    position: fixed;
+    display: flex;
+    padding: 10rem;
+    justify-content: center;
+    /* border: 5px solid red; */
 }
 
 .projectsDiv {
@@ -15,7 +26,7 @@
     align-items: center;
     width: 30%;
     height: 100%;
-    border: 5px solid red;
+    /* border: 5px solid red; */
     padding-top: 10%;
 }
 

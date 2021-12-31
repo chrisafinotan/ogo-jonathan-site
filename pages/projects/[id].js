@@ -1,43 +1,44 @@
-import Layout from '../../components/layout'
-import { getAllProjectIds, getProjectData } from '../../lib/projectsLib'
-import Head from 'next/head'
-import Date from '../../components/date'
-import utilStyles from '../../styles/utils.module.css'
+import Layout from "../../components/layout";
+import Head from "next/head";
+import { getAllProjectIds, getProjectData } from "../../lib/projectsLib";
 
-//1st
 export async function getStaticPaths() {
-    const paths = getAllProjectIds();
-    console.log("paths", paths);
+    const paths = await getAllProjectIds();
     return {
-        paths,
-        fallback: false
-    }
+        paths: paths,
+        fallback: false,
+    };
 }
 
-//2nd
-export async function getStaticProps({ params }) {
-    const projectData = await getProjectData(params.id);
-    console.log("projectData", projectData);
+export async function getStaticProps(context) {
+    const { params } = context;
+    const projectID = params.id;
+    const projectData = await getProjectData(projectID);
     return {
         props: {
-            projectData
-        }
-    }
+            projectData,
+        },
+    };
 }
 
-export default function work({projectData}) {
+export default function work({ projectData }) {
+    let data = () => {
+        return Object.entries(projectData).map((el) => {
+            return (
+                <div>
+                    <div>{el[0]}</div>
+                    <div>{el[1]}</div>
+                </div>
+            );
+        });
+    };
+
     return (
         <Layout>
             <Head>
-                <title>{projectData.title}</title>
+                <title>{projectData.Name}</title>
             </Head>
-            <article>
-                <h1 className={utilStyles.headingXl}>{projectData.title}</h1>
-                <div className={utilStyles.lightText}>
-                    <Date dateString={projectData.date} />
-                </div>
-                <div dangerouslySetInnerHTML={{ __html: projectData.contentHtml }} />
-            </article>
+            <div>{data()}</div>
         </Layout>
-    )
+    );
 }

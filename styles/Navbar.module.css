@@ -3,7 +3,7 @@
     width: 100vw;
     padding: 0.5rem;
     justify-content: space-around;
-    position: absolute;
+    position: fixed;
     z-index: 100;
 }
 

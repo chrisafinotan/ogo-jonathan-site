@@ -1,14 +1,10 @@
-import Navbar from './navbar'
+import Navbar from "./navbar";
 
 export default function Layout({ children }) {
     return (
-        <div>
-            <header>
-                <Navbar></Navbar>
-            </header>
-            <main>
-                {children}
-                </main>
+        <div style={{ position: "relative" }}>
+            <Navbar></Navbar>
+            <div className="siteContent">{children}</div>
         </div>
-    )
+    );
 }

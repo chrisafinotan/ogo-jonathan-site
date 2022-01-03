@@ -1,72 +1,58 @@
-.projectsContainer {
-    width: 100vw;
-    height: 100vh;
-    overflow: auto;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    border: 5px solid red;
+.projectWrapper {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    height: 70vh;
+    z-index: 5;
+    padding: 10px;
+    padding-top: 10vh;
 }
 
-.projectsContainer2 {
-    width: 100vw;
-    height: 100vh;
-    overflow: auto;
-    position: absolute;
+.projectList {
     display: flex;
-    padding: 10rem;
-    justify-content: center;
-    /* border: 5px solid red; */
-}
-
-.projectsDiv {
-    display: flex;
-    /* justify-content: center; */
     flex-direction: column;
-    align-items: center;
-    width: 30%;
+    width: 20vw;
+    margin: 100px 10px 0 30px;
+}
+
+.projectContainer {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.project {
+    display: block;
+    height: 10vh;
+    width: 100%;
+    font-size:2rem;
+    padding: 0.5rem;
+    margin: 0.5rem 0rem;
+    position: relative;
+}
+
+.projectImagesWrapper {
+    display: inline-block;
+    width: 100%;
+    height: 70vh;
+    overflow: hidden;
+    position: relative;
+    background-color:none;
+
+}
+
+.projectImageWrapper {
+    /* overflow: hidden; */
+    position: relative;
     height: 100%;
-    border: 5px solid blue;
-    padding-top: 10%;
-    position: absolute;
-}
-
-.projectDiv {
-    margin: 10px;
-    display: flex;
-    justify-content: center;
-    font-size: 1.5rem;
-    font-weight: bold;
-    padding: 50px;
-}
-
-.background {
-    background-color: blueviolet;
-    position: fixed;
-    z-index: -1;
-    top: 10%;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    height: 1rem;
-}
-
-.background2 {
-    background-color: blueviolet;
-    position: fixed;
-    z-index: 10;
-    top: 90%;
-    right: 0;
-    left: 0;
-    height: 1rem;
-}
-.test {
-    height: 200vh;
 }
 
 .image {
-    width: 80vw;
-    height: 80vh;
+    padding: 10px 0;
+    cursor: pointer;
+    /* background-color: rgba(0, 0, 0, 0.8); */
+    /* opacity: 0.5; */
+    position: absolute;
     object-fit: contain;
-    border: 1px solid red;
+    width: 100%;
+    height: 100%;
 }

@@ -1,34 +1,66 @@
 .navbar {
     display: flex;
     width: 100vw;
-    padding: 0.5rem;
-    justify-content: space-around;
     position: fixed;
-    z-index: 100;
+    z-index: 50;
+}
+
+.navbarContent {
+    height: 100vh;
+    width: 100%;
+    margin: none;
+    padding: none;
+    overflow: none;
+}
+
+.navbarLinks {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    top: 5rem;
+    height: 80%;
 }
 
 .page {
-    display: flex;
-    border: 1px dashed red;
+    /* display: block; */
+    height: 10vh;
+    width: 100%;
+    font-size: 4.5rem;
+    padding: 0.5rem;
+    margin: 0.5rem 0rem;
+    position: relative;
 }
 
-.pages {
-    /* position: absolute; */
-    display: flex;
+.projects {
+    left: 50%;
+}
+
+.about {
+    left: 0.5rem;
+}
+
+.contact {
     right: 1rem;
-    width: 30vw;
-    justify-content: space-between;
-    border: 1px solid red;
 }
 
-.home {
-    /* position: absolute; */
-    display: flex;
-    align-content: center;
-    justify-content: center;
-    /* width: 6rem; */
-    left: 2rem;
-    font-size: 4rem;
-    text-align: center;
-    border: 1px solid red;
+.menuBtnWrapper {
+    position: fixed;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+}
+
+.menuBtnWrapper > div{
+    height: 5vh;
+}
+
+.homepage {
+    width: 100%;
+    font-family: 'The Nautigal', cursive;
+    font-size: 3rem;
+    position: relative;
+}
+
+.svgt {
+    filter: invert(0.8);
 }

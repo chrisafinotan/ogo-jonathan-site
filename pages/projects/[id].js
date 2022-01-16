@@ -40,18 +40,24 @@ export async function getStaticProps(context) {
 
 export default function work({ projectData, projectPictures }) {
     let data = () => {
-        return projectPictures.map((el) => {
-            return (
-                <div className={projectsPageStyles.projectImageWrapper}>
-                    <img
-                        key={`${projectData.Name}_${el.index}_pic`}
-                        src={el.pic}
-                        className={projectsPageStyles.image}
-                    ></img>
-                    {/* <div>{el.index}</div> */}
-                </div>
-            );
-        });
+        return (
+            <div className={projectsPageStyles.projectImagesWrapper} 
+            // style={{width:`${projectPictures.length*30}em`}}
+            >
+                {projectPictures.map((el) => {
+                    return (
+                        <div className={projectsPageStyles.projectImageWrapper}>
+                            <img
+                                key={`${projectData.Name}_${el.index}_pic`}
+                                src={el.pic}
+                                className={projectsPageStyles.image}
+                            ></img>
+                            {/* <div>{el.index}</div> */}
+                        </div>
+                    );
+                })}
+            </div>
+        );
     };
 
     return (
@@ -59,11 +65,15 @@ export default function work({ projectData, projectPictures }) {
             <Head>
                 <title>{projectData.Name}</title>
             </Head>
-            {/* <div className={projectsPageStyles.projectImagesWrapper}>
-                {data()}
-            </div> */}
+            <div className={projectsPageStyles.container}>
+                <div className={projectsPageStyles.scroll}>{data()}</div>
+            </div>
+        </Layout>
+    );
+}
 
-            <Swiper
+{
+    /* <Swiper
                 spaceBetween={0}
                 slidesPerView={1}
                 navigation
@@ -75,8 +85,8 @@ export default function work({ projectData, projectPictures }) {
                         <SwiperSlide key={`${el.id}_${index}_slide2`}
                         className="swiper-slide2"
                         >
-                            {/* <Link href={`/projects/${el.id}`}> */}
-                            {/* <a> */}
+                            <Link href={`/projects/${el.id}`}>
+                            <a>
                             <div
                                 key={`${projectData.Name}_${el.index}_pic2`}
                                 // src={el.pic}
@@ -84,12 +94,10 @@ export default function work({ projectData, projectPictures }) {
                             >
                                 {el.pic}
                             </div>
-                            {/* </a> */}
-                            {/* </Link> */}
+                            </a>
+                            </Link>
                         </SwiperSlide>
                     );
                 })}
-            </Swiper>
-        </Layout>
-    );
+            </Swiper> */
 }

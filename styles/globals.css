@@ -7,7 +7,7 @@ body {
         Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif; */
 
     font-family: CircularStd-Book, -apple-system, BlinkMacSystemFont, Segoe UI,
-        Roboto, Helvetica Neue, Arial, sans-serif, 'Shizuru', cursive;
+        Roboto, Helvetica Neue, Arial, sans-serif, "Shizuru", cursive;
 }
 
 a {
@@ -17,6 +17,14 @@ a {
 
 * {
     box-sizing: border-box;
+}
+
+image {
+    max-width: calc(100vh - 4em);
+    max-height: calc(100vh - 4em);
+    /* display: block; */
+    vertical-align: middle;
+    display: inline-block;
 }
 
 .swiper {

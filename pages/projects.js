@@ -90,22 +90,25 @@ export default function Projects({ projects }) {
                             >
                                 <Link href={`/projects/${el.id}`}>
                                     <a>
-                                        <CDiv
-                                            onMouseEnter={(val) =>
-                                                setCurrent(val)
-                                            }
-                                            // onMouseExit={() => setCurrent(0)}
-                                            className={`${projectsPageStyles.project}`}
-                                            text={
-                                                <>
-                                                    {el.name}
-                                                    {el.formatdate}
-                                                </>
-                                            }
-                                            startColor="#000000"
-                                            color="#000000"
-                                            index={index}
-                                        ></CDiv>
+                                        <div
+                                        className={`${projectsPageStyles.project_content}`}
+                                        >
+                                            <CDiv
+                                                onMouseEnter={(val) =>
+                                                    setCurrent(val)
+                                                }
+                                                className={`${projectsPageStyles.project}`}
+                                                text={el.name}
+                                                startColor="#000000"
+                                                color="#000000"
+                                                index={index}
+                                            ></CDiv>
+                                            <span
+                                                className={`${projectsPageStyles.date}`}
+                                            >
+                                                {el.formatdate}
+                                            </span>
+                                        </div>
                                     </a>
                                 </Link>
                             </div>

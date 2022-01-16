@@ -18,7 +18,7 @@ const colors = [
     "#b5c762",
     "#dcb450",
     "#e91c1c",
-    "#000000",
+    // "#000000",
 ];
 
 const container = {
@@ -112,6 +112,21 @@ export default function Navbar() {
                         >
                             <motion.div
                                 variants={links}
+                                key="navbar-link-home-motion"
+                                className={`${styles.page}`}
+                            >
+                                <Link href="/">
+                                    <a>
+                                        <CDiv
+                                            className={`${styles.home}`}
+                                            text="OGO JONATHAN"
+                                            color={color}
+                                        ></CDiv>
+                                    </a>
+                                </Link>
+                            </motion.div>
+                            <motion.div
+                                variants={links}
                                 key="navbar-link-projects-motion"
                                 className={`${styles.page}`}
                             >
@@ -161,36 +176,8 @@ export default function Navbar() {
 
                 <div className={`${styles.menuBtnWrapper}`}>
                     <motion.div
-                        key="navbar-link-home-motion"
-                        style={{ originX: 0, originY: 1 }}
-                        initial={{
-                            scale: menuOpen ? 1.5 : 1,
-                        }}
-                        animate={{
-                            scale: menuOpen ? 1.5 : 1,
-                        }}
-                        transition={{
-                            when: "beforeChildren",
-                            staggerChildren: 0.3,
-                        }}
-                        className={`${styles.homepage}`}
-                    >
-                        <Link href="/">
-                            <a>
-                                <CDiv
-                                    text="OGO JONATHAN"
-                                    id={"homeBtn"}
-                                    startFont={`'The Nautigal', cursive`}
-                                    endFont="Arial"
-                                    color={menuOpen ? color : "#0028ff"}
-                                    startColor="#000000"
-                                    startSize="2rem"
-                                    endSize="2.5rem"
-                                ></CDiv>
-                            </a>
-                        </Link>
-                    </motion.div>
-                    <motion.div
+                        key="navbar-link-menu-motion"
+                        style={{ originX: 1, originY: 0 }}
                         className={`${styles.menuBtn}`}
                         onClick={handleClick}
                     >
@@ -201,6 +188,7 @@ export default function Navbar() {
                             endSize="2.5rem"
                             color={menuOpen ? color : "#0028ff"}
                             startColor="#000000"
+                            originX={1}
                         ></CDiv>
                     </motion.div>
                 </div>

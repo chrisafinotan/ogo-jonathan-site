@@ -6,8 +6,8 @@ const CDiv = ({
     text = "empty",
     startFont = "Arial",
     endFont = `'The Nautigal', cursive`,
-    startSize = "4.5rem",
-    endSize = "3rem",
+    startSize = "4.5em",
+    endSize = "3em",
     color,
     startColor = "#ffffff",
     className,
@@ -15,6 +15,8 @@ const CDiv = ({
     index,
     onMouseEnter,
     onMouseExit,
+    originX = 0,
+    originY = 0,
 }) => {
     const controls = useAnimation();
     const [isAnimationPlaying, setIsAnimationPlaying] = useState(false);
@@ -22,14 +24,18 @@ const CDiv = ({
     const fontChange = {
         init: {
             fontFamily: startFont,
-            fontSize: startSize,
+            // fontSize: startSize,
+            scale: 1,
             transition: { duration: 0.2 },
             filter: "invert(0)",
             color: startColor,
         },
         anim: {
             fontFamily: endFont,
-            fontSize: endSize,
+            originX: originX,
+            originY: originY,
+            // fontSize: endSize,
+            scale: 1.2,
             filter: "invert(1)",
             color: ncolor,
             transition: { duration: 0.2 },
@@ -38,29 +44,34 @@ const CDiv = ({
 
     return (
         <motion.div
-            animate={controls}
-            initial={fontChange.init}
-            // initial={false}
+            // initial={fontChange.init}
             onHoverStart={() => {
                 if (!isAnimationPlaying) {
-                    setIsAnimationPlaying(true);
+                    // setIsAnimationPlaying(true);
                     controls.start(fontChange.anim);
                 }
             }}
             onHoverEnd={() => {
-                setIsAnimationPlaying(true);
+                // setIsAnimationPlaying(true);
                 controls.start(fontChange.init);
             }}
-            onAnimationComplete={() => {
-                setIsAnimationPlaying(false);
-            }}
-            onMouseEnter={onMouseEnter&&(()=>onMouseEnter(index))}
-            onMouseLeave={onMouseExit&&(()=>onMouseExit())}
+            // onAnimationComplete={() => {
+            //     setIsAnimationPlaying(false);
+            // }}
+            onMouseEnter={onMouseEnter && (() => onMouseEnter(index))}
+            onMouseLeave={onMouseExit && (() => onMouseExit())}
             className={`${styles.cdiv}`}
             id={id}
             data-index={index}
         >
-            <motion.span className={className} index={index}>{text}</motion.span>
+            <motion.div
+                animate={controls}
+                initial={fontChange.init}
+                className={className}
+                index={index}
+            >
+                {text}
+            </motion.div>
         </motion.div>
     );
 };

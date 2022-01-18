@@ -35,7 +35,7 @@ const CDiv = ({
             originX: originX,
             originY: originY,
             // fontSize: endSize,
-            scale: 1.2,
+            // scale: 1.2,
             filter: "invert(1)",
             color: ncolor,
             transition: { duration: 0.2 },

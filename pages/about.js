@@ -6,12 +6,10 @@ import { motion } from "framer-motion";
 
 const imageWrapper = {
     init: {
-        // y: -200,
         opacity: 0,
         transition: { duration: 0.2 },
     },
     anim: {
-        // y: 0,
         opacity: 1,
         transition: { duration: 1 },
     },
@@ -19,7 +17,6 @@ const imageWrapper = {
         filter: "invert(1)",
     },
     exit: {
-        // y: 200,
         transition: {
             staggerChildren: 1,
         },

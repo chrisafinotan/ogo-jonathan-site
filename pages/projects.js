@@ -1,7 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useBreakpoint } from "../components/Breakpoint";
+import Layout from "../components/layout";
+import CDiv from "../components/CDiv";
+import { getAllProjects } from "../lib/projectsLib";
+import projectsPageStyles from "../styles/Projects.module.css";
 
-import { projectDB, projectStorage } from "../firebase/fire-config";
+import { projectStorage } from "../firebase/fire-config";
 import { ref, getDownloadURL } from "firebase/storage";
 
 import Head from "next/head";
@@ -17,8 +21,12 @@ import SwiperCore, {
     Controller,
     Keyboard,
 } from "swiper";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+//FRAMER IMPORTS
+import { motion } from "framer-motion";
 
-// install Swiper modules
 SwiperCore.use([
     Pagination,
     Navigation,
@@ -27,16 +35,6 @@ SwiperCore.use([
     Keyboard,
     Controller,
 ]);
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-
-import Layout from "../components/layout";
-import CDiv from "../components/CDiv";
-import projectsPageStyles from "../styles/Projects.module.css";
-
-import { getAllProjects } from "../lib/projectsLib";
-import image from "next/image";
 
 export async function getStaticProps() {
     let projects = await getAllProjects();
@@ -45,13 +43,42 @@ export async function getStaticProps() {
     };
 }
 
+const projectsContainer__motion = {
+    show: {
+        transition: {
+            staggerChildren: 0.4,
+        },
+    },
+};
+
+const project__motion = {
+    hidden: {
+        opacity: 0,
+        y: 20,
+        rotateX: -90,
+    },
+    show: {
+        opacity: 1,
+        y: 0,
+        rotateX: 0,
+        transition: {
+            ease: [0.6, 0.01, -0.05, 0.95],
+            duration: 1.7,
+        },
+    },
+    exit: {
+        opacity: 0,
+        y: -10,
+        transition: {
+            ease: "easeInOut",
+            duration: 0.7,
+        },
+    },
+};
+
 export default function Projects({ projects }) {
-    const [firstSwiper, setFirstSwiper] = useState(null);
-    const [secondSwiper, setSecondSwiper] = useState(null);
     const swiperRef = useRef(null);
     const breakpoints = useBreakpoint();
-    console.log(breakpoints);
-
     const [activeProject, setactiveProject] = useState(0);
 
     //get images from storage
@@ -79,24 +106,27 @@ export default function Projects({ projects }) {
     }, []);
 
     useEffect(() => {
-        console.log(activeProject, swiperRef);
-        if (swiperRef.current !== null)
+        if (swiperRef.current !== null && !breakpoints.md)
             swiperRef.current.swiper.slideTo(activeProject, 0, 1);
     }, [activeProject]);
-
-    const getcontrol = () => {
-        return breakpoints.md && { control: secondSwiper };
-    };
 
     return (
         <Layout>
             <Head>
                 <title>Projects</title>
             </Head>
-            {/* <div className={`${projectsPageStyles.projectWrapper}`}> */}
             {!breakpoints.md ? (
-                <div className={projectsPageStyles.projectWrapper}>
-                    <div className={projectsPageStyles.projects__swiper}>
+                <motion.div
+                    variants={projectsContainer__motion}
+                    initial="hidden"
+                    animate="show"
+                    exit="exit"
+                    className={projectsPageStyles.projectWrapper}
+                >
+                    <motion.div
+                        variants={project__motion}
+                        className={projectsPageStyles.projects__swiper}
+                    >
                         <Swiper
                             cssMode={true}
                             className={projectsPageStyles.mySwiper}
@@ -114,61 +144,75 @@ export default function Projects({ projects }) {
                         >
                             {images.map((el, index) => {
                                 return (
-                                    <SwiperSlide>
-                                        <img
-                                            key={`${el.id}_${index}_pics`}
-                                            src={el.pic}
+                                    <SwiperSlide key={`${index}_slide_lrg`}>
+                                        <Image
+                                            key={`${el.id}_${index}_pics_lrg`}
+                                            src={el.pic && el.pic}
                                             className={
                                                 projectsPageStyles.projects__swiper__image
                                             }
-                                        ></img>
+                                            // width={1440}
+                                            // height={1440}
+                                            layout="fill"
+                                        ></Image>
                                     </SwiperSlide>
                                 );
                             })}
                         </Swiper>
-                    </div>
-                    <div className={projectsPageStyles.projectList}>
-                        <div className={projectsPageStyles.projectList__header}>
+                    </motion.div>
+                    <motion.div className={projectsPageStyles.projectList}>
+                        <motion.div
+                            className={projectsPageStyles.projectList__header}
+                            variants={project__motion}
+                        >
                             PROJECTS
-                        </div>
+                        </motion.div>
                         {projects.map((el, index) => {
                             return (
-                                <div
-                                    key={`${el}_${index}_projects`}
+                                <motion.div
+                                    key={`${el}_${index}_projects_lrg`}
                                     className={`${projectsPageStyles.projectContainer}`}
+                                    variants={project__motion}
                                 >
                                     <Link href={`/projects/${el.id}`}>
                                         <a>
-                                            <div
-                                                className={`${projectsPageStyles.project__content}`}
-                                            >
+                                            <div>
                                                 <CDiv
                                                     onMouseEnter={(val) =>
                                                         setCurrent(val)
                                                     }
                                                     className={`${projectsPageStyles.project}`}
-                                                    text={el.name}
+                                                    text={
+                                                        <div
+                                                            className={`${projectsPageStyles.project__content}`}
+                                                        >
+                                                            <div>{el.name}</div>
+                                                            <div
+                                                                className={
+                                                                    projectsPageStyles.date
+                                                                }
+                                                            >
+                                                                {el.formatdate}
+                                                            </div>
+                                                        </div>
+                                                    }
                                                     startColor="#000000"
                                                     color="#000000"
                                                     index={index}
                                                 ></CDiv>
-                                                {/* <span
-                                                        className={
-                                                            projectsPageStyles.date
-                                                        }
-                                                    >
-                                                        {el.formatdate}
-                                                    </span> */}
                                             </div>
                                         </a>
                                     </Link>
-                                </div>
+                                </motion.div>
                             );
                         })}
-                    </div>
-                </div>
+                    </motion.div>
+                </motion.div>
             ) : (
-                <div className={projectsPageStyles.projectWrapper}>
+                <motion.div
+                  
+                    className={projectsPageStyles.projectWrapper}
+                >
                     <Swiper
                         cssMode={true}
                         className={projectsPageStyles.mySwiper2}
@@ -182,42 +226,52 @@ export default function Projects({ projects }) {
                     >
                         {images.map((el, index) => {
                             return (
-                                <SwiperSlide>
-                                    <div
-                                        key={`${el}_${index}_projects`}
+                                <SwiperSlide key={`${index}_slide_med`}>
+                                    <motion.div
+                                        key={`${el}_${index}_projects_med`}
                                         className={`${projectsPageStyles.projectContainer}`}
+                                        variants={projectsContainer__motion}
+                                        initial="hidden"
+                                        animate="show"
+                                        exit="exit"
                                     >
-                                        <div
+                                        <motion.div
                                             className={
                                                 projectsPageStyles.project__content
                                             }
                                         >
-                                            <span>{projects[index].name}</span>
-                                            <span
+                                            <motion.div
+                                                variants={project__motion}
+                                            >
+                                                {projects[index].name}
+                                            </motion.div>
+                                            <motion.div
                                                 className={
                                                     projectsPageStyles.date
                                                 }
+                                                variants={project__motion}
                                             >
                                                 {projects[index].formatdate}
-                                            </span>
-                                        </div>
+                                            </motion.div>
+                                        </motion.div>
                                         <Link href={`/projects/${el.id}`}>
                                             <a>
-                                                <img
-                                                    key={`${el.id}_${index}_pics`}
+                                                <motion.img
+                                                    key={`${el.id}_${index}_pics_med`}
                                                     src={el.pic}
                                                     className={
                                                         projectsPageStyles.projects__swiper__image
                                                     }
-                                                ></img>
+                                                    variants={project__motion}
+                                                ></motion.img>
                                             </a>
                                         </Link>
-                                    </div>
+                                    </motion.div>
                                 </SwiperSlide>
                             );
                         })}
                     </Swiper>
-                </div>
+                </motion.div>
             )}
         </Layout>
     );

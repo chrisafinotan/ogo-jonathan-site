@@ -1,58 +1,100 @@
-.container {
-    height: 100vh;
-    /* width: 100vw; */
-    padding-top: 4rem;
-    border: 3px dashed red;
-    position: relative;
+.projectNavigator {
+    position: fixed;
+    z-index: 10;
+    font-size: 2em;
 }
 
-.scroll {
-    position: sticky;
-    top: 0;
-    /* overflow: hidden; */
-    background-color: #f1f1f1;
-    height: 100vh;
-    width: 100vw;
+.projectNavigator__next {
+    margin: 2em;
+    position: fixed;
+    right: 0;
+    bottom: 0;
 }
+
+.projectNavigator__prev {
+    margin: 2em;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+}
+
+/* SMALL SCREEN */
+.container {
+    position: relative;
+    height: 100vh;
+    padding: 1em;
+    overflow-y: scroll;
+    scroll-snap-type: y proximity;
+}
+
+.project__info {
+    font-size: 2em;
+    padding-top: 4rem;
+    scroll-snap-align: start;
+}
+
 .projectImagesWrapper {
     display: flex;
-    /* overflow: hidden; */
     flex-direction: column;
     height: 100%;
-    width: 100%;
     flex-wrap: nowrap;
     object-fit: fill;
-    border: 3px dashed black;
 }
 
 .projectImageWrapper {
-    /* width: 40em; */
+    scroll-snap-align: start;
     display: flex;
     width: 100%;
+    height: 100%;
     align-self: center;
-
     justify-content: center;
+    padding: 0.5em 0;
 }
 
 .image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border: 3px solid green;
 }
 
-/* .swiperImage {
+/* LARGE SCREEN */
+.container__lrg {
     position: relative;
+    height: 100vh;
+    padding: 1em;
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.project__info__lrg {
+    font-size: 2em;
+    padding: 4rem 0 4rem 10rem;
+    scroll-snap-align: start;
+    flex: none;
+}
+
+.project__name__lrg {
+    width: auto;
+    white-space: nowrap;
+}
+
+.project__desc__lrg {
+    max-width: 15em;
+    white-space: nowrap;
+}
+
+.projectImagesWrapper__lrg {
+    display: flex;
+    overflow-x: auto;
+    height: 100%;
+    scroll-snap-type: x proximity;
+}
+
+.image__lrg {
     width: 100%;
-    /* height: 100%; 
+    height: 100%;
     object-fit: contain;
-    padding: 10px 0;
-    border: 1px solid green;
-} */
-/* 
-@media only screen and (max-width: 1080px) {
-    .image {
-        object-fit: cover;
-        border: 1px solid pink;
-    }
-} */
+    scroll-snap-align: start;
+    scroll-behavior: none;
+    padding: 1em;
+}

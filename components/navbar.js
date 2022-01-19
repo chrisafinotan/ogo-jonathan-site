@@ -37,11 +37,13 @@ const container = {
 const links = {
     hidden: {
         opacity: 0,
-        // y: -200,
+        y: 20,
+        rotateX: -90,
     },
     show: {
         opacity: 1,
-        // y: 0,
+        y: 0,
+        rotateX: 0,
         transition: {
             ease: [0.6, 0.01, -0.05, 0.95],
             duration: 0.7,
@@ -49,7 +51,7 @@ const links = {
     },
     exit: {
         opacity: 0,
-        // y: -200,
+        y: -10,
         transition: {
             ease: "easeInOut",
             duration: 0.7,

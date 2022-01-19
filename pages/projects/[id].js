@@ -85,8 +85,6 @@ export default function work({
     projectData,
     projectPictures,
 }) {
-    console.log("projects", projects);
-    console.log("id", projectID);
     const breakpoints = useBreakpoint();
     const elRef = useRef();
     const [projectPics, setPictures] = useState([]);

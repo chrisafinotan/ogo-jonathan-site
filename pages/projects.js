@@ -10,7 +10,7 @@ import { ref, getDownloadURL } from "firebase/storage";
 
 import Head from "next/head";
 import Link from "next/link";
-import Image from "next/image";
+// import Image from "next/image";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, {
@@ -145,7 +145,7 @@ export default function Projects({ projects }) {
                             {images.map((el, index) => {
                                 return (
                                     <SwiperSlide key={`${index}_slide_lrg`}>
-                                        <Image
+                                        <img
                                             key={`${el.id}_${index}_pics_lrg`}
                                             src={el.pic && el.pic}
                                             className={
@@ -154,7 +154,7 @@ export default function Projects({ projects }) {
                                             // width={1440}
                                             // height={1440}
                                             layout="fill"
-                                        ></Image>
+                                        ></img>
                                     </SwiperSlide>
                                 );
                             })}

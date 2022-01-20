@@ -9,12 +9,12 @@ export async function getStaticProps() {
 }
 
 export default function Home({ projects }) {
-
     return (
         <Layout>
             <Head>
                 <title>Ogo Jonathan</title>
             </Head>
+            MAIN PAGE
         </Layout>
     );
 }

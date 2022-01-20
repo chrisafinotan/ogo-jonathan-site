@@ -1,5 +1,5 @@
 import Layout from "../components/layout";
-import Image from "next/image";
+// import Image from "next/image";
 import aboutPageStyles from "../styles/About.module.css";
 //FRAMER IMPORTS
 import { motion } from "framer-motion";
@@ -67,7 +67,8 @@ export default function about() {
                     whileHover="color"
                     className={aboutPageStyles.imageWrapper}
                 >
-                    <Image
+                    {/* <Image */}
+                    <img
                         src="/images/profilePic.jpg"
                         alt="Profile Picture of Ogo Jonathan"
                         width={1440}

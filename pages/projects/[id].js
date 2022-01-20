@@ -171,6 +171,50 @@ export default function work({
                                 ></motion.img>
                             );
                         })}
+                        {/* <div className={projectsPageStyles.projectNavigator}> */}
+                        {prevProj && (
+                            <Link
+                                href={`/projects/${projects[linkIndex - 1].id}`}
+                            >
+                                <a
+                                    className={
+                                        projectsPageStyles.projectNavigator__prev
+                                    }
+                                >
+                                    <div>PREV</div>
+                                    {/* <div>Project</div> */}
+                                    <div
+                                        className={
+                                            projectsPageStyles.projectNavigator__prev__name
+                                        }
+                                    >
+                                        {projects[linkIndex - 1].name}
+                                    </div>
+                                </a>
+                            </Link>
+                        )}
+                        {nextProj && (
+                            <Link
+                                href={`/projects/${projects[linkIndex + 1].id}`}
+                            >
+                                <a
+                                    className={
+                                        projectsPageStyles.projectNavigator__next
+                                    }
+                                >
+                                    <div>NEXT</div>
+                                    {/* <div>Project</div> */}
+                                    <div
+                                        className={
+                                            projectsPageStyles.projectNavigator__prev__name
+                                        }
+                                    >
+                                        {projects[linkIndex + 1].name}
+                                    </div>
+                                </a>
+                            </Link>
+                        )}
+                        {/* </div> */}
                     </motion.div>
                 </div>
             ) : (
@@ -214,25 +258,51 @@ export default function work({
                                 </motion.div>
                             );
                         })}
+                        {prevProj && (
+                            <Link
+                                href={`/projects/${projects[linkIndex - 1].id}`}
+                            >
+                                <a
+                                    className={
+                                        projectsPageStyles.projectNavigator__prev
+                                    }
+                                >
+                                    <div>PREV</div>
+                                    {/* <div>Project</div> */}
+                                    <div
+                                        className={
+                                            projectsPageStyles.projectNavigator__prev__name
+                                        }
+                                    >
+                                        {projects[linkIndex - 1].name}
+                                    </div>
+                                </a>
+                            </Link>
+                        )}
+                        {nextProj && (
+                            <Link
+                                href={`/projects/${projects[linkIndex + 1].id}`}
+                            >
+                                <a
+                                    className={
+                                        projectsPageStyles.projectNavigator__next
+                                    }
+                                >
+                                    <div>NEXT</div>
+                                    {/* <div>Project</div> */}
+                                    <div
+                                        className={
+                                            projectsPageStyles.projectNavigator__prev__name
+                                        }
+                                    >
+                                        {projects[linkIndex + 1].name}
+                                    </div>
+                                </a>
+                            </Link>
+                        )}
                     </motion.div>
                 </motion.div>
             )}
-            <div className={projectsPageStyles.projectNavigator}>
-                {prevProj && (
-                    <div className={projectsPageStyles.projectNavigator__prev}>
-                        <Link href={`/projects/${projects[linkIndex - 1].id}`}>
-                            <a>PREV</a>
-                        </Link>
-                    </div>
-                )}
-                {nextProj && (
-                    <div className={projectsPageStyles.projectNavigator__next}>
-                        <Link href={`/projects/${projects[linkIndex + 1].id}`}>
-                            <a>NEXT</a>
-                        </Link>
-                    </div>
-                )}
-            </div>
         </Layout>
     );
 }

@@ -1,3 +1,27 @@
+.mySwiper {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    padding-right: 10em;
+}
+
+.mySwiper > .swiper-wrapper {
+    width: 60%;
+    border: 1px solid red;
+}
+
+.mySwiperSlide {
+    width: 60%;
+}
+
+.mySwiper .swiper-slide:nth-child(2n) {
+    width: 40%;
+}
+
+.swiper-slide:nth-child(3n) {
+    width: 20%;
+}
+
 .projectNavigator {
     position: fixed;
     z-index: 10;
@@ -23,7 +47,7 @@
     font-size: 2em;
     right: 0;
     bottom: 0;
-    color: rgb(255, 255, 255);
+    color: #ffffff;
     mix-blend-mode: difference;
 }
 
@@ -42,7 +66,7 @@
     font-size: 2em;
     left: 0;
     bottom: 0;
-    color: #fff;
+    color: #ffffff;
     mix-blend-mode: difference;
 }
 
@@ -97,7 +121,7 @@
 
 .project__info__lrg {
     font-size: 2em;
-    padding: 4rem 0 4rem 10rem;
+    /* padding: 4rem 0 4rem 10rem; */
     scroll-snap-align: start;
     flex: none;
 }
@@ -109,8 +133,14 @@
 
 .project__desc__lrg {
     max-width: 15em;
-    white-space: nowrap;
+    /* white-space: nowrap; */
 }
+
+.project__end {
+    min-width: 15vw;
+}
+
+
 
 .projectImagesWrapper__lrg {
     display: flex;
@@ -122,6 +152,7 @@
 }
 
 .image__lrg {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: contain;
@@ -129,7 +160,11 @@
     scroll-behavior: none;
     margin: 1em;
     isolation: isolate;
+}
 
+.project__end {
+    padding-right: 15em;
+    border: 2px solid blue;
 }
 
 @media only screen and (max-width: 1024px) {

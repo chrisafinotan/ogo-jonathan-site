@@ -10,16 +10,23 @@ import {
     getAssets,
 } from "../../lib/projectsLib";
 import projectsPageStyles from "../../styles/ID.module.css";
+import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, {
-    Autoplay,
-    Mousewheel,
     Navigation,
     Pagination,
+    Autoplay,
+    Controller,
+    Keyboard,
+    Mousewheel,
+    FreeMode,
 } from "swiper";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 //FRAMER IMPORTS
 import { motion } from "framer-motion";
 
-SwiperCore.use([Navigation, Pagination, Mousewheel, Autoplay]);
+SwiperCore.use([Navigation, Pagination, Mousewheel, Autoplay, FreeMode]);
 
 export async function getStaticPaths() {
     const paths = await getAllProjectIds();
@@ -93,22 +100,6 @@ export default function work({
     const [linkIndex, setLinkIndex] = useState(1);
 
     useEffect(() => {
-        const el = elRef.current;
-        if (el) {
-            const onWheel = (e) => {
-                if (e.deltaY == 0) return;
-                e.preventDefault();
-                el.scrollTo({
-                    left: el.scrollLeft + e.deltaY,
-                    behavior: "smooth",
-                });
-            };
-            el.addEventListener("wheel", onWheel);
-            return () => el.removeEventListener("wheel", onWheel);
-        }
-    }, [breakpoints.md]);
-
-    useEffect(() => {
         setPictures(projectPictures);
         getProjectIndex();
     }, [projectPictures]);
@@ -141,37 +132,84 @@ export default function work({
                         animate="show"
                         exit="exit"
                     >
-                        <motion.div
-                            className={projectsPageStyles.project__info__lrg}
+                        <Swiper
+                            className="mySwiperID"
+                            // className={projectsPageStyles.mySwiper}
+                            modules={[
+                                Navigation,
+                                Pagination,
+                                Controller,
+                                Mousewheel,
+                                Keyboard,
+                                FreeMode,
+                            ]}
+                            navigation
+                            pagination={{ clickable: true }}
+                            scrollbar={{ draggable: true }}
+                            keyboard={{
+                                enabled: true,
+                            }}
+                            freeMode={true}
+                            mousewheel={{
+                                releaseOnEdges: true,
+                            }}
+                            slidesPerView={"auto"}
                         >
-                            <motion.div
-                                className={
-                                    projectsPageStyles.project__name__lrg
-                                }
-                                variants={project__motion}
+                            <SwiperSlide
+                                key={`desc_slide_lrg`}
+                                className="mySwiperSlideInfo"
                             >
-                                {projectData.Name}
-                            </motion.div>
-                            <motion.div
-                                className={
-                                    projectsPageStyles.project__desc__lrg
-                                }
-                                variants={project__motion}
+                                <motion.div
+                                    className={
+                                        projectsPageStyles.project__info__lrg
+                                    }
+                                >
+                                    <motion.div
+                                        className={
+                                            projectsPageStyles.project__name__lrg
+                                        }
+                                        variants={project__motion}
+                                    >
+                                        {projectData.Name}
+                                    </motion.div>
+                                    <motion.div
+                                        className={
+                                            projectsPageStyles.project__desc__lrg
+                                        }
+                                        variants={project__motion}
+                                    >
+                                        {projectData.Description}
+                                    </motion.div>
+                                </motion.div>
+                            </SwiperSlide>
+                            {projectPics.map((el, index) => {
+                                return (
+                                    <SwiperSlide
+                                        key={`${index}_slide_lrg`}
+                                        cssMode={true}
+                                        className="mySwiperSlide"
+                                    >
+                                        <motion.img
+                                            key={`${el}_${index}_project_pics_lrg`}
+                                            src={el.pic && el.pic}
+                                            className={
+                                                projectsPageStyles.image__lrg
+                                            }
+                                            variants={project__motion}
+                                        ></motion.img>
+                                    </SwiperSlide>
+                                );
+                            })}
+                            <SwiperSlide
+                                key={`desc_slide_lrg`}
+                                className="mySwiperSlide__end"
                             >
-                                {projectData.Description}
-                            </motion.div>
-                        </motion.div>
-                        {projectPics.map((el, index) => {
-                            return (
-                                <motion.img
-                                    key={`${el}_${index}_project_pics_lrg`}
-                                    src={el.pic && el.pic}
-                                    className={projectsPageStyles.image__lrg}
-                                    variants={project__motion}
-                                ></motion.img>
-                            );
-                        })}
-                        {/* <div className={projectsPageStyles.projectNavigator}> */}
+                                <motion.div
+                                    className={projectsPageStyles.project__end}
+                                ></motion.div>
+                            </SwiperSlide>
+                        </Swiper>
+
                         {prevProj && (
                             <Link
                                 href={`/projects/${projects[linkIndex - 1].id}`}
@@ -182,7 +220,6 @@ export default function work({
                                     }
                                 >
                                     <div>PREV</div>
-                                    {/* <div>Project</div> */}
                                     <div
                                         className={
                                             projectsPageStyles.projectNavigator__prev__name
@@ -203,7 +240,6 @@ export default function work({
                                     }
                                 >
                                     <div>NEXT</div>
-                                    {/* <div>Project</div> */}
                                     <div
                                         className={
                                             projectsPageStyles.projectNavigator__prev__name
@@ -214,7 +250,6 @@ export default function work({
                                 </a>
                             </Link>
                         )}
-                        {/* </div> */}
                     </motion.div>
                 </div>
             ) : (

@@ -1,4 +1,5 @@
 import Navbar from "./navbar";
+import { useState } from "react";
 
 export default function Layout({ children }) {
     return (

@@ -20,6 +20,8 @@ import SwiperCore, {
     Autoplay,
     Controller,
     Keyboard,
+    Mousewheel,
+    FreeMode,
 } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -105,10 +107,16 @@ export default function Projects({ projects }) {
         loadImages();
     }, []);
 
-    useEffect(() => {
-        if (swiperRef.current !== null && !breakpoints.md)
-            swiperRef.current.swiper.slideTo(activeProject, 0, 1);
-    }, [activeProject]);
+    // useEffect(() => {
+    //     if (swiperRef.current !== null && !breakpoints.md)
+    //         swiperRef.current.swiper.slideTo(activeProject, 0, 1);
+    // }, [activeProject]);
+
+    const duplicateArr = (arr, times) => {
+        return Array(times)
+            .fill([...arr])
+            .reduce((a, b) => a.concat(b));
+    };
 
     return (
         <Layout>
@@ -128,91 +136,78 @@ export default function Projects({ projects }) {
                         className={projectsPageStyles.projects__swiper}
                     >
                         <Swiper
-                            cssMode={true}
-                            className={projectsPageStyles.mySwiper}
-                            modules={[Navigation, Pagination, Controller]}
-                            slidesPerView={1}
+                            className="mySwiperProjects"
+                            modules={[
+                                Navigation,
+                                Pagination,
+                                Controller,
+                                Mousewheel,
+                                Keyboard,
+                                FreeMode,
+                            ]}
+                            slidesPerView={3}
                             navigation
-                            pagination={{ clickable: true }}
+                            // pagination={{ clickable: true }}
                             scrollbar={{ draggable: true }}
                             ref={swiperRef}
-                            // onSwiper={setFirstSwiper}
-                            // controller={getcontrol}
+                            // freeMode={true}
+                            mousewheel={{
+                                releaseOnEdges: true,
+                            }}
                             keyboard={{
                                 enabled: true,
                             }}
+                            loop={true}
+                            loopedSlides={3}
+                            centeredSlides={true}
+                            onSlideChange={(swiper) => {
+                                console.log("slide change", swiper, [
+                                    activeProject,
+                                ]);
+                                setactiveProject(swiper.realIndex);
+                            }}
                         >
-                            {images.map((el, index) => {
+                            {projects.map((el, index) => {
                                 return (
                                     <SwiperSlide key={`${index}_slide_lrg`}>
-                                        <img
-                                            key={`${el.id}_${index}_pics_lrg`}
-                                            src={el.pic && el.pic}
+                                        <div
                                             className={
-                                                projectsPageStyles.projects__swiper__image
+                                                projectsPageStyles.projects__swiper__name
                                             }
-                                            // width={1440}
-                                            // height={1440}
-                                            layout="fill"
-                                        ></img>
+                                        >
+                                            <Link href={`/projects/${el.id}`}>
+                                                <a>
+                                                    {projects[index].name}
+                                                </a>
+                                            </Link>
+                                        </div>
                                     </SwiperSlide>
                                 );
                             })}
                         </Swiper>
-                    </motion.div>
-                    <motion.div className={projectsPageStyles.projectList}>
+
                         <motion.div
-                            className={projectsPageStyles.projectList__header}
-                            variants={project__motion}
+                            className={`${projectsPageStyles.projectContainer__background}`}
                         >
-                            PROJECTS
+                            <img
+                                key={`show_${activeProject}_pics_lrg`}
+                                src={
+                                    images[activeProject] &&
+                                    images[activeProject].pic &&
+                                    images[activeProject].pic
+                                }
+                                className={
+                                    projectsPageStyles.projects__swiper__image__background
+                                }
+                            ></img>
+                            <div>
+                                <span>{projects[activeProject].desc}</span>
+                            </div>
                         </motion.div>
-                        {projects.map((el, index) => {
-                            return (
-                                <motion.div
-                                    key={`${el}_${index}_projects_lrg`}
-                                    className={`${projectsPageStyles.projectContainer}`}
-                                    variants={project__motion}
-                                >
-                                    <Link href={`/projects/${el.id}`}>
-                                        <a>
-                                            <div>
-                                                <CDiv
-                                                    onMouseEnter={(val) =>
-                                                        setCurrent(val)
-                                                    }
-                                                    className={`${projectsPageStyles.project}`}
-                                                    text={
-                                                        <div
-                                                            className={`${projectsPageStyles.project__content}`}
-                                                        >
-                                                            <div>{el.name}</div>
-                                                            <div
-                                                                className={
-                                                                    projectsPageStyles.date
-                                                                }
-                                                            >
-                                                                {el.formatdate}
-                                                            </div>
-                                                        </div>
-                                                    }
-                                                    startColor="#000000"
-                                                    color="#000000"
-                                                    index={index}
-                                                ></CDiv>
-                                            </div>
-                                        </a>
-                                    </Link>
-                                </motion.div>
-                            );
-                        })}
                     </motion.div>
                 </motion.div>
             ) : (
-                <motion.div
-                  
-                    className={projectsPageStyles.projectWrapper}
-                >
+                <motion.div className={projectsPageStyles.projectWrapper}>
                     <Swiper
                         cssMode={true}
                         className={projectsPageStyles.mySwiper2}

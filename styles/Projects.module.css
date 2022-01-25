@@ -1,11 +1,16 @@
 .projectWrapper {
     display: flex;
+    position: relative;
     flex-direction: row;
     gap: 0.5em;
     padding: 0.2em;
     border: none;
     height: 100vh;
-    padding-top: 10vh;
+    width: 100vw;
+    /* padding-top: 6vh; */
+    justify-content: center;
+    align-content: center;
+    background-color: rgb(73, 73, 73);
 }
 
 .projectList {
@@ -46,12 +51,22 @@
     display: none;
 } */
 
-.projects__swiper {
+/* .projects__swiper {
     width: 50%;
     height: 90%;
     margin: 0 1em;
     display: flex;
     position: relative;
+} */
+
+.projects__swiper {
+    width: 100%;
+    height: 100%;
+    /* margin: 0 1em; */
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-content: center;
 }
 
 .projectContainer {
@@ -84,7 +99,35 @@
     object-fit: cover;
     display: block;
     width: 100%;
+    height: 50%;
+}
+
+.projects__swiper__name {
+    position: absolute;
+    font-size: 4em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
     height: 100%;
+    color: white;
+}
+
+.projectContainer__background {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40%;
+    height: 60%;
+}
+
+.projects__swiper__image__background {
+    object-fit: cover;
+    display: block;
+    width: 100%;
+    height: 100%;
+    
 }
 
 .date {

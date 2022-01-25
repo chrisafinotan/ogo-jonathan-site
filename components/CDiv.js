@@ -20,58 +20,34 @@ const CDiv = ({
 }) => {
     const controls = useAnimation();
     const [isAnimationPlaying, setIsAnimationPlaying] = useState(false);
-    let ncolor = color === "#000000" ? "#0028ff" : color;
+    let ncolor = "#0028ff";
     const fontChange = {
         init: {
-            fontFamily: startFont,
-            // fontSize: startSize,
-            scale: 1,
+            // scale: 1,
             transition: { duration: 0.2 },
-            filter: "invert(0)",
-            color: startColor,
+            // backgroundColor: "inherit",
+            filter: "invert(1)",
         },
         anim: {
-            fontFamily: endFont,
+            filter: "invert(0)",
             originX: originX,
             originY: originY,
-            // fontSize: endSize,
             // scale: 1.2,
-            filter: "invert(1)",
-            color: ncolor,
+            backgroundColor: ncolor,
             transition: { duration: 0.2 },
         },
     };
 
     return (
-        <motion.div
-            // initial={fontChange.init}
-            onHoverStart={() => {
-                if (!isAnimationPlaying) {
-                    // setIsAnimationPlaying(true);
-                    controls.start(fontChange.anim);
-                }
-            }}
-            onHoverEnd={() => {
-                // setIsAnimationPlaying(true);
-                controls.start(fontChange.init);
-            }}
-            // onAnimationComplete={() => {
-            //     setIsAnimationPlaying(false);
-            // }}
-            onMouseEnter={onMouseEnter && (() => onMouseEnter(index))}
-            onMouseLeave={onMouseExit && (() => onMouseExit())}
-            className={`${styles.cdiv}`}
-            id={id}
-            data-index={index}
-        >
-            <motion.div
-                animate={controls}
-                initial={fontChange.init}
+        <motion.div className={`${styles.cdiv}`} id={id} data-index={index}>
+            <motion.span
+                variants={fontChange}
+                whileHover="anim"
                 className={className}
                 index={index}
             >
                 {text}
-            </motion.div>
+            </motion.span>
         </motion.div>
     );
 };

@@ -1,13 +1,5 @@
 .cdiv {
     cursor: pointer;
-    /* height: 6rem; */
-    width: 100%;
+    /* width: 100%; */
     position: relative;
-    color: "#ffffff";
-    /* border: 1px solid purple; */
-}
-
-.cdiv > span {
-    position: absolute;
-    pointer-events: none;
 }

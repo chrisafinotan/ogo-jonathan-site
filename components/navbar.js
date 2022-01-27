@@ -91,31 +91,24 @@ export default function Navbar() {
         <div className={styles.navbarWrapper}>
             {!breakpoints.md ? (
                 <>
+                    <div className={`${styles.navbar__home}`}>
+                        <Link href="/">
+                            <a className={styles.navbar__link}>
+                                <span className="letters">OJ</span>
+                            </a>
+                        </Link>
+                    </div>
                     <motion.div
                         className={styles.navbar__lrg}
                         onClick={handleClick}
                     >
-                        <div
-                            key="navbar-link-home__lrg"
-                            className={`${styles.page__lrg}`}
-                        >
-                            <Link href="/">
-                                <a className={styles.navbar__link}>
-                                    OGO JONATHAN
-                                    {/* <CDiv
-                                        className={`${styles.left}`}
-                                        color={color}
-                                    ></CDiv> */}
-                                </a>
-                            </Link>
-                        </div>
                         <div
                             key="navbar-link-projects-motion__lrg"
                             className={`${styles.page__lrg}`}
                         >
                             <Link href="/projects">
                                 <a>
-                                    text="PROJECTS"
+                                    PROJECTS
                                     {/* <CDiv
                                         className={`${styles.left}`}
                                         color={color}
@@ -129,7 +122,7 @@ export default function Navbar() {
                         >
                             <Link href="/about">
                                 <a>
-                                    text="ABOUT"
+                                    ABOUT
                                     {/* <CDiv
                                         className={`${styles.left}`}
                                         color={color}
@@ -143,7 +136,7 @@ export default function Navbar() {
                         >
                             <Link href="/contact">
                                 <a>
-                                    text="CONTACT"
+                                    CONTACT
                                     {/* <CDiv
                                         className={`${styles.left}`}
                                         color={color}

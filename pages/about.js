@@ -91,6 +91,20 @@ export default function about() {
                                 variants={spanText}
                                 style={{ originX: 0 }}
                             >
+                                BLAH BLAH BLAH BLAH
+                                ...This is taking longer than expected
+                            </motion.div>
+                            <motion.div
+                                variants={spanText}
+                                style={{ originX: 0 }}
+                            >
+                                words words words words words i actually
+                                typed it out... not copy and paste
+                            </motion.div>
+                            <motion.div
+                                variants={spanText}
+                                style={{ originX: 0 }}
+                            >
                                 Lorem ipsum dolor sit amet consectetur,
                                 adipisicing
                             </motion.div>

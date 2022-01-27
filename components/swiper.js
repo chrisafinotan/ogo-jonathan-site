@@ -27,7 +27,7 @@ SwiperCore.use([Navigation, Pagination, Mousewheel, Autoplay]);
 export const CustomSwiper = forwardRef(({ pictures }, ref) => {
     const navigationPrevRef = useRef(null);
     const navigationNextRef = useRef(null);
-    console.log(pictures);
+    // console.log(pictures);
     return (
         // <div className="CustomSwiperContainer">
         <Swiper

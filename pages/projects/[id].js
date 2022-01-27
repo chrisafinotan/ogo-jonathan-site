@@ -98,6 +98,7 @@ export default function work({
     const [nextProj, showNext] = useState(false);
     const [prevProj, showPrev] = useState(false);
     const [linkIndex, setLinkIndex] = useState(1);
+    const [display, setDisplay] = useState(false);
 
     useEffect(() => {
         setPictures(projectPictures);
@@ -116,13 +117,24 @@ export default function work({
         }
         setLinkIndex(index);
     };
+    // console.log(breakpoints);
+    // console.log(projectPics);
+    // console.log('display', display);
+
+    const show = () => {
+        projectPics.length > 0 ? setDisplay(true) : setDisplay(false);
+    };
+
+    useEffect(() => {
+        show();
+    }, [projectPics]);
+
 
     return (
         <Layout>
-            <Head>
-                <title>{projectData.Name}</title>
-            </Head>
-            {!breakpoints.md ? (
+            {display ?
+
+            (!breakpoints.md ? (
                 <div className={projectsPageStyles.container__lrg}>
                     <motion.div
                         ref={elRef}
@@ -154,6 +166,8 @@ export default function work({
                                 releaseOnEdges: true,
                             }}
                             slidesPerView={"auto"}
+                            // slidesPerView={breakpoints.lg ? 4 : breakpoints.md ? 2 : 1}
+                            // loop
                         >
                             <SwiperSlide
                                 key={`desc_slide_lrg`}
@@ -186,7 +200,6 @@ export default function work({
                                 return (
                                     <SwiperSlide
                                         key={`${index}_slide_lrg`}
-                                        cssMode={true}
                                         className="mySwiperSlide"
                                     >
                                         <motion.img
@@ -201,7 +214,7 @@ export default function work({
                                 );
                             })}
                             <SwiperSlide
-                                key={`desc_slide_lrg`}
+                                key={`desc_slide_lrg_end`}
                                 className="mySwiperSlide__end"
                             >
                                 <motion.div
@@ -337,7 +350,9 @@ export default function work({
                         )}
                     </motion.div>
                 </motion.div>
-            )}
+            )) 
+            : (<div>LOADING</div>)
+                                    }
         </Layout>
     );
 }

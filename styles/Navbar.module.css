@@ -25,6 +25,17 @@
     height: 100%;
 }
 
+.navbar__home {
+    font-size: 2em;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+}
 .navbar__link {
     mix-blend-mode: difference;
 }
@@ -82,19 +93,20 @@
     position: fixed;
     right: 0;
     top: 0;
-    z-index: 10000;
+    z-index: 10;
     padding: 1em;
     display: flex;
     flex-direction: column;
-    gap: 1.5em;
+    gap: 0.5em;
 }
 
 .page__lrg {
-    font-size: 1em;
+    font-size: 1.2em;
     position: relative;
     display: flex;
     align-content: center;
-    justify-content: end;
+    justify-content: flex-end;
+    color: white;
 }
 
 .left {

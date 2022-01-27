@@ -28,6 +28,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 //FRAMER IMPORTS
 import { motion } from "framer-motion";
+import ReactTooltip from "react-tooltip";
 
 SwiperCore.use([
     Pagination,
@@ -112,17 +113,8 @@ export default function Projects({ projects }) {
     //         swiperRef.current.swiper.slideTo(activeProject, 0, 1);
     // }, [activeProject]);
 
-    const duplicateArr = (arr, times) => {
-        return Array(times)
-            .fill([...arr])
-            .reduce((a, b) => a.concat(b));
-    };
-
     return (
         <Layout>
-            <Head>
-                <title>Projects</title>
-            </Head>
             {!breakpoints.md ? (
                 <motion.div
                     variants={projectsContainer__motion}
@@ -146,6 +138,7 @@ export default function Projects({ projects }) {
                                 FreeMode,
                             ]}
                             slidesPerView={3}
+                            spaceBetween={50}
                             navigation
                             // pagination={{ clickable: true }}
                             scrollbar={{ draggable: true }}
@@ -158,36 +151,96 @@ export default function Projects({ projects }) {
                                 enabled: true,
                             }}
                             loop={true}
-                            loopedSlides={3}
+                            // loopedSlides={3}
                             centeredSlides={true}
                             onSlideChange={(swiper) => {
-                                console.log("slide change", swiper, [
-                                    activeProject,
-                                ]);
+                                // console.log("slide change", swiper, [
+                                //     activeProject,
+                                // ]);
                                 setactiveProject(swiper.realIndex);
+                                ReactTooltip.hide(`tip_${swiper.realIndex}`);
+                                ReactTooltip.rebuild();
                             }}
                         >
                             {projects.map((el, index) => {
                                 return (
                                     <SwiperSlide key={`${index}_slide_lrg`}>
-                                        <div
-                                            className={
-                                                projectsPageStyles.projects__swiper__name
-                                            }
-                                        >
-                                            <Link href={`/projects/${el.id}`}>
-                                                <a>
+                                        <Link href={`/projects/${el.id}`}>
+                                            <a
+                                                className={
+                                                    projectsPageStyles.projects__swiper__name
+                                                }
+                                                // onMouseEnter={() =>
+                                                //     setactiveProject(index)
+                                                // }
+                                                // onMouseLeave={() =>
+                                                //     setactiveProject(
+                                                //         swiperRef.current.swiper
+                                                //             .realIndex
+                                                //     )
+                                                // }
+                                                data-tip={index}
+                                                data-for={`tip_${index}`}
+                                            >
+                                                <span>
                                                     {projects[index].name}
-                                                </a>
-                                            </Link>
-                                        </div>
+                                                </span>
+                                            </a>
+                                        </Link>
+                                        <ReactTooltip
+                                            id={`tip_${index}`}
+                                            place="top"
+                                            type="dark"
+                                            effect="float"
+                                            disable={index === activeProject}
+                                            getContent={(dataTip) => {
+                                                return (
+                                                    <img
+                                                        src={
+                                                            images[dataTip] &&
+                                                            images[dataTip]
+                                                                .pic &&
+                                                            images[dataTip].pic
+                                                        }
+                                                        className={
+                                                            projectsPageStyles.projects__preview_image
+                                                        }
+                                                    ></img>
+                                                );
+                                            }}
+                                        />
                                     </SwiperSlide>
                                 );
                             })}
                         </Swiper>
 
+                        {/* <ReactTooltip
+                            id={`tip`}
+                            place="top"
+                            type="dark"
+                            effect="float"
+                            getContent={(dataTip) => {
+                                console.log(dataTip, activeProject);
+                                if (activeProject != dataTip) {
+                                    return (
+                                        <img
+                                            src={
+                                                images[dataTip] &&
+                                                images[dataTip].pic &&
+                                                images[dataTip].pic
+                                            }
+                                            className={
+                                                projectsPageStyles.projects__preview_image
+                                            }
+                                        ></img>
+                                    );
+                                }
+                            }}
+                        /> */}
+
                         <motion.div
-                            className={`${projectsPageStyles.projectContainer__background}`}
+                            className={`${projectsPageStyles.projects__background}`}
+                            id="background"
                         >
                             <img
                                 key={`show_${activeProject}_pics_lrg`}
@@ -197,11 +250,22 @@ export default function Projects({ projects }) {
                                     images[activeProject].pic
                                 }
                                 className={
-                                    projectsPageStyles.projects__swiper__image__background
+                                    projectsPageStyles.projects__background__image
                                 }
                             ></img>
-                            <div>
-                                <span>{projects[activeProject].desc}</span>
+                            <div
+                                className={
+                                    projectsPageStyles.projects__background__desc
+                                }
+                            >
+                                <div>{projects[activeProject].desc}</div>
+                                <div
+                                    className={
+                                        projectsPageStyles.projects__background__desc__count
+                                    }
+                                >{`${activeProject + 1}/${
+                                    projects.length
+                                }`}</div>
                             </div>
                         </motion.div>
                     </motion.div>

@@ -89,7 +89,7 @@ export default function contact() {
 
         var pathEl = document.getElementById("checkPath");
         var offset = anime.setDashoffset(pathEl);
-        console.log(pathEl, submit);
+        // console.log(pathEl, submit);
         pathEl.setAttribute("stroke-dashoffset", offset);
 
         basicTimeline

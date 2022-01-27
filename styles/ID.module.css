@@ -117,6 +117,8 @@
     display: flex;
     flex-flow: row nowrap;
     background-color: black;
+    padding-top: 120px;
+
 }
 
 .project__info__lrg {
@@ -148,23 +150,22 @@
     height: 100%;
     isolation: isolate;
     color: white;
+    /* border: 2px solid blue; */
+    z-index: 10;
     /* scroll-snap-type: x; */
 }
 
 .image__lrg {
     display: block;
     width: 100%;
+    /* aspect-ratio: 16/9; */
     height: 100%;
     object-fit: contain;
-    /* scroll-snap-align: start; */
-    scroll-behavior: none;
     margin: 1em;
-    isolation: isolate;
 }
 
 .project__end {
     padding-right: 15em;
-    border: 2px solid blue;
 }
 
 @media only screen and (max-width: 1024px) {

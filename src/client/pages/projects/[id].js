@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { useBreakpoint } from "../../components/Breakpoint";
-import Layout from "../../components/layout";
+import { useBreakpoint } from "../../../../components/Breakpoint";
+import Layout from "../../../../components/layout";
 import Head from "next/head";
 import Link from "next/link";
 import {
@@ -8,7 +8,7 @@ import {
     getAllProjects,
     getProjectData,
     getAssets,
-} from "../../lib/projectsLib";
+} from "../../../../lib/projectsLib";
 import projectsPageStyles from "../../styles/ID.module.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, {

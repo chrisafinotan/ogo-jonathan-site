@@ -304,14 +304,14 @@ export default function Projects({ projects }) {
                                             >
                                                 {projects[index].name}
                                             </motion.div>
-                                            <motion.div
+                                            {/* <motion.div
                                                 className={
                                                     projectsPageStyles.date
                                                 }
                                                 variants={project__motion}
                                             >
                                                 {projects[index].formatdate}
-                                            </motion.div>
+                                            </motion.div> */}
                                         </motion.div>
                                         <Link href={`/projects/${el.id}`}>
                                             <a>

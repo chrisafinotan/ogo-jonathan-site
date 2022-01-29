@@ -2,18 +2,28 @@
     "name": "ogo-jonathan-site",
     "version": "0.1.0",
     "private": true,
+    "main": "dist/server/index.js",
+    "engines": {
+        "node": "10"
+    },
     "scripts": {
-        "dev": "next dev",
-        "build": "next build && next export",
-        "export": "next export",
-        "deploy": "firebase deploy --only functions,hosting",
-        "start": "next start",
-        "lint": "next lint"
+        "dev:client": "next src/client",
+        "dev:server": "babel src/server --out-dir dist/server --source-maps --watch",
+        "dev": "npm run dev:client & npm run dev:server",
+        "build:client": "next build src/client",
+        "build:server": "babel src/server --out-dir dist/server --source-maps",
+        "build": "npm run build:client && npm run build:server",
+        "preserve": "npm run build",
+        "serve": "cross-env NODE_ENV=production firebase serve --only functions,hosting",
+        "predeploy": "rimraf dist/ && npm run build",
+        "deploy": "cross-env NODE_ENV=production firebase deploy --only functions,hosting"
     },
     "dependencies": {
         "animejs": "^3.2.1",
         "date-fns": "^2.25.0",
         "firebase": "^9.6.1",
+        "firebase-admin": "^10.0.2",
+        "firebase-functions": "^3.16.0",
         "framer-motion": "^5.5.5",
         "gray-matter": "^4.0.3",
         "hamburger-react": "^2.4.1",
@@ -26,7 +36,12 @@
         "swiper": "^7.0.8"
     },
     "devDependencies": {
+        "@babel/cli": "^7.16.8",
+        "@babel/core": "^7.16.12",
+        "@babel/preset-env": "^7.16.11",
+        "cross-env": "^7.0.3",
         "eslint": "8.0.1",
-        "eslint-config-next": "11.1.2"
+        "eslint-config-next": "11.1.2",
+        "rimraf": "^3.0.2"
     }
 }

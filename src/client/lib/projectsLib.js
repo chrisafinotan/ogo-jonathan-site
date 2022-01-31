@@ -112,3 +112,23 @@ export async function getAssets(path) {
         });
     return pictures;
 }
+
+export async function getAllHomeProjects() {
+    let projectsData = [];
+    const querySnapshot = await getDocs(collection(projectDB, "home"));
+    querySnapshot.forEach(async (doc) => {
+        let projectObj = {
+            id: doc.id,
+            file: doc.data().File,
+            name: doc.data().Name,
+            size: doc.data().Size,
+            type: doc.data().Type,
+            link: doc.data().Link,
+        };
+        console.log(projectObj);
+        projectsData.push(projectObj);
+    });
+
+    return projectsData;
+    // return [];
+}

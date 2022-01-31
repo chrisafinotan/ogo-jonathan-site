@@ -1,6 +1,12 @@
-/* .navbarWrapper {
-
-} */
+.navbarWrapper {
+    font-size: 1.2em;
+    z-index: 100;
+    height: fit-content;
+    width: fit-content;
+    height: 100px;
+    display: block;
+    position: absolute;
+}
 
 .navbar {
     display: flex;
@@ -26,7 +32,6 @@
 }
 
 .navbar__home {
-    font-size: 2em;
     position: fixed;
     left: 0;
     top: 0;
@@ -35,6 +40,7 @@
     display: flex;
     flex-direction: column;
     gap: 1.5em;
+    /* border: 2px solid red; */
 }
 .navbar__link {
     mix-blend-mode: difference;
@@ -42,7 +48,7 @@
 
 .page {
     width: 100%;
-    font-size: 4.5rem;
+    /* font-size: 4.5rem; */
     padding: 0.5rem;
     margin: 0.5rem 0rem;
     position: relative;
@@ -53,7 +59,7 @@
     width: 100%;
     display: flex;
     justify-content: flex-end;
-    font-size: 3rem;
+    /* font-size: 3rem; */
 }
 
 .menuBtnWrapper > div {
@@ -63,7 +69,7 @@
 .homepage {
     width: 100%;
     font-family: "The Nautigal", cursive;
-    font-size: 3rem;
+    /* font-size: 3rem; */
     position: relative;
 }
 
@@ -96,17 +102,14 @@
     z-index: 10;
     padding: 1em;
     display: flex;
-    flex-direction: column;
     gap: 0.5em;
 }
 
 .page__lrg {
-    font-size: 1.2em;
     position: relative;
     display: flex;
     align-content: center;
-    justify-content: flex-end;
-    color: white;
+    /* justify-content: flex-end; */
 }
 
 .left {

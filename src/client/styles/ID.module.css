@@ -117,8 +117,7 @@
     display: flex;
     flex-flow: row nowrap;
     background-color: black;
-    padding-top: 120px;
-
+    /* padding-top: 5vh; */
 }
 
 .project__info__lrg {

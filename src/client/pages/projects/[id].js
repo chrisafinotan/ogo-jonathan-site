@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
-import { useBreakpoint } from "../../../../components/Breakpoint";
-import Layout from "../../../../components/layout";
+import { useRouter } from "next/router";
+import { useBreakpoint } from "../../components/Breakpoint";
+import Layout from "../../components/layout";
 import Head from "next/head";
 import Link from "next/link";
 import {
@@ -8,7 +9,7 @@ import {
     getAllProjects,
     getProjectData,
     getAssets,
-} from "../../../../lib/projectsLib";
+} from "../../lib/projectsLib";
 import projectsPageStyles from "../../styles/ID.module.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, {
@@ -100,10 +101,7 @@ export default function work({
     const [linkIndex, setLinkIndex] = useState(1);
     const [display, setDisplay] = useState(false);
 
-    useEffect(() => {
-        setPictures(projectPictures);
-        getProjectIndex();
-    }, [projectPictures]);
+    const router = useRouter();
 
     const getProjectIndex = () => {
         let index = projects.findIndex((el) => el.id === projectID);
@@ -125,234 +123,276 @@ export default function work({
         projectPics.length > 0 ? setDisplay(true) : setDisplay(false);
     };
 
+    const nextPage = () => {
+        window.scrollTo(0, 0);
+    };
+
+    useEffect(() => {
+        setPictures(projectPictures);
+        getProjectIndex();
+    }, [projectPictures]);
+
     useEffect(() => {
         show();
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: "smooth",
+        });
     }, [projectPics]);
 
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: "smooth",
+        });
+        console.log("page reload", window.location.href);
+    }, []);
 
     return (
         <Layout>
-            {display ?
+            {display ? (
+                !breakpoints.md ? (
+                    <div className={projectsPageStyles.container__lrg}>
+                        <motion.div
+                            ref={elRef}
+                            className={
+                                projectsPageStyles.projectImagesWrapper__lrg
+                            }
+                            variants={projectsContainer__motion}
+                            initial="hidden"
+                            animate="show"
+                            exit="exit"
+                        >
+                            <Swiper
+                                className="mySwiperID"
+                                // className={projectsPageStyles.mySwiper}
+                                modules={[
+                                    Navigation,
+                                    Pagination,
+                                    Controller,
+                                    Mousewheel,
+                                    Keyboard,
+                                    FreeMode,
+                                ]}
+                                navigation
+                                pagination={{ clickable: true }}
+                                scrollbar={{ draggable: true }}
+                                keyboard={{
+                                    enabled: true,
+                                }}
+                                freeMode={true}
+                                mousewheel={{
+                                    releaseOnEdges: true,
+                                }}
+                                slidesPerView={"auto"}
+                                // slidesPerView={breakpoints.lg ? 4 : breakpoints.md ? 2 : 1}
+                                // loop
+                            >
+                                <SwiperSlide
+                                    key={`desc_slide_lrg`}
+                                    className="mySwiperSlideInfo"
+                                >
+                                    <motion.div
+                                        className={
+                                            projectsPageStyles.project__info__lrg
+                                        }
+                                    >
+                                        <motion.div
+                                            className={
+                                                projectsPageStyles.project__name__lrg
+                                            }
+                                            variants={project__motion}
+                                        >
+                                            {projectData.Name}
+                                        </motion.div>
+                                        <motion.div
+                                            className={
+                                                projectsPageStyles.project__desc__lrg
+                                            }
+                                            variants={project__motion}
+                                        >
+                                            {projectData.Description}
+                                        </motion.div>
+                                    </motion.div>
+                                </SwiperSlide>
+                                {projectPics.map((el, index) => {
+                                    return (
+                                        <SwiperSlide
+                                            key={`${index}_slide_lrg`}
+                                            className="mySwiperSlide"
+                                        >
+                                            <motion.img
+                                                key={`${el}_${index}_project_pics_lrg`}
+                                                src={el.pic && el.pic}
+                                                className={
+                                                    projectsPageStyles.image__lrg
+                                                }
+                                                variants={project__motion}
+                                            ></motion.img>
+                                        </SwiperSlide>
+                                    );
+                                })}
+                                <SwiperSlide
+                                    key={`desc_slide_lrg_end`}
+                                    className="mySwiperSlide__end"
+                                >
+                                    <motion.div
+                                        className={
+                                            projectsPageStyles.project__end
+                                        }
+                                    ></motion.div>
+                                </SwiperSlide>
+                            </Swiper>
 
-            (!breakpoints.md ? (
-                <div className={projectsPageStyles.container__lrg}>
+                            {prevProj && (
+                                <Link
+                                    href={`/projects/${
+                                        projects[linkIndex - 1].id
+                                    }`}
+                                >
+                                    <a
+                                        className={
+                                            projectsPageStyles.projectNavigator__prev
+                                        }
+                                        onClick={nextPage}
+                                    >
+                                        <div>PREV</div>
+                                        <div
+                                            className={
+                                                projectsPageStyles.projectNavigator__prev__name
+                                            }
+                                        >
+                                            {projects[linkIndex - 1].name}
+                                        </div>
+                                    </a>
+                                </Link>
+                            )}
+                            {nextProj && (
+                                // <Link
+                                //     href={`/projects/${
+                                //         projects[linkIndex + 1].id
+                                //     }`}
+                                // >
+                                <a
+                                    className={
+                                        projectsPageStyles.projectNavigator__next
+                                    }
+                                    href={`/projects/${
+                                        projects[linkIndex + 1].id
+                                    }`}
+                                    // onClick={nextPage}
+                                >
+                                    <div>NEXT</div>
+                                    <div
+                                        className={
+                                            projectsPageStyles.projectNavigator__prev__name
+                                        }
+                                    >
+                                        {projects[linkIndex + 1].name}
+                                    </div>
+                                </a>
+                                // </Link>
+                            )}
+                        </motion.div>
+                    </div>
+                ) : (
                     <motion.div
-                        ref={elRef}
-                        className={projectsPageStyles.projectImagesWrapper__lrg}
+                        className={projectsPageStyles.container}
                         variants={projectsContainer__motion}
                         initial="hidden"
                         animate="show"
                         exit="exit"
                     >
-                        <Swiper
-                            className="mySwiperID"
-                            // className={projectsPageStyles.mySwiper}
-                            modules={[
-                                Navigation,
-                                Pagination,
-                                Controller,
-                                Mousewheel,
-                                Keyboard,
-                                FreeMode,
-                            ]}
-                            navigation
-                            pagination={{ clickable: true }}
-                            scrollbar={{ draggable: true }}
-                            keyboard={{
-                                enabled: true,
-                            }}
-                            freeMode={true}
-                            mousewheel={{
-                                releaseOnEdges: true,
-                            }}
-                            slidesPerView={"auto"}
-                            // slidesPerView={breakpoints.lg ? 4 : breakpoints.md ? 2 : 1}
-                            // loop
+                        <motion.div
+                            className={projectsPageStyles.project__info}
                         >
-                            <SwiperSlide
-                                key={`desc_slide_lrg`}
-                                className="mySwiperSlideInfo"
+                            <motion.div
+                                className={projectsPageStyles.project__name}
+                                variants={project__motion}
                             >
-                                <motion.div
-                                    className={
-                                        projectsPageStyles.project__info__lrg
-                                    }
-                                >
-                                    <motion.div
-                                        className={
-                                            projectsPageStyles.project__name__lrg
-                                        }
-                                        variants={project__motion}
-                                    >
-                                        {projectData.Name}
-                                    </motion.div>
-                                    <motion.div
-                                        className={
-                                            projectsPageStyles.project__desc__lrg
-                                        }
-                                        variants={project__motion}
-                                    >
-                                        {projectData.Description}
-                                    </motion.div>
-                                </motion.div>
-                            </SwiperSlide>
+                                {projectData.Name}
+                            </motion.div>
+                            <motion.div
+                                className={projectsPageStyles.project__desc}
+                                variants={project__motion}
+                            >
+                                {projectData.Description}
+                            </motion.div>
+                        </motion.div>
+                        <motion.div
+                            className={projectsPageStyles.projectImagesWrapper}
+                        >
                             {projectPics.map((el, index) => {
                                 return (
-                                    <SwiperSlide
-                                        key={`${index}_slide_lrg`}
-                                        className="mySwiperSlide"
+                                    <motion.div
+                                        key={`${index}_pic_sml`}
+                                        className={
+                                            projectsPageStyles.projectImageWrapper
+                                        }
+                                        variants={project__motion}
                                     >
-                                        <motion.img
-                                            key={`${el}_${index}_project_pics_lrg`}
-                                            src={el.pic && el.pic}
-                                            className={
-                                                projectsPageStyles.image__lrg
-                                            }
-                                            variants={project__motion}
-                                        ></motion.img>
-                                    </SwiperSlide>
+                                        <img
+                                            key={`${projectData.Name}_${el.index}_pic`}
+                                            src={el.pic}
+                                            className={projectsPageStyles.image}
+                                        ></img>
+                                    </motion.div>
                                 );
                             })}
-                            <SwiperSlide
-                                key={`desc_slide_lrg_end`}
-                                className="mySwiperSlide__end"
-                            >
-                                <motion.div
-                                    className={projectsPageStyles.project__end}
-                                ></motion.div>
-                            </SwiperSlide>
-                        </Swiper>
-
-                        {prevProj && (
-                            <Link
-                                href={`/projects/${projects[linkIndex - 1].id}`}
-                            >
-                                <a
-                                    className={
-                                        projectsPageStyles.projectNavigator__prev
-                                    }
+                            {prevProj && (
+                                <Link
+                                    href={`/projects/${
+                                        projects[linkIndex - 1].id
+                                    }`}
                                 >
-                                    <div>PREV</div>
-                                    <div
+                                    <a
                                         className={
-                                            projectsPageStyles.projectNavigator__prev__name
+                                            projectsPageStyles.projectNavigator__prev
                                         }
                                     >
-                                        {projects[linkIndex - 1].name}
-                                    </div>
-                                </a>
-                            </Link>
-                        )}
-                        {nextProj && (
-                            <Link
-                                href={`/projects/${projects[linkIndex + 1].id}`}
-                            >
-                                <a
-                                    className={
-                                        projectsPageStyles.projectNavigator__next
-                                    }
+                                        <div>PREV</div>
+                                        {/* <div>Project</div> */}
+                                        <div
+                                            className={
+                                                projectsPageStyles.projectNavigator__prev__name
+                                            }
+                                        >
+                                            {projects[linkIndex - 1].name}
+                                        </div>
+                                    </a>
+                                </Link>
+                            )}
+                            {nextProj && (
+                                <Link
+                                    href={`/projects/${
+                                        projects[linkIndex + 1].id
+                                    }`}
                                 >
-                                    <div>NEXT</div>
-                                    <div
+                                    <a
                                         className={
-                                            projectsPageStyles.projectNavigator__prev__name
+                                            projectsPageStyles.projectNavigator__next
                                         }
                                     >
-                                        {projects[linkIndex + 1].name}
-                                    </div>
-                                </a>
-                            </Link>
-                        )}
+                                        <div>NEXT</div>
+                                        {/* <div>Project</div> */}
+                                        <div
+                                            className={
+                                                projectsPageStyles.projectNavigator__prev__name
+                                            }
+                                        >
+                                            {projects[linkIndex + 1].name}
+                                        </div>
+                                    </a>
+                                </Link>
+                            )}
+                        </motion.div>
                     </motion.div>
-                </div>
+                )
             ) : (
-                <motion.div
-                    className={projectsPageStyles.container}
-                    variants={projectsContainer__motion}
-                    initial="hidden"
-                    animate="show"
-                    exit="exit"
-                >
-                    <motion.div className={projectsPageStyles.project__info}>
-                        <motion.div
-                            className={projectsPageStyles.project__name}
-                            variants={project__motion}
-                        >
-                            {projectData.Name}
-                        </motion.div>
-                        <motion.div
-                            className={projectsPageStyles.project__desc}
-                            variants={project__motion}
-                        >
-                            {projectData.Description}
-                        </motion.div>
-                    </motion.div>
-                    <motion.div
-                        className={projectsPageStyles.projectImagesWrapper}
-                    >
-                        {projectPics.map((el) => {
-                            return (
-                                <motion.div
-                                    className={
-                                        projectsPageStyles.projectImageWrapper
-                                    }
-                                    variants={project__motion}
-                                >
-                                    <img
-                                        key={`${projectData.Name}_${el.index}_pic`}
-                                        src={el.pic}
-                                        className={projectsPageStyles.image}
-                                    ></img>
-                                </motion.div>
-                            );
-                        })}
-                        {prevProj && (
-                            <Link
-                                href={`/projects/${projects[linkIndex - 1].id}`}
-                            >
-                                <a
-                                    className={
-                                        projectsPageStyles.projectNavigator__prev
-                                    }
-                                >
-                                    <div>PREV</div>
-                                    {/* <div>Project</div> */}
-                                    <div
-                                        className={
-                                            projectsPageStyles.projectNavigator__prev__name
-                                        }
-                                    >
-                                        {projects[linkIndex - 1].name}
-                                    </div>
-                                </a>
-                            </Link>
-                        )}
-                        {nextProj && (
-                            <Link
-                                href={`/projects/${projects[linkIndex + 1].id}`}
-                            >
-                                <a
-                                    className={
-                                        projectsPageStyles.projectNavigator__next
-                                    }
-                                >
-                                    <div>NEXT</div>
-                                    {/* <div>Project</div> */}
-                                    <div
-                                        className={
-                                            projectsPageStyles.projectNavigator__prev__name
-                                        }
-                                    >
-                                        {projects[linkIndex + 1].name}
-                                    </div>
-                                </a>
-                            </Link>
-                        )}
-                    </motion.div>
-                </motion.div>
-            )) 
-            : (<div>LOADING</div>)
-                                    }
+                <div>LOADING</div>
+            )}
         </Layout>
     );
 }

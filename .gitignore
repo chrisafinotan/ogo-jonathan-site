@@ -36,3 +36,4 @@ yarn-error.log*
 
 #firebase
 /.firebase
+src/client/firebase/fire-config.js

@@ -10,9 +10,11 @@ import { AnimatePresence, motion, useAnimation } from "framer-motion";
 //STYLE IMPORTS
 import styles from "../styles/Navbar.module.css";
 import CDiv from "./CDiv";
+import CLink from "./CLink";
 
 import { Slant as Hamburger } from "hamburger-react";
 import { useBreakpoint } from "./Breakpoint";
+import CSpan from "./CSpan";
 const colors = [
     "#3addcd",
     "#3524a3",
@@ -92,11 +94,13 @@ export default function Navbar() {
             {!breakpoints.md ? (
                 <>
                     <div className={`${styles.navbar__home}`}>
-                        <Link href="/">
+                        <CLink href="/">
                             <a className={styles.navbar__link}>
-                                <span className="letters">OJ</span>
+                                {/* <span className="letters"> */}
+                                    <CSpan text="OJ" />
+                                {/* </span> */}
                             </a>
-                        </Link>
+                        </CLink>
                     </div>
                     <motion.div
                         className={styles.navbar__lrg}
@@ -106,43 +110,40 @@ export default function Navbar() {
                             key="navbar-link-projects-motion__lrg"
                             className={`${styles.page__lrg}`}
                         >
-                            <Link href="/projects">
+                            <CLink href="/projects">
                                 <a>
-                                    PROJECTS
+                                    <CSpan text="PROJECTS" />
                                     {/* <CDiv
                                         className={`${styles.left}`}
                                         color={color}
                                     ></CDiv> */}
                                 </a>
-                            </Link>
+                            </CLink>
                         </div>
                         <div
                             key="navbar-link-about-motion__lrg"
                             className={`${styles.page__lrg}`}
                         >
-                            <Link href="/about">
+                            <CLink href="/about">
                                 <a>
-                                    ABOUT
+                                    <CSpan text="ABOUT" />
+
                                     {/* <CDiv
                                         className={`${styles.left}`}
                                         color={color}
                                     ></CDiv> */}
                                 </a>
-                            </Link>
+                            </CLink>
                         </div>
                         <div
                             key="navbar-link-contact-motion"
                             className={`${styles.page__lrg}`}
                         >
-                            <Link href="/contact">
+                            <CLink href="/contact">
                                 <a>
-                                    CONTACT
-                                    {/* <CDiv
-                                        className={`${styles.left}`}
-                                        color={color}
-                                    ></CDiv> */}
+                                    <CSpan text="CONTACT" />
                                 </a>
-                            </Link>
+                            </CLink>
                         </div>
                     </motion.div>
                 </>

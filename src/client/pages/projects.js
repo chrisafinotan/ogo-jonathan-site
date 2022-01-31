@@ -8,8 +8,9 @@ import projectsPageStyles from "../styles/Projects.module.css";
 import { projectStorage } from "../firebase/fire-config";
 import { ref, getDownloadURL } from "firebase/storage";
 
-import Head from "next/head";
 import Link from "next/link";
+
+import CSpan from "../components/CSpan";
 // import Image from "next/image";
 
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -80,6 +81,7 @@ const project__motion = {
 };
 
 export default function Projects({ projects }) {
+    
     const swiperRef = useRef(null);
     const breakpoints = useBreakpoint();
     const [activeProject, setactiveProject] = useState(0);
@@ -183,7 +185,9 @@ export default function Projects({ projects }) {
                                                 data-for={`tip_${index}`}
                                             >
                                                 <span>
-                                                    {projects[index].name}
+                                                    {/* {projects[index].name} */}
+                                    <CSpan text={projects[index].name} />
+
                                                 </span>
                                             </a>
                                         </Link>
@@ -213,30 +217,6 @@ export default function Projects({ projects }) {
                                 );
                             })}
                         </Swiper>
-
-                        {/* <ReactTooltip
-                            id={`tip`}
-                            place="top"
-                            type="dark"
-                            effect="float"
-                            getContent={(dataTip) => {
-                                console.log(dataTip, activeProject);
-                                if (activeProject != dataTip) {
-                                    return (
-                                        <img
-                                            src={
-                                                images[dataTip] &&
-                                                images[dataTip].pic &&
-                                                images[dataTip].pic
-                                            }
-                                            className={
-                                                projectsPageStyles.projects__preview_image
-                                            }
-                                        ></img>
-                                    );
-                                }
-                            }}
-                        /> */}
 
                         <motion.div
                             className={`${projectsPageStyles.projects__background}`}

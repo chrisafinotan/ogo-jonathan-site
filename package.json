@@ -2,21 +2,17 @@
     "name": "ogo-jonathan-site",
     "version": "0.1.0",
     "private": true,
-    "main": "dist/server/index.js",
+    "main": "server.js",
     "engines": {
         "node": "10"
     },
     "scripts": {
-        "dev:client": "next src/client",
-        "dev:server": "babel src/server --out-dir dist/server --source-maps --watch",
-        "dev": "npm run dev:client & npm run dev:server",
-        "build:client": "next build src/client",
-        "build:server": "babel src/server --out-dir dist/server --source-maps",
-        "build": "npm run build:client && npm run build:server",
-        "preserve": "npm run build",
-        "serve": "cross-env NODE_ENV=production firebase serve --only functions,hosting",
-        "predeploy": "rimraf dist/ && npm run build",
-        "deploy": "cross-env NODE_ENV=production firebase deploy --only functions,hosting"
+        "clean": "rimraf nextjs/",
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "predeploy": "npm run clean && next build",
+        "deploy": "firebase deploy"
     },
     "dependencies": {
         "animejs": "^3.2.1",
@@ -40,8 +36,6 @@
         "@babel/core": "^7.16.12",
         "@babel/preset-env": "^7.16.11",
         "cross-env": "^7.0.3",
-        "eslint": "8.0.1",
-        "eslint-config-next": "11.1.2",
         "rimraf": "^3.0.2"
     }
 }

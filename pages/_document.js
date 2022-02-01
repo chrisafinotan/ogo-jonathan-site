@@ -12,7 +12,7 @@ class MyDocument extends Document {
                     <link
                         rel="preconnect"
                         href="https://fonts.gstatic.com"
-                        crossorigin
+                        // crossOrigin
                     />
                     <link
                         href="https://fonts.googleapis.com/css2?family=Shizuru&display=swap"
@@ -25,7 +25,7 @@ class MyDocument extends Document {
                     <link
                         rel="preconnect"
                         href="https://fonts.gstatic.com"
-                        crossorigin
+                        // crossOrigin
                     />
                     <link
                         href="https://fonts.googleapis.com/css2?family=The+Nautigal:wght@700&display=swap"

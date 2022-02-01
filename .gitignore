@@ -37,3 +37,11 @@ yarn-error.log*
 #firebase
 /.firebase
 src/client/firebase/fire-config.js
+nextjs
+
+
+#log files
+*.log
+
+#cache files
+*.cache

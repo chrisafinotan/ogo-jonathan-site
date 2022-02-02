@@ -1,38 +1,34 @@
 .mainWrapper {
     width: 100vw;
     height: 100vh;
-    overflow-y: scroll;
-    overflow-x: hidden;
-
+    /* overflow-y: scroll;
+    overflow-x: hidden; */
+    overflow: hidden;
 }
 
-.siteSVG {
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 5;
+.sliding__background {
+    /* background: url("../public/images/lojay.JPG") repeat-x; */
+    width: 100%;
+    height: 300%;
+    border: 2px solid red;
 }
 
 .imageComponent {
     object-fit: contain;
     width: 100%;
     height: 100%;
-    /* border: 2px solid red; */
-    z-index: 100;
+    /* z-index: 100; */
 }
 
 .scrollWrapper {
-
     position: relative;
     z-index: 10;
-    /* border: 2px solid red; */
+    animation: slide 10s linear infinite;
 }
 
 .imgWrapper {
     width: 25vw;
     height: 40vh;
-    /* border: 1px solid blue; */
 }
 
 /* @media only screen and (max-width: 1024px) {
@@ -42,3 +38,12 @@
         height: 100%;
     }
 } */
+
+@keyframes slide {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+    100% {
+        transform: translate3d(0, -1000px, 0); /* The image width */
+    }
+}

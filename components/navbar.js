@@ -13,7 +13,7 @@ import CDiv from "./CDiv";
 import CLink from "./CLink";
 
 import { Slant as Hamburger } from "hamburger-react";
-import { useBreakpoint } from "./Breakpoint";
+import { useBreakpoint } from "../context/breakpointContext";
 import CSpan from "./CSpan";
 const colors = [
     "#3addcd",
@@ -88,6 +88,7 @@ export default function Navbar() {
         setmenuOpen(false);
         setcolor();
     };
+    console.log(breakpoints);
 
     return (
         <div className={styles.navbarWrapper}>
@@ -97,7 +98,7 @@ export default function Navbar() {
                         <CLink href="/">
                             <a className={styles.navbar__link}>
                                 {/* <span className="letters"> */}
-                                    <CSpan text="OJ" />
+                                <CSpan text="OJ" />
                                 {/* </span> */}
                             </a>
                         </CLink>
@@ -148,26 +149,27 @@ export default function Navbar() {
                     </motion.div>
                 </>
             ) : (
-                <>
+                <div>
                     <div className={styles.header__wrapper}>
                         <Hamburger
                             toggled={menuOpen}
                             onToggle={(toggled) => {
                                 if (toggled) {
-                                    setcolor(
-                                        colors[
-                                            Math.floor(
-                                                Math.random() * colors.length
-                                            )
-                                        ]
-                                    );
+                                    // setcolor(
+                                    //     colors[
+                                    //         Math.floor(
+                                    //             Math.random() * colors.length
+                                    //         )
+                                    //     ]
+                                    // );
                                     setmenuOpen(true);
                                 } else {
-                                    setcolor("white");
+                                    // setcolor("white");
                                     setmenuOpen(false);
                                 }
                             }}
                             distance="lg"
+                            className={styles.hbg__wrapper}
                         ></Hamburger>
                     </div>
                     {menuOpen && (
@@ -263,7 +265,7 @@ export default function Navbar() {
                             </AnimatePresence>
                         </motion.div>
                     )}
-                </>
+                </div>
             )}
         </div>
     );

@@ -78,7 +78,6 @@ export default function about() {
                         style={{position: 'relative'}}
                     />
                 </motion.div>
-                {/* <AnimatePresence> */}
                     <motion.div className={aboutPageStyles.aboutText}>
                         <motion.div
                             variants={spanContainer}
@@ -130,7 +129,6 @@ export default function about() {
                             </motion.div>
                         </motion.div>
                     </motion.div>
-                {/* </AnimatePresence> */}
             </motion.div>
         </Layout>
     );

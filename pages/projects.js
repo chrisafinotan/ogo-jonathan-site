@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useBreakpoint } from "../components/Breakpoint";
+import { useBreakpoint } from "../context/breakpointContext";
 import Layout from "../components/layout";
 import CDiv from "../components/CDiv";
 import { getAllProjects } from "../lib/projectsLib";
@@ -23,6 +23,7 @@ import SwiperCore, {
     Keyboard,
     Mousewheel,
     FreeMode,
+    History,
 } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -30,6 +31,7 @@ import "swiper/css/pagination";
 //FRAMER IMPORTS
 import { motion } from "framer-motion";
 import ReactTooltip from "react-tooltip";
+import { useRouter } from 'next/router';
 
 SwiperCore.use([
     Pagination,
@@ -38,6 +40,7 @@ SwiperCore.use([
     EffectCreative,
     Keyboard,
     Controller,
+    History,
 ]);
 
 export async function getStaticProps() {
@@ -48,11 +51,11 @@ export async function getStaticProps() {
 }
 
 const projectsContainer__motion = {
-    show: {
-        transition: {
-            staggerChildren: 0.4,
-        },
-    },
+    // show: {
+    //     transition: {
+    //         staggerChildren: 0.4,
+    //     },
+    // },
 };
 
 const project__motion = {
@@ -73,6 +76,7 @@ const project__motion = {
     exit: {
         opacity: 0,
         y: -10,
+        rotateX: 90,
         transition: {
             ease: "easeInOut",
             duration: 0.7,
@@ -81,39 +85,10 @@ const project__motion = {
 };
 
 export default function Projects({ projects }) {
-    
-    const swiperRef = useRef(null);
     const breakpoints = useBreakpoint();
     const [activeProject, setactiveProject] = useState(0);
-
-    //get images from storage
-    const [images, setimages] = useState([]);
-    const loadImages = async () => {
-        let async_images = await Promise.all(
-            projects.map(async (project) => {
-                return {
-                    id: project.id,
-                    pic: await getDownloadURL(
-                        ref(projectStorage, project.cover)
-                    ),
-                };
-            })
-        );
-        setimages(async_images);
-    };
-
-    const setCurrent = (val) => {
-        !breakpoints.md && setactiveProject(val);
-    };
-
-    useEffect(() => {
-        loadImages();
-    }, []);
-
-    // useEffect(() => {
-    //     if (swiperRef.current !== null && !breakpoints.md)
-    //         swiperRef.current.swiper.slideTo(activeProject, 0, 1);
-    // }, [activeProject]);
+    const router = useRouter();
+    console.log(router.query.slide);
 
     return (
         <Layout>
@@ -125,10 +100,7 @@ export default function Projects({ projects }) {
                     exit="exit"
                     className={projectsPageStyles.projectWrapper}
                 >
-                    <motion.div
-                        variants={project__motion}
-                        className={projectsPageStyles.projects__swiper}
-                    >
+                    <motion.div className={projectsPageStyles.projects__swiper}>
                         <Swiper
                             className="mySwiperProjects"
                             modules={[
@@ -138,81 +110,57 @@ export default function Projects({ projects }) {
                                 Mousewheel,
                                 Keyboard,
                                 FreeMode,
+                                History,
                             ]}
                             slidesPerView={3}
                             spaceBetween={50}
                             navigation
-                            // pagination={{ clickable: true }}
                             scrollbar={{ draggable: true }}
-                            ref={swiperRef}
-                            // freeMode={true}
                             mousewheel={{
                                 releaseOnEdges: true,
                             }}
                             keyboard={{
                                 enabled: true,
                             }}
-                            loop={true}
-                            // loopedSlides={3}
+                            // loop={true}
                             centeredSlides={true}
+                            onSwiper={(swiper) => {
+                                console.log(router.query.slide);
+                                router.query.slide && swiper.slideTo(Number(router.query.slide))
+                            }}
                             onSlideChange={(swiper) => {
-                                // console.log("slide change", swiper, [
-                                //     activeProject,
-                                // ]);
                                 setactiveProject(swiper.realIndex);
-                                ReactTooltip.hide(`tip_${swiper.realIndex}`);
-                                ReactTooltip.rebuild();
+                                router.query.slide = swiper.realIndex
+                            }}
+                            history={{
+                                key: "slide",
+                                replaceState: true,
                             }}
                         >
                             {projects.map((el, index) => {
                                 return (
-                                    <SwiperSlide key={`${index}_slide_lrg`}>
-                                        <Link href={`/projects/${el.id}`}>
-                                            <a
+                                    <SwiperSlide
+                                        key={`${index}_slide_lrg`}
+                                        data-history={index}
+                                    >
+                                        <Link href={`/project/${el.id}`}>
+                                            <motion.a
+                                                variants={project__motion}
                                                 className={
                                                     projectsPageStyles.projects__swiper__name
                                                 }
-                                                // onMouseEnter={() =>
-                                                //     setactiveProject(index)
-                                                // }
-                                                // onMouseLeave={() =>
-                                                //     setactiveProject(
-                                                //         swiperRef.current.swiper
-                                                //             .realIndex
-                                                //     )
-                                                // }
                                                 data-tip={index}
                                                 data-for={`tip_${index}`}
                                             >
                                                 <span>
-                                                    {/* {projects[index].name} */}
-                                    <CSpan text={projects[index].name} />
-
+                                                    <CSpan
+                                                        text={
+                                                            projects[index].name
+                                                        }
+                                                    />
                                                 </span>
-                                            </a>
+                                            </motion.a>
                                         </Link>
-                                        <ReactTooltip
-                                            id={`tip_${index}`}
-                                            place="top"
-                                            type="dark"
-                                            effect="float"
-                                            disable={index === activeProject}
-                                            getContent={(dataTip) => {
-                                                return (
-                                                    <img
-                                                        src={
-                                                            images[dataTip] &&
-                                                            images[dataTip]
-                                                                .pic &&
-                                                            images[dataTip].pic
-                                                        }
-                                                        className={
-                                                            projectsPageStyles.projects__preview_image
-                                                        }
-                                                    ></img>
-                                                );
-                                            }}
-                                        />
                                     </SwiperSlide>
                                 );
                             })}
@@ -222,31 +170,31 @@ export default function Projects({ projects }) {
                             className={`${projectsPageStyles.projects__background}`}
                             id="background"
                         >
-                            <img
+                            <motion.img
                                 key={`show_${activeProject}_pics_lrg`}
-                                src={
-                                    images[activeProject] &&
-                                    images[activeProject].pic &&
-                                    images[activeProject].pic
-                                }
+                                src={projects[activeProject].content}
                                 className={
                                     projectsPageStyles.projects__background__image
                                 }
-                            ></img>
-                            <div
+                                layoutId={`${projects[activeProject].id}_pic`}
+                            ></motion.img>
+                            <motion.div
                                 className={
                                     projectsPageStyles.projects__background__desc
                                 }
                             >
-                                <div>{projects[activeProject].desc}</div>
-                                <div
+                                <motion.div variants={project__motion}>
+                                    {projects[activeProject].desc}
+                                </motion.div>
+                                <motion.div
                                     className={
                                         projectsPageStyles.projects__background__desc__count
                                     }
+                                    variants={project__motion}
                                 >{`${activeProject + 1}/${
                                     projects.length
-                                }`}</div>
-                            </div>
+                                }`}</motion.div>
+                            </motion.div>
                         </motion.div>
                     </motion.div>
                 </motion.div>
@@ -263,11 +211,11 @@ export default function Projects({ projects }) {
                             enabled: true,
                         }}
                     >
-                        {images.map((el, index) => {
+                        {projects.map((el, index) => {
                             return (
-                                <SwiperSlide key={`${index}_slide_med`}>
+                                <SwiperSlide key={`${el.id}_slide_med`}>
                                     <motion.div
-                                        key={`${el}_${index}_projects_med`}
+                                        key={`${el.id}_projects_med`}
                                         className={`${projectsPageStyles.projectContainer}`}
                                         variants={projectsContainer__motion}
                                         initial="hidden"
@@ -282,22 +230,14 @@ export default function Projects({ projects }) {
                                             <motion.div
                                                 variants={project__motion}
                                             >
-                                                {projects[index].name}
+                                                {el.name}
                                             </motion.div>
-                                            {/* <motion.div
-                                                className={
-                                                    projectsPageStyles.date
-                                                }
-                                                variants={project__motion}
-                                            >
-                                                {projects[index].formatdate}
-                                            </motion.div> */}
                                         </motion.div>
-                                        <Link href={`/projects/${el.id}`}>
+                                        <Link href={`/project/${el.id}`}>
                                             <a>
                                                 <motion.img
-                                                    key={`${el.id}_${index}_pics_med`}
-                                                    src={el.pic}
+                                                    key={`${el.id}_pics_med`}
+                                                    src={el.content}
                                                     className={
                                                         projectsPageStyles.projects__swiper__image
                                                     }

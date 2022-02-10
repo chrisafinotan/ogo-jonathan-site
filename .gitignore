@@ -43,3 +43,6 @@ nextjs
 
 #cache files
 *.cache
+
+/assets
+/public/video

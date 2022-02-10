@@ -69,8 +69,8 @@ const CSpan = ({ text, className }) => {
             <span
                 // className="text-wrapper"
                 className={`text_${String(text).replace(/\s+/g, "")}`}
-                onMouseEnter={play}
-                onMouseLeave={playEnd}
+                // onMouseEnter={play}
+                // onMouseLeave={playEnd}
             >
                 <span ref={myRef} className="letters">
                     {text}

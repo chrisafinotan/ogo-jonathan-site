@@ -1,15 +1,22 @@
+html {
+    color: white;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    font-size: 16px;
+}
+
 html,
 body {
     padding: 0;
     margin: 0;
-    /* background-color: black; */
-    /* font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-        Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif; */
+}
 
+body {
     font-family: CircularStd-Book, -apple-system, BlinkMacSystemFont, Segoe UI,
         Roboto, Helvetica Neue, Arial, sans-serif, "Shizuru", cursive;
-    background-color: black;
-    color: white;
+    background: #000000;
+    overscroll-behavior: none;
+    overflow-x: hidden;
 }
 
 a {
@@ -18,19 +25,14 @@ a {
 }
 
 * {
-    box-sizing: border-box;
+    text-decoration: none;
+    /* cursor: none; */
 }
 
 .siteContent {
     width: 100vw;
     height: 100vh;
 }
-
-/* .swiper-slide {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-} */
 
 #menuBtn {
     padding: 0;
@@ -76,36 +78,27 @@ a {
 }
 
 .mySwiperID .mySwiperSlide {
-    /* max-width: 60%; */
     min-width: fit-content;
     width: 50%;
     display: flex;
 }
 
 .mySwiperID .swiper-slide {
-    /* width: 100%; */
-    /* height: fit-content; */
     height: 95%;
     width: fit-content;
     margin: 0.5em;
-    /* border: 2px solid green; */
     max-width: 70vw;
 }
 
 .mySwiperID .mySwiperSlideInfo {
     width: 25vw;
-    z-index: 101;
+    display: flex;
+    align-items: center;
 }
-
-/* .mySwiperID .mySwiperSlide__end {
-    width: fit-content;
-    margin: 0;
-} */
 
 .mySwiperProjects {
     width: 100%;
     height: 100%;
-    /* height: auto; */
 }
 
 .mySwiperProjects .swiper-slide {
@@ -126,18 +119,8 @@ a {
     height: 100%;
     opacity: 1;
 }
-/* .mySwiperProjects .swiper-slide-active span {
-    display: flex;
-    padding: 0.5em;
-    justify-content: center;
-    background-color: red;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-} */
 
 .mySwiperProjects .swiper-slide-active span:hover {
-    /* background-color: rgba(248, 2, 2, 0.385); */
     background-color: initial;
 }
 
@@ -167,8 +150,8 @@ a {
     position: relative;
     display: inline-block;
     padding-top: 0.2em;
-    Padding-right: 0.05em;
-    padding-bottom: 0.1em; 
+    padding-right: 0.05em;
+    padding-bottom: 0.1em;
     overflow: hidden;
     padding: 0;
     margin: 0;

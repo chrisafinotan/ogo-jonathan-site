@@ -141,8 +141,6 @@
     min-width: 15vw;
 }
 
-
-
 .projectImagesWrapper__lrg {
     display: flex;
     overflow-x: auto;
@@ -165,6 +163,12 @@
 
 .project__end {
     padding-right: 15em;
+}
+
+.trans__img {
+    width: 100vw;
+    height: 100vh;
+    object-fit: contain;
 }
 
 @media only screen and (max-width: 1024px) {

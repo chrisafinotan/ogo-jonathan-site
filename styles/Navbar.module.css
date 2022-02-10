@@ -1,11 +1,12 @@
 .navbarWrapper {
     font-size: 1.2em;
-    z-index: 100;
-    height: fit-content;
-    width: fit-content;
     height: 100px;
-    display: block;
-    position: absolute;
+    width: 100vw;
+    display: flex;
+    position: fixed;
+    top: 0;
+    border: 1px solid yellow;
+    z-index: 100;
 }
 
 .navbar {
@@ -88,11 +89,17 @@
 } */
 
 .header__wrapper {
-    position: absolute;
-    right: 0;
-    padding: 1em;
-    z-index: 1000;
-    /* mix-blend-mode: difference; */
+    /* position: absolute; */
+    /* left: 0; */
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    /* padding: 1em; */
+    border: 2px solid rgb(0, 45, 244);
+}
+
+.hbg__wrapper {
+    color: red;
 }
 
 .navbar__lrg {

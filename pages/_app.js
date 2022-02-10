@@ -1,6 +1,8 @@
 import "../styles/globals.css";
 
-import { BreakpointProvider } from "../components/Breakpoint";
+import { BreakpointProvider } from "../context/breakpointContext";
+import { AnimatePresence, AnimateSharedLayout } from "framer-motion";
+import { GlobalProvider } from "../context/globalContext";
 
 const queries = {
     xs: "(max-width: 320px)",
@@ -12,9 +14,15 @@ const queries = {
 
 function MyApp({ Component, pageProps }) {
     return (
-        <BreakpointProvider queries={queries}>
-            <Component {...pageProps} />
-        </BreakpointProvider>
+        <AnimatePresence exitBeforeEnter>
+            <AnimateSharedLayout>
+                <GlobalProvider>
+                    <BreakpointProvider queries={queries}>
+                        <Component {...pageProps} />
+                    </BreakpointProvider>
+                </GlobalProvider>
+            </AnimateSharedLayout>
+        </AnimatePresence>
     );
 }
 

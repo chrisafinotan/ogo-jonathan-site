@@ -21,7 +21,7 @@ export const Container = styled.div`
         css`
             padding: 0;
             margin: 0;
-            background: red;
+            background: ${(props) => props.theme.background};
             max-width: 100% !important;
         `}
 `;

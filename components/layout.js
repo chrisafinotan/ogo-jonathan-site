@@ -14,6 +14,9 @@ import {
 
 const GlobalStyle = createGlobalStyle`
   ${normalize}
+  :root {
+    --swiper-theme-color: ${(props) => props.theme.main};
+  }
   * {
     text-decoration: none;
     // cursor: none;
@@ -57,7 +60,7 @@ export default function Layout({ children, projects }) {
     const darkTheme = {
         background: "#000",
         text: "#fff",
-        main: '#ea281e',
+        main: "#ea281e",
         left: `${hamburgerPosition.x}px`,
         top: `${hamburgerPosition.y}px`,
     };
@@ -65,7 +68,7 @@ export default function Layout({ children, projects }) {
     const lightTheme = {
         background: "#fff",
         text: "#000",
-        main: '#1e76ea',
+        main: "#1e76ea",
         left: `${hamburgerPosition.x}px`,
         top: `${hamburgerPosition.y}px`,
     };
@@ -76,7 +79,6 @@ export default function Layout({ children, projects }) {
     };
 
     return (
-        // <div style={{ position: "relative" }}>
         <ThemeProvider theme={currentTheme === "dark" ? darkTheme : lightTheme}>
             <GlobalStyle />
             <Head>
@@ -102,6 +104,5 @@ export default function Layout({ children, projects }) {
             />
             <div className="siteContent">{children}</div>
         </ThemeProvider>
-        // </div>
     );
 }

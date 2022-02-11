@@ -49,3 +49,36 @@ export const spanText = {
         },
     },
 };
+
+export const projectsContainer__motion = {
+    show: {
+        transition: {
+            staggerChildren: 0.4,
+        },
+    },
+};
+
+export const project__motion = {
+    hidden: {
+        opacity: 0,
+        y: 20,
+        rotateX: -90,
+    },
+    show: {
+        opacity: 1,
+        y: 0,
+        rotateX: 0,
+        transition: {
+            ease: [0.6, 0.01, -0.05, 0.95],
+            duration: 1.7,
+        },
+    },
+    exit: {
+        opacity: 0,
+        y: -10,
+        transition: {
+            ease: [0.6, 0.01, -0.05, 0.95],
+            duration: 1.7,
+        },
+    },
+};

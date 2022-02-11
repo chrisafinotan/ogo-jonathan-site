@@ -10,8 +10,11 @@ const CCursor = ({ toggleMenu }) => {
 
   const onMouseMove = event => {
     const { clientX, clientY } = event
-    cursor.current.style.left = `${clientX}px`;
-    cursor.current.style.top = `${clientY}px`;
+    if (cursor.current)
+    {
+      cursor.current.style.left = `${clientX}px`;
+      cursor.current.style.top = `${clientY}px`;
+    } 
   }
 
   useEffect(() => {
@@ -20,6 +23,7 @@ const CCursor = ({ toggleMenu }) => {
       document.removeEventListener("mousemove", onMouseMove)
     }
   }, [])
+  console.log('cursor', cursor)
   return (
     <>
       <Cursor

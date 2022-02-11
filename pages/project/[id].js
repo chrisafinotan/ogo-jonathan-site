@@ -25,6 +25,22 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 //FRAMER IMPORTS
 import { motion } from "framer-motion";
+import { Container } from "../../styles/globalStyles";
+import {
+    ImagesWrapper,
+    PrevLink,
+    NextLink,
+    Links,
+    ImagesWrapperSmall,
+    ImagesContainer,
+    Info,
+    StyledSwiperImg,
+    StyledSwiperPagination,
+} from "../../styles/projectStyles";
+import {
+    projectsContainer__motion,
+    project__motion,
+} from "../../framer/variants";
 
 SwiperCore.use([Navigation, Pagination, Mousewheel, Autoplay, FreeMode]);
 
@@ -57,39 +73,6 @@ export async function getStaticProps(context) {
         },
     };
 }
-
-const projectsContainer__motion = {
-    show: {
-        transition: {
-            staggerChildren: 0.4,
-        },
-    },
-};
-
-const project__motion = {
-    hidden: {
-        opacity: 0,
-        y: 20,
-        rotateX: -90,
-    },
-    show: {
-        opacity: 1,
-        y: 0,
-        rotateX: 0,
-        transition: {
-            ease: [0.6, 0.01, -0.05, 0.95],
-            duration: 1.7,
-        },
-    },
-    exit: {
-        opacity: 0,
-        y: -10,
-        transition: {
-            ease: [0.6, 0.01, -0.05, 0.95],
-            duration: 1.7,
-        },
-    },
-};
 
 export default function work({
     projectID,
@@ -128,28 +111,30 @@ export default function work({
             left: 0,
             behavior: "smooth",
         });
-        console.log("page reload", window.location.href);
     }, []);
-    console.log("reloaded", projectPictures, projectData);
 
     return (
         <Layout projects={projects}>
             {display ? (
                 !breakpoints.md ? (
-                    <div className={projectsPageStyles.container__lrg}>
-                        <motion.div
+                    <Container fluid>
+                        <ImagesWrapper
                             ref={elRef}
-                            className={
-                                projectsPageStyles.projectImagesWrapper__lrg
-                            }
                             variants={projectsContainer__motion}
                             initial="hidden"
                             animate="show"
                             exit="exit"
                         >
+                            <StyledSwiperPagination className="swiper-mypagination"></StyledSwiperPagination>
+                            {/* <StyledSwiperNextBtn> */}
+                                {/* <div class="arrow-container">
+                                    <div class="arrow"></div>
+                                    <div class="arrow"></div>
+                                    <div class="arrow"></div>
+                                </div>
+                            </StyledSwiperNextBtn> */}
                             <Swiper
                                 className="mySwiperID"
-                                // className={projectsPageStyles.mySwiper}
                                 modules={[
                                     Navigation,
                                     Pagination,
@@ -159,7 +144,12 @@ export default function work({
                                     FreeMode,
                                 ]}
                                 navigation
-                                pagination={{ clickable: true }}
+                                pagination={{
+                                    el: ".swiper-mypagination",
+                                    clickable: true,
+                                    type: "progressbar",
+                                    background: "#fff",
+                                }}
                                 scrollbar={{ draggable: true }}
                                 keyboard={{
                                     enabled: true,
@@ -172,30 +162,22 @@ export default function work({
                             >
                                 <SwiperSlide
                                     key={`desc_slide_lrg`}
-                                    className="mySwiperSlideInfo"
+                                    className="mySwiperSlide__info"
                                 >
-                                    <motion.div
-                                        className={
-                                            projectsPageStyles.project__info__lrg
-                                        }
-                                    >
+                                    <Info>
                                         <motion.div
-                                            className={
-                                                projectsPageStyles.project__name__lrg
-                                            }
+                                            className="name"
                                             variants={project__motion}
                                         >
                                             {projectData.name}
                                         </motion.div>
                                         <motion.div
-                                            className={
-                                                projectsPageStyles.project__desc__lrg
-                                            }
+                                            className="desc"
                                             variants={project__motion}
                                         >
                                             {projectData.desc}
                                         </motion.div>
-                                    </motion.div>
+                                    </Info>
                                 </SwiperSlide>
                                 {projectPictures.map((el, index) => {
                                     return (
@@ -203,21 +185,18 @@ export default function work({
                                             key={`${index}_slide_lrg`}
                                             className="mySwiperSlide"
                                         >
-                                            <motion.img
+                                            <StyledSwiperImg
                                                 layoutId={
                                                     el.background &&
                                                     `${projectID}_pic`
                                                 }
                                                 key={`${index}_project_pics_lrg`}
                                                 src={el.pic}
-                                                className={
-                                                    projectsPageStyles.image__lrg
-                                                }
                                                 variants={
                                                     !el.background &&
                                                     project__motion
                                                 }
-                                            ></motion.img>
+                                            ></StyledSwiperImg>
                                         </SwiperSlide>
                                     );
                                 })}
@@ -232,159 +211,79 @@ export default function work({
                                     ></motion.div>
                                 </SwiperSlide>
                             </Swiper>
-
-                            {prevProj && (
-                                <Link
-                                    href={`/projects/${
-                                        projects[linkIndex - 1].id
-                                    }`}
-                                >
-                                    <a
-                                        className={
-                                            projectsPageStyles.projectNavigator__prev
-                                        }
-                                        onClick={nextPage}
-                                    >
-                                        <div>PREV</div>
-                                        <div
-                                            className={
-                                                projectsPageStyles.projectNavigator__prev__name
-                                            }
-                                        >
-                                            {projects[linkIndex - 1].name}
-                                        </div>
-                                    </a>
-                                </Link>
-                            )}
-                            {nextProj && (
-                                // <Link
-                                //     href={`/projects/${
-                                //         projects[linkIndex + 1].id
-                                //     }`}
-                                // >
-                                <a
-                                    className={
-                                        projectsPageStyles.projectNavigator__next
-                                    }
-                                    href={`/projects/${
-                                        projects[linkIndex + 1].id
-                                    }`}
-                                    // onClick={nextPage}
-                                >
-                                    <div>NEXT</div>
-                                    <div
-                                        className={
-                                            projectsPageStyles.projectNavigator__prev__name
-                                        }
-                                    >
-                                        {projects[linkIndex + 1].name}
-                                    </div>
-                                </a>
-                                // </Link>
-                            )}
-                        </motion.div>
-                    </div>
+                        </ImagesWrapper>
+                    </Container>
                 ) : (
-                    <motion.div
-                        className={projectsPageStyles.container}
-                        variants={projectsContainer__motion}
-                        initial="hidden"
-                        animate="show"
-                        exit="exit"
-                    >
-                        <motion.div
-                            className={projectsPageStyles.project__info}
+                    <Container fluid>
+                        <ImagesWrapperSmall
+                            variants={projectsContainer__motion}
+                            initial="hidden"
+                            animate="show"
+                            exit="exit"
                         >
-                            <motion.div
-                                className={projectsPageStyles.project__name}
-                                variants={project__motion}
-                            >
-                                {projectData.name}
-                            </motion.div>
-                            <motion.div
-                                className={projectsPageStyles.project__desc}
-                                variants={project__motion}
-                            >
-                                {projectData.desc}
-                            </motion.div>
-                        </motion.div>
-                        <motion.div
-                            className={projectsPageStyles.projectImagesWrapper}
-                        >
-                            {projectPictures.map((el, index) => {
-                                return (
-                                    <motion.div
-                                        key={`id_${projectData.id}_img_div_sml`}
-                                        className={
-                                            projectsPageStyles.projectImageWrapper
-                                        }
-                                        variants={project__motion}
-                                    >
-                                        <img
-                                            // key={`id_${projectData.id}_pic_sml`}
-                                            src={el.pic}
-                                            className={projectsPageStyles.image}
-                                        ></img>
-                                    </motion.div>
-                                );
-                            })}
-                            {prevProj && (
-                                <Link
-                                    href={`/projects/${
-                                        projects[linkIndex - 1].id
-                                    }`}
+                            <Info>
+                                <motion.div
+                                    className="name"
+                                    variants={project__motion}
                                 >
-                                    <a
-                                        className={
-                                            projectsPageStyles.projectNavigator__prev
-                                        }
-                                    >
-                                        <div>PREV</div>
-                                        {/* <div>Project</div> */}
-                                        <div
-                                            className={
-                                                projectsPageStyles.projectNavigator__prev__name
-                                            }
-                                        >
-                                            {projects[linkIndex - 1].name}
-                                        </div>
-                                    </a>
-                                </Link>
-                            )}
-                            {nextProj && (
-                                <Link
-                                    href={`/projects/${
-                                        projects[linkIndex + 1].id
-                                    }`}
+                                    {projectData.name}
+                                </motion.div>
+                                <motion.div
+                                    className="desc"
+                                    variants={project__motion}
                                 >
-                                    <a
-                                        className={
-                                            projectsPageStyles.projectNavigator__next
-                                        }
-                                    >
-                                        <div>NEXT</div>
-                                        {/* <div>Project</div> */}
-                                        <div
-                                            className={
-                                                projectsPageStyles.projectNavigator__prev__name
-                                            }
+                                    {projectData.desc}
+                                </motion.div>
+                            </Info>
+                            <ImagesContainer>
+                                {projectPictures.map((el, index) => {
+                                    return (
+                                        <motion.div
+                                            key={`id_${projectData.id}_img_div_sml`}
+                                            className="projectImageWrapper"
+                                            variants={project__motion}
                                         >
-                                            {projects[linkIndex + 1].name}
-                                        </div>
-                                    </a>
-                                </Link>
-                            )}
-                        </motion.div>
-                    </motion.div>
+                                            <img
+                                                src={el.pic}
+                                                className="image"
+                                            ></img>
+                                        </motion.div>
+                                    );
+                                })}
+                            </ImagesContainer>
+                        </ImagesWrapperSmall>
+                    </Container>
                 )
             ) : (
                 <motion.img
                     src={projectData.coverPic}
                     className={projectsPageStyles.trans__img}
-                    // animate={{ scale: 1.2 }}
                     layoutId={`${projectID}_pic`}
                 ></motion.img>
             )}
+            <Links>
+                {prevProj && (
+                    <Link href={`/project/${projects[linkIndex - 1].id}`}>
+                        <PrevLink onClick={nextPage}>
+                            <div>PREV</div>
+                            <div className="name">
+                                {projects[linkIndex - 1].name}
+                            </div>
+                        </PrevLink>
+                    </Link>
+                )}
+                {nextProj && (
+                    <NextLink
+                        href={`/project/${projects[linkIndex + 1].id}`}
+                        onClick={nextPage}
+                    >
+                        <div>NEXT</div>
+                        <div className="name">
+                            {projects[linkIndex + 1].name}
+                        </div>
+                    </NextLink>
+                )}
+            </Links>
         </Layout>
     );
 }

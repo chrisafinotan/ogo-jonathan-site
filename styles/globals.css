@@ -6,9 +6,11 @@ html {
 }
 
 html,
-body {
+body,
+#__next {
     padding: 0;
     margin: 0;
+    overflow: hidden;
 }
 
 body {
@@ -83,6 +85,11 @@ a {
     display: flex;
 }
 
+/* .mySwiperID .swiper-pagination {
+    width: 50vw !important;
+    bottom: 0 !important;
+} */
+
 .mySwiperID .swiper-slide {
     height: 95%;
     width: fit-content;
@@ -90,10 +97,11 @@ a {
     max-width: 70vw;
 }
 
-.mySwiperID .mySwiperSlideInfo {
-    width: 25vw;
+.mySwiperID .mySwiperSlide__info {
+    /* width: 25vw; */
+    padding-left: 10vw;
     display: flex;
-    align-items: center;
+    /* align-items: center; */
 }
 
 .mySwiperProjects {

@@ -57,7 +57,7 @@ const ClassToggleStyled = styled.div`
 `;
 
 export default function Home({ projects, projects2 }) {
-    console.log('prj2', projects2);
+    console.log("prj2", projects2);
     //get images from storage
     const [images, setimages] = useState([]);
     const loadImages = async () => {
@@ -79,9 +79,5 @@ export default function Home({ projects, projects2 }) {
         loadImages();
     }, []);
 
-    return (
-        <Layout projects={projects2}>
-      
-        </Layout>
-    );
+    return <Layout projects={projects2}></Layout>;
 }

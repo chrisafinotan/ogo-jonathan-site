@@ -19,7 +19,13 @@ import { Instagram, Facebook, Vimeo } from "../assets/svg/social-icons";
 import { motion, AnimatePresence } from "framer-motion";
 import { imageWrapper, spanContainer, spanText } from "../framer/variants";
 
-const Navigation = ({ projects, toggleMenu, setToggleMenu, onCursor, setHamburgerPosition }) => {
+const Navigation = ({
+    projects,
+    toggleMenu,
+    setToggleMenu,
+    onCursor,
+    setHamburgerPosition,
+}) => {
     // projects = [...projects, ...projects];
     const ProjectsView = projects ? (
         <NavList>
@@ -45,6 +51,9 @@ const Navigation = ({ projects, toggleMenu, setToggleMenu, onCursor, setHamburge
                                 type: route.type,
                             })
                         }
+                        onClick={() => {
+                            setToggleMenu(false);
+                        }}
                     >
                         <Link href={`/project/${route.id}`}>
                             <motion.div
@@ -152,11 +161,12 @@ const Navigation = ({ projects, toggleMenu, setToggleMenu, onCursor, setHamburge
         key: "0",
     });
 
-    console.log("navigation");
-    console.log(revealContent.content);
+    // console.log("navigation");
+    // console.log(revealContent.content);
 
     const closeHamburger = useRef(null);
-    const position = closeHamburger.current && useElementPosition(closeHamburger);
+    const position =
+        closeHamburger.current && useElementPosition(closeHamburger);
 
     const menuHover = () => {
         onCursor("locked");
@@ -185,7 +195,9 @@ const Navigation = ({ projects, toggleMenu, setToggleMenu, onCursor, setHamburge
                                                 key={`view_${index}`}
                                                 to="/"
                                                 onClick={() => setMenuView(el)}
-                                                onMouseEnter={() => onCursor("pointer")}
+                                                onMouseEnter={() =>
+                                                    onCursor("pointer")
+                                                }
                                                 onMouseLeave={onCursor}
                                             >
                                                 {el.name}
@@ -281,6 +293,7 @@ const Navigation = ({ projects, toggleMenu, setToggleMenu, onCursor, setHamburge
                                         <motion.video
                                             key={revealContent.id}
                                             src={`/video/easy.mp4`}
+                                            layoutId={`${revealContent.id}_pic`}
                                             initial={{ opacity: 0 }}
                                             exit={{ opacity: 0 }}
                                             animate={{
@@ -304,6 +317,7 @@ const Navigation = ({ projects, toggleMenu, setToggleMenu, onCursor, setHamburge
                                         <motion.img
                                             key={revealContent.id}
                                             src={revealContent.content}
+                                            layoutId={`${revealContent.id}_pic`}
                                             initial={{ opacity: 0 }}
                                             exit={{ opacity: 0 }}
                                             animate={{

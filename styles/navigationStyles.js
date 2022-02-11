@@ -75,6 +75,7 @@ export const NavList = styled.div`
                 .arrow {
                     height: 76px;
                     margin-right: 8px;
+                    pointer-events: none;
                 }
             }
             svg {

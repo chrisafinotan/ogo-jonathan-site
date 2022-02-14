@@ -31,7 +31,6 @@ export const CloseNav = styled.div`
     justify-self: center;
     align-self: center;
     button {
-        transform-origin: center;
         border: none;
         padding: 20px;
         background: none;
@@ -41,8 +40,14 @@ export const CloseNav = styled.div`
             height: 8px;
             display: block;
             background: ${(props) => props.theme.background};
-            margin: 8px;
-            transform: rotate(45deg);
+            // margin: 8px;
+        transform-origin: center center;
+        }
+        .first {
+            transform: translate(-8px, 4px) rotateZ(-45deg);
+        }
+        .second {
+            transform: translate(-8px, -4px) rotateZ(45deg);
         }
     }
 `;
@@ -149,7 +154,7 @@ export const NavContent = styled.div`
         height: 100%;
         width: 100%;
         img {
-            object-fit: cover;
+            object-fit: contain;
             display: block;
             width: 100%;
             height: 100%;

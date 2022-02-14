@@ -32,6 +32,7 @@ const Header = ({
     };
 
     const menuHover = () => {
+        console.log("changing burger pos", position);
         onCursor("locked");
         setHamburgerPosition({ x: position.x, y: position.y + 72 });
     };
@@ -54,11 +55,12 @@ const Header = ({
                     <Logo
                         onMouseEnter={() => onCursor("hovered")}
                         onMouseLeave={onCursor}
+                        invert={toggleMenu && true}
                     >
                         <Link href="/">OJ</Link>
                         <span
                             onClick={toggleTheme}
-                            onMouseEnter={() => onCursor("pointer")}
+                            onMouseEnter={() => onCursor("pointerinv")}
                             onMouseLeave={onCursor}
                         ></span>
                     </Logo>
@@ -67,10 +69,11 @@ const Header = ({
                         ref={hamburger}
                         onMouseEnter={menuHover}
                         onMouseLeave={onCursor}
+                        open={toggleMenu}
                     >
                         <button>
-                            <span></span>
-                            <span></span>
+                            <span className={toggleMenu ? "first": undefined}></span>
+                            <span className={toggleMenu ? "second": undefined}></span>
                         </button>
                     </Menu>
                 </Flex>

@@ -25,7 +25,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 //FRAMER IMPORTS
 import { motion } from "framer-motion";
-import { Container } from "../../styles/globalStyles";
+import { Container, Flex } from "../../styles/globalStyles";
 import {
     ImagesWrapper,
     PrevLink,
@@ -36,11 +36,17 @@ import {
     Info,
     StyledSwiperImg,
     StyledSwiperPagination,
+    StyledSwiperNavBtn,
+    StyledSwiperWrapper,
 } from "../../styles/projectStyles";
 import {
     projectsContainer__motion,
     project__motion,
 } from "../../framer/variants";
+import {
+    useGlobalDispatchContext,
+    useGlobalStateContext,
+} from "../../context/globalContext";
 
 SwiperCore.use([Navigation, Pagination, Mousewheel, Autoplay, FreeMode]);
 
@@ -112,6 +118,13 @@ export default function work({
             behavior: "smooth",
         });
     }, []);
+    const dispatch = useGlobalDispatchContext();
+    const { cursorStyles, currentTheme } = useGlobalStateContext();
+
+    const onCursor = (cursorType) => {
+        cursorType = (cursorStyles.includes(cursorType) && cursorType) || false;
+        dispatch({ type: "CURSOR_TYPE", cursorType: cursorType });
+    };
 
     return (
         <Layout projects={projects}>
@@ -125,14 +138,30 @@ export default function work({
                             animate="show"
                             exit="exit"
                         >
-                            <StyledSwiperPagination className="swiper-mypagination"></StyledSwiperPagination>
-                            {/* <StyledSwiperNextBtn> */}
-                                {/* <div class="arrow-container">
-                                    <div class="arrow"></div>
-                                    <div class="arrow"></div>
-                                    <div class="arrow"></div>
-                                </div>
-                            </StyledSwiperNextBtn> */}
+                            <StyledSwiperWrapper spaceBetween>
+                                <StyledSwiperPagination className="swiper-mypagination"></StyledSwiperPagination>
+                                <StyledSwiperNavBtn
+                                    left
+                                    className="prevBtn"
+                                    onMouseEnter={() => onCursor("pointer")}
+                                    onMouseLeave={onCursor}
+                                >
+                                    <div className="arrow one"></div>
+                                    <div className="arrow two"></div>
+                                    <div className="arrow three"></div>
+                                </StyledSwiperNavBtn>
+                                <StyledSwiperNavBtn
+                                    right
+                                    className="nextBtn"
+                                    onMouseEnter={() => onCursor("pointer")}
+                                    onMouseLeave={onCursor}
+                                >
+                                    <div className="arrow one"></div>
+                                    <div className="arrow two"></div>
+                                    <div className="arrow three"></div>
+                                </StyledSwiperNavBtn>
+                            </StyledSwiperWrapper>
+
                             <Swiper
                                 className="mySwiperID"
                                 modules={[
@@ -142,8 +171,12 @@ export default function work({
                                     Mousewheel,
                                     Keyboard,
                                     FreeMode,
+                                    Autoplay,
                                 ]}
-                                navigation
+                                navigation={{
+                                    nextEl: ".nextBtn",
+                                    prevEl: ".prevBtn",
+                                }}
                                 pagination={{
                                     el: ".swiper-mypagination",
                                     clickable: true,
@@ -159,6 +192,10 @@ export default function work({
                                     releaseOnEdges: true,
                                 }}
                                 slidesPerView={"auto"}
+                                // autoplay={{
+                                //     delay: 2000,
+                                //     disableOnInteraction: true,
+                                // }}
                             >
                                 <SwiperSlide
                                     key={`desc_slide_lrg`}

@@ -23,7 +23,7 @@ const CCursor = ({ toggleMenu }) => {
       document.removeEventListener("mousemove", onMouseMove)
     }
   }, [])
-  console.log('cursor', cursor)
+  // console.log('cursor', cursor)
   return (
     <>
       <Cursor

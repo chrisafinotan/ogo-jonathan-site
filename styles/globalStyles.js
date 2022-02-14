@@ -31,6 +31,13 @@ export const Flex = styled.div`
     display: flex;
     align-items: center;
     ${(props) =>
+        props.row &&
+        css`
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center
+        `};
+    ${(props) =>
         props.spaceBetween &&
         css`
             justify-content: space-between;
@@ -45,11 +52,11 @@ export const Flex = styled.div`
         css`
             justify-content: flex-start;
         `};
-        ${(props) =>
-            props.flexCenter &&
-            css`
-                justify-content: center;
-            `};
+    ${(props) =>
+        props.flexCenter &&
+        css`
+            justify-content: center;
+        `};
     ${(props) =>
         props.alignTop &&
         css`
@@ -60,11 +67,11 @@ export const Flex = styled.div`
         css`
             height: 0;
         `};
-        ${(props) =>
-            props.width &&
-            css`
-                width: ${props.width};
-            `};
+    ${(props) =>
+        props.width &&
+        css`
+            width: ${props.width};
+        `};
 `;
 
 export const Cursor = styled.div`
@@ -82,7 +89,14 @@ export const Cursor = styled.div`
     pointer-events: none;
     z-index: 999;
     &.pointer {
-        border: 4px solid ${(props) => props.theme.text} !important;
+        border: 4px solid ${(props) => props.theme.main} !important;
+    }
+    &.nav-open,
+    &.pointer {
+        border: 4px solid ${(props) => props.theme.inv_background} !important;
+    }
+    &.pointerinv {
+        border: 4px solid ${(props) => props.theme.inv_main} !important;
     }
     &.hovered {
         background: transparent !important;

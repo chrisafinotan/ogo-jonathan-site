@@ -14,7 +14,7 @@ const globalReducer = (state, action) => {
             };
         }
         case "CURSOR_TYPE": {
-            console.log('cursor',action.cursorType);
+            // console.log("cursor", action.cursorType);
             return {
                 ...state,
                 cursorType: action.cursorType,
@@ -28,7 +28,7 @@ const globalReducer = (state, action) => {
 
 //Provider
 export const GlobalProvider = ({ children }) => {
-    console.log("global provider");
+    // console.log("global provider");
     const [state, dispatch] = useReducer(globalReducer, {
         currentTheme: "dark",
         // currentTheme:
@@ -36,7 +36,7 @@ export const GlobalProvider = ({ children }) => {
         //         ? "dark"
         //         : window.localStorage.getItem("theme")),
         cursorType: false,
-        cursorStyles: ["pointer", "hovered", "locked", "white"],
+        cursorStyles: ["pointer", "pointerinv", "hovered", "locked", "white"],
     });
 
     return (

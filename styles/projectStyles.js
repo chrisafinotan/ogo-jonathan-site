@@ -1,9 +1,5 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { motion } from "framer-motion";
-// import { Swiper, SwiperSlide } from "swiper/react";
-
-// export const StyledSwiper = styled.Swiper`
-// `
 
 export const StyledSwiperImg = styled(motion.img)`
     display: block;
@@ -14,6 +10,18 @@ export const StyledSwiperImg = styled(motion.img)`
     margin: 1em;
 `;
 
+export const StyledSwiperWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 50%;
+    transform: translate(50%, 50%);
+    bottom: 10vh;
+    height: fit-content;
+    z-index: 1000;
+`;
+
 export const StyledSwiperPagination = styled.div`
     bottom: 0 !important;
     top: calc(100% - 5px) !important;
@@ -22,35 +30,40 @@ export const StyledSwiperPagination = styled.div`
     transform: translateX(50%);
 `;
 
-export const StyledSwiperNextBtn = styled.div`
-    $total-arrows: 3;
-    $arrow-line-length: 50px;
-    $arrow-line-width: 4px;
-
-    // arrow animtion + choose direction
-    @mixin arrow-transitions($rot: 0deg) {
-        transform: translate(-50%, -50%) rotateZ($rot);
-    }
-
-    // arrows
+export const StyledSwiperNavBtn = styled.div`
     display: block;
-    width: 100px;
-    height: 100px;
+    width: 4em;
+    height: 4em;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    @include arrow-transitions(0deg);
+    // top: 50%;
+    ${(props) =>
+        props.left &&
+        css`
+            transform: rotateZ(90deg);
+            // border: 3px solid blue;
+            left: 10%;
+        `};
+    ${(props) =>
+        props.right &&
+        css`
+            transform: rotateZ(-90deg);
+            // border: 3px solid red;
+            left: 90%;
+        `};
     &:hover {
         cursor: pointer;
         .arrow {
             top: 50%;
             &:before {
-                @include arrow-transitions(-30deg);
+                transform: translate(-50%, -50%) rotateZ(-30deg);
             }
             &:after {
-                @include arrow-transitions(30deg);
+                transform: translate(-50%, -50%) rotateZ(30deg);
             }
         }
+    }
+    &.swiper-button-disabled {
+        display: none;
     }
     .arrow {
         position: absolute;
@@ -63,9 +76,9 @@ export const StyledSwiperNextBtn = styled.div`
             display: block;
             position: absolute;
             transform-origin: bottom right;
-            background: #fff;
-            width: $arrow-line-width;
-            height: $arrow-line-length;
+            background: ${(props) => props.theme.text};
+            width: 4px;
+            height: 50px;
             border-radius: 10px;
             transform: translate(-50%, -50%) rotateZ(-45deg);
         }
@@ -73,12 +86,18 @@ export const StyledSwiperNextBtn = styled.div`
             transform-origin: bottom left;
             transform: translate(-50%, -50%) rotateZ(45deg);
         }
-        @for $i from 1 through $total-arrows {
-            &:nth-child(#{$i}) {
-                opacity: 0.3 * $i;
-                top: 15 + (100% * $i/5);
-            }
-        }
+    }
+    .one {
+        opacity: 0.3;
+        top: 20%;
+    }
+    .two {
+        opacity: 0.6;
+        top: 40%;
+    }
+    .three {
+        opacity: 0.9;
+        top: 60%;
     }
 `;
 

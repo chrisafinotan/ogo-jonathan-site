@@ -23,7 +23,11 @@ export default function useElementPosition(el) {
                 element.offsetHeight / 2;
             setElementPosition(getElement(x, y));
         }
-        handlePosition();
+        if (el === null) {
+            setElementPosition(getElement(0, 0));
+        } else {
+            handlePosition();
+        }
     }, [el]);
 
     return elementPosition;

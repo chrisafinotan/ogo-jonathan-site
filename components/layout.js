@@ -19,7 +19,7 @@ const GlobalStyle = createGlobalStyle`
   }
   * {
     text-decoration: none;
-    // cursor: none;
+    cursor: none;
   }
   html {
       box-sizing: border-box;
@@ -61,6 +61,9 @@ export default function Layout({ children, projects }) {
         background: "#000",
         text: "#fff",
         main: "#ea281e",
+        inv_background: "#fff",
+        inv_text: "#000",
+        inv_main: "#1e76ea",
         left: `${hamburgerPosition.x}px`,
         top: `${hamburgerPosition.y}px`,
     };
@@ -69,6 +72,9 @@ export default function Layout({ children, projects }) {
         background: "#fff",
         text: "#000",
         main: "#1e76ea",
+        inv_background: "#000",
+        inv_text: "#fff",
+        inv_main: "#ea281e",
         left: `${hamburgerPosition.x}px`,
         top: `${hamburgerPosition.y}px`,
     };
@@ -77,6 +83,8 @@ export default function Layout({ children, projects }) {
         cursorType = (cursorStyles.includes(cursorType) && cursorType) || false;
         dispatch({ type: "CURSOR_TYPE", cursorType: cursorType });
     };
+
+    console.log("burger pos", hamburgerPosition);
 
     return (
         <ThemeProvider theme={currentTheme === "dark" ? darkTheme : lightTheme}>

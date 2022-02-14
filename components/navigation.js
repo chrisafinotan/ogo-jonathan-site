@@ -1,8 +1,13 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import useElementPosition from "../hooks/useElementPosition";
+import {
+    useGlobalDispatchContext,
+    useGlobalStateContext,
+} from "../context/globalContext";
 //Styled Components
 import { Container, Flex } from "../styles/globalStyles";
+import { Logo } from "../styles/headerStyles";
 import {
     Nav,
     NavHeader,
@@ -18,6 +23,7 @@ import { Instagram, Facebook, Vimeo } from "../assets/svg/social-icons";
 //Framer Motion
 import { motion, AnimatePresence } from "framer-motion";
 import { imageWrapper, spanContainer, spanText } from "../framer/variants";
+import { useBreakpoint } from "../context/breakpointContext";
 
 const Navigation = ({
     projects,
@@ -167,11 +173,45 @@ const Navigation = ({
     const closeHamburger = useRef(null);
     const position =
         closeHamburger.current && useElementPosition(closeHamburger);
+    // const [position, setposition] = useState(useElementPosition(closeHamburger));
+
+    const dispatch = useGlobalDispatchContext();
+    const { currentTheme } = useGlobalStateContext();
+    const breakpoints = useBreakpoint();
+
+    const toggleTheme = () => {
+        if (currentTheme === "dark") {
+            dispatch({ type: "TOGGLE_THEME", theme: "light" });
+        } else {
+            dispatch({ type: "TOGGLE_THEME", theme: "dark" });
+        }
+    };
 
     const menuHover = () => {
+        console.log("changing burger pos2", position);
+
         onCursor("locked");
+        console.log("position", position);
         setHamburgerPosition({ x: position.x, y: position.y + 72 });
     };
+
+    useEffect(() => {
+        const handleResize = () => {
+            console.log(
+                "resized to: ",
+                window.innerWidth,
+                "x",
+                window.innerHeight
+            );
+            // setposition(useElementPosition(closeHamburger));
+        };
+
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
 
     return (
         <>
@@ -187,9 +227,16 @@ const Navigation = ({
                         }}
                     >
                         <Container>
-                            <NavHeader>
-                                <Flex flexEnd noHeight>
-                                    <Flex spaceBetween noHeight width={`20%`}>
+                            {menuView.view}
+
+                            <NavFooter>
+                                <Flex spaceBetween width={`100%`}>
+                                    <Flex
+                                        spaceBetween
+                                        noHeight
+                                        width={`20%`}
+                                        row={breakpoints.md}
+                                    >
                                         {views.map((el, index) => (
                                             <h2
                                                 key={`view_${index}`}
@@ -204,75 +251,50 @@ const Navigation = ({
                                             </h2>
                                         ))}
                                     </Flex>
-                                    <CloseNav
-                                        onClick={() =>
-                                            setToggleMenu(!toggleMenu)
-                                        }
-                                        onMouseEnter={() => onCursor("locked")}
-                                        onMouseLeave={onCursor}
+                                    <Flex
+                                        spaceBetween
+                                        width={`40%`}
+                                        row={breakpoints.md}
                                     >
-                                        <button>
-                                            <span></span>
-                                            <span></span>
-                                        </button>
-                                    </CloseNav>
-                                    {/* <CloseNav
-                                        onClick={() =>
-                                            setToggleMenu(!toggleMenu)
-                                        }
-                                        ref={closeHamburger}
-                                        onMouseEnter={menuHover}
-                                        onMouseLeave={onCursor}
-                                    >
-                                        <button>
-                                            <span></span>
-                                            <span></span>
-                                        </button>
-                                    </CloseNav> */}
-                                </Flex>
-                            </NavHeader>
-                            {menuView.view}
-
-                            <NavFooter>
-                                <Flex flexEnd width={`100%`}>
-                                    <FooterContent>
-                                        <p>email@domain.net</p>
-                                    </FooterContent>
-                                    <FooterContent wider>
-                                        <p>000.000.000</p>
-                                    </FooterContent>
-                                    <FooterSocial>
-                                        <a
-                                            onMouseEnter={() =>
-                                                onCursor("locked")
-                                            }
-                                            onMouseLeave={onCursor}
-                                            href="/"
-                                            target="_blank"
-                                        >
-                                            <Instagram />
-                                        </a>
-                                        <a
-                                            onMouseEnter={() =>
-                                                onCursor("locked")
-                                            }
-                                            onMouseLeave={onCursor}
-                                            href="/"
-                                            target="_blank"
-                                        >
-                                            <Facebook />
-                                        </a>
-                                        <a
-                                            onMouseEnter={() =>
-                                                onCursor("locked")
-                                            }
-                                            onMouseLeave={onCursor}
-                                            href="/"
-                                            target="_blank"
-                                        >
-                                            <Vimeo />
-                                        </a>
-                                    </FooterSocial>
+                                        <FooterContent>
+                                            <p>email@domain.net</p>
+                                        </FooterContent>
+                                        <FooterContent>
+                                            <p>000.000.000</p>
+                                        </FooterContent>
+                                        <FooterSocial>
+                                            <a
+                                                onMouseEnter={() =>
+                                                    onCursor("locked")
+                                                }
+                                                onMouseLeave={onCursor}
+                                                href="/"
+                                                target="_blank"
+                                            >
+                                                <Instagram />
+                                            </a>
+                                            <a
+                                                onMouseEnter={() =>
+                                                    onCursor("locked")
+                                                }
+                                                onMouseLeave={onCursor}
+                                                href="/"
+                                                target="_blank"
+                                            >
+                                                <Facebook />
+                                            </a>
+                                            {/* <a
+                                                onMouseEnter={() =>
+                                                    onCursor("locked")
+                                                }
+                                                onMouseLeave={onCursor}
+                                                href="/"
+                                                target="_blank"
+                                            >
+                                                <Vimeo />
+                                            </a> */}
+                                        </FooterSocial>
+                                    </Flex>
                                 </Flex>
                             </NavFooter>
                         </Container>

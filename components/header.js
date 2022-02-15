@@ -21,7 +21,7 @@ const Header = ({
     const dispatch = useGlobalDispatchContext();
     const { currentTheme } = useGlobalStateContext();
     const hamburger = useRef(null);
-    const position = useElementPosition(hamburger);
+    // const position = useElementPosition(hamburger);
 
     const toggleTheme = () => {
         if (currentTheme === "dark") {
@@ -31,15 +31,37 @@ const Header = ({
         }
     };
 
-    const menuHover = () => {
-        console.log("changing burger pos", position);
+    const menuHover = (element) => {
+        // console.log("changing burger pos", position);
+        console.log("event source", element);
+
         onCursor("locked");
-        setHamburgerPosition({ x: position.x, y: position.y + 72 });
+        let eventposition = useElementPosition(element);
+        console.log(eventposition);
+        //
+        // setHamburgerPosition({ x: position.x, y: position.y + 72 });
+        setHamburgerPosition(eventposition);
     };
 
     useEffect(() => {
         window.localStorage.setItem("theme", currentTheme);
     }, [currentTheme]);
+
+    useEffect(() => {
+        if (hamburger && hamburger.current) {
+            hamburger.current.addEventListener("mouseenter", () =>
+                menuHover(hamburger)
+            );
+        }
+
+        return () => {
+            if (hamburger && hamburger.current) {
+                hamburger.current.removeEventListener("mouseenter", () =>
+                    menuHover(hamburger)
+                );
+            }
+        };
+    }, [hamburger]);
 
     return (
         <HeaderNav
@@ -67,13 +89,16 @@ const Header = ({
                     <Menu
                         onClick={() => setToggleMenu(!toggleMenu)}
                         ref={hamburger}
-                        onMouseEnter={menuHover}
                         onMouseLeave={onCursor}
                         open={toggleMenu}
                     >
                         <button>
-                            <span className={toggleMenu ? "first": undefined}></span>
-                            <span className={toggleMenu ? "second": undefined}></span>
+                            <span
+                                className={toggleMenu ? "first" : undefined}
+                            ></span>
+                            <span
+                                className={toggleMenu ? "second" : undefined}
+                            ></span>
                         </button>
                     </Menu>
                 </Flex>

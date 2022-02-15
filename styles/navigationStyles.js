@@ -41,7 +41,7 @@ export const CloseNav = styled.div`
             display: block;
             background: ${(props) => props.theme.background};
             // margin: 8px;
-        transform-origin: center center;
+            transform-origin: center center;
         }
         .first {
             transform: translate(-8px, 4px) rotateZ(-45deg);
@@ -70,6 +70,7 @@ export const NavList = styled.div`
             text-transform: uppercase;
             font-weight: 900;
             height: 96px;
+            height: min-content;
             line-height: 96px;
             overflow: hidden;
             .link {
@@ -78,9 +79,13 @@ export const NavList = styled.div`
                 display: flex;
                 align-items: center;
                 .arrow {
+                    display: flex;
+                    align-items: center;
                     height: 76px;
+                    width: 60px;
                     margin-right: 8px;
                     pointer-events: none;
+                    // background: ${(props) => props.theme.inv_main};
                 }
             }
             svg {
@@ -100,10 +105,9 @@ export const NavFooter = styled.div`
     width: 100%;
     z-index: 500;
     // background: ${(props) => props.theme.background};
-    background: ${(props) => props.theme.main};
-    height: fit-content
-
-    padding: 56px 0px;
+    // background: ${(props) => props.theme.inv_main};
+    height: fit-content;
+    padding: 6px 0px;
     p {
         color: ${(props) => props.theme.background};
     }

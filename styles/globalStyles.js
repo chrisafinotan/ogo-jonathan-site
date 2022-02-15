@@ -30,12 +30,14 @@ export const Flex = styled.div`
     position: relative;
     display: flex;
     align-items: center;
+    color: ${(props) => props.theme.inv_text};
+
     ${(props) =>
         props.row &&
         css`
             flex-direction: column;
             justify-content: flex-start;
-            align-items: center
+            align-items: center;
         `};
     ${(props) =>
         props.spaceBetween &&
@@ -72,6 +74,11 @@ export const Flex = styled.div`
         css`
             width: ${props.width};
         `};
+        ${(props) =>
+            props.gap &&
+            css`
+                gap: ${props.gap}px;
+            `};
 `;
 
 export const Cursor = styled.div`
@@ -83,7 +90,7 @@ export const Cursor = styled.div`
     background: ${(props) => props.theme.main};
     border-radius: 100%;
     transform: translate(-50%, -50%);
-    transition: all 0.1s ease-out;
+    transition: all 0.2s ease-out;
     transition-property: width, height, border;
     will-change: width, height, transform, border;
     pointer-events: none;
@@ -100,8 +107,8 @@ export const Cursor = styled.div`
     }
     &.hovered {
         background: transparent !important;
-        width: 56px;
-        height: 56px;
+        // width: 56px;
+        // height: 56px;
         border: 4px solid ${(props) => props.theme.main};
         border: 4px solid ${(props) => props.theme.main};
     }
@@ -109,9 +116,22 @@ export const Cursor = styled.div`
         background: transparent !important;
         width: 56px;
         height: 56px;
+        width: ${(props) => props.theme.width} !important;
+        height: ${(props) => props.theme.height} !important;
         border: 4px solid ${(props) => props.theme.text} !important;
         top: ${(props) => props.theme.top} !important;
         left: ${(props) => props.theme.left} !important;
+    }
+    &.wrapped {
+    transition: all 0.1s ease-out;
+        background: transparent !important;
+        width: ${(props) => props.theme.width} !important;
+        height: ${(props) => props.theme.height} !important;
+        padding: 0.5em 0.2em;
+        border: 4px solid ${(props) => props.theme.text} !important;
+        top: ${(props) => props.theme.top} !important;
+        left: ${(props) => props.theme.left} !important;
+        border-radius: 2em;
     }
     &.nav-open {
         background: ${(props) => props.theme.text};

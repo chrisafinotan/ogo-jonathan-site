@@ -40,19 +40,11 @@ const GlobalStyle = createGlobalStyle`
 export default function Layout({ children, projects }) {
     const dispatch = useGlobalDispatchContext();
     const { cursorStyles, currentTheme } = useGlobalStateContext();
-    // const data = useStaticQuery(graphql`
-    //     query SiteTitleQuery {
-    //         site {
-    //             siteMetadata {
-    //                 title
-    //             }
-    //         }
-    //     }
-    // `);
-
     const [hamburgerPosition, setHamburgerPosition] = useState({
         x: 0,
         y: 0,
+        width: 0,
+        height: 0,
     });
 
     const [toggleMenu, setToggleMenu] = useState(false);
@@ -66,6 +58,8 @@ export default function Layout({ children, projects }) {
         inv_main: "#1e76ea",
         left: `${hamburgerPosition.x}px`,
         top: `${hamburgerPosition.y}px`,
+        width: `${hamburgerPosition.width}px`,
+        height: `${hamburgerPosition.height}px`,
     };
 
     const lightTheme = {
@@ -77,14 +71,14 @@ export default function Layout({ children, projects }) {
         inv_main: "#ea281e",
         left: `${hamburgerPosition.x}px`,
         top: `${hamburgerPosition.y}px`,
+        width: `${hamburgerPosition.width}px`,
+        height: `${hamburgerPosition.height}px`,
     };
 
     const onCursor = (cursorType) => {
         cursorType = (cursorStyles.includes(cursorType) && cursorType) || false;
         dispatch({ type: "CURSOR_TYPE", cursorType: cursorType });
     };
-
-    console.log("burger pos", hamburgerPosition);
 
     return (
         <ThemeProvider theme={currentTheme === "dark" ? darkTheme : lightTheme}>

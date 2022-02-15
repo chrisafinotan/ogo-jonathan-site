@@ -4,14 +4,19 @@ import { motion } from "framer-motion";
 export const FooterNav = styled(motion.div)`
     height: 300px;
     margin-top: 296px;
+
 `;
 
 export const FooterContent = styled.div`
-    color: ${(props) => props.theme.main};
+    color: ${(props) => props.theme.inv_text};
     font-size: 22px;
     font-weight: 600;
-    line-height: 8px;
     flex: 1;
+    // height: fit-content;
+    span {
+        // height: 1em;
+        height: fit-content;
+    }
     ${(props) =>
         props.wider &&
         css`

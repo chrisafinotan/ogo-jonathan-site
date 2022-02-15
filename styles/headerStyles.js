@@ -1,5 +1,17 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { motion } from "framer-motion";
+
+const blink = keyframes`
+0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .3;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
 
 export const HeaderNav = styled(motion.div)`
     height: 0px;
@@ -31,6 +43,13 @@ export const Logo = styled.div`
         display: inline-block;
         position: relative;
         bottom: 2px;
+        // css
+        //     padding: 0;
+        //     margin: 0;
+        //     background: ${(props) => props.theme.background};
+        //     max-width: 100% !important;
+        //
+        animation: ${blink} 3s linear infinite;
     }
 `;
 

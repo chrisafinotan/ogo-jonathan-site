@@ -3,6 +3,9 @@ import "../styles/globals.css";
 import { BreakpointProvider } from "../context/breakpointContext";
 import { AnimatePresence, AnimateSharedLayout } from "framer-motion";
 import { GlobalProvider } from "../context/globalContext";
+import "@fortawesome/fontawesome-svg-core/styles.css"; // import Font Awesome CSS
+import { config } from "@fortawesome/fontawesome-svg-core";
+config.autoAddCss = false;
 
 const queries = {
     xs: "(max-width: 320px)",

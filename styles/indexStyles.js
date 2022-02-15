@@ -1,6 +1,20 @@
-import styled, { css } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import { motion } from "framer-motion";
 
+const blink = keyframes`
+0% {
+    opacity: 1;
+    scale: 1;
+  }
+  50% {
+    opacity: .3;
+    scale: 2;
+  }
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+`;
 export const ContentBox = styled.div`
     display: block;
     position: fixed;
@@ -49,7 +63,6 @@ export const ContentBox = styled.div`
         position: absolute;
         width: 100%;
         height: 100%;
-        // border: 2px solid red;
         img {
             width: 100%;
             height: 100%;
@@ -78,14 +91,17 @@ export const ContentBox = styled.div`
         align-items: center;
         span {
             display: none;
-            font-size: 1em;
-            letter-spacing: 0.5em;
+            font-size: 1.7em;
+            letter-spacing: 0.5rem;
             overflow: hidden;
             white-space: nowrap;
             text-align: center;
-
-            background: ${(props) => props.theme.main};
-            color: ${(props) => props.theme.text};
+            mix-blend-mode: color-dodge;
+            font-weight: 700;
+            // background: ${(props) => props.theme.text};
+            color: ${(props) => props.theme.inv_text};
+            color: ${(props) => props.theme.main};
+            color: #fff;
         }
         pointer-events: none;
     }
@@ -93,7 +109,7 @@ export const ContentBox = styled.div`
     &:hover {
         transform: scale(1.2);
         z-index: 10;
-        transition: all 0.2s ease-in-out;
+        transition: all 0.3s ease-in-out;
         * {
             opacity: 1;
         }
@@ -135,13 +151,6 @@ export const TitleBanner = styled(motion.div)`
         margin: 0.2em;
         border-radius: 100%;
         position: relative;
-        // border: 2px solid blue;
-
+        animation: ${blink} 3s linear infinite;
     }
-    &span:before {
-        content: "";
-        mix-blend-mode: normal;
-        // border: 2px solid green;
-    }
-
 `;

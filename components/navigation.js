@@ -24,6 +24,13 @@ import { Instagram, Facebook, Vimeo } from "../assets/svg/social-icons";
 import { motion, AnimatePresence } from "framer-motion";
 import { imageWrapper, spanContainer, spanText } from "../framer/variants";
 import { useBreakpoint } from "../context/breakpointContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import the icons you need
+import {
+    // faSearch,
+    // faAmbulance,
+    faCamera,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Navigation = ({
     projects,
@@ -32,7 +39,22 @@ const Navigation = ({
     onCursor,
     setHamburgerPosition,
 }) => {
-    // projects = [...projects, ...projects];
+    const instagramref = useRef(null);
+    const facebookref = useRef(null);
+    const phoneref = useRef(null);
+    const projectsref = useRef(null);
+    const aboutref = useRef(null);
+
+    const [revealContent, setRevealContent] = useState({
+        show: false,
+        video: "featured-video.mp4",
+        key: "0",
+    });
+
+    const dispatch = useGlobalDispatchContext();
+    const { currentTheme } = useGlobalStateContext();
+    const breakpoints = useBreakpoint();
+
     const ProjectsView = projects ? (
         <NavList>
             <ul>
@@ -63,10 +85,10 @@ const Navigation = ({
                     >
                         <Link href={`/project/${route.id}`}>
                             <motion.div
-                                initial={{ x: -108 }}
+                                initial={{ x: -60 }}
                                 className="link"
                                 whileHover={{
-                                    x: -40,
+                                    x: 0,
                                     transition: {
                                         duration: 0.4,
                                         ease: [0.6, 0.05, -0.01, 0.9],
@@ -74,7 +96,9 @@ const Navigation = ({
                                 }}
                             >
                                 <span className="arrow">
-                                    <motion.svg
+                                    <FontAwesomeIcon icon={faCamera} />
+
+                                    {/* <motion.svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 101 57"
                                     >
@@ -83,7 +107,7 @@ const Navigation = ({
                                             fill="#000"
                                             fillRule="evenodd"
                                         ></path>
-                                    </motion.svg>
+                                    </motion.svg> */}
                                 </span>
                                 {route.name}
                             </motion.div>
@@ -153,31 +177,15 @@ const Navigation = ({
         {
             name: "Projects",
             view: ProjectsView,
+            ref: projectsref,
         },
         {
             name: "About",
             view: AboutView,
+            ref: aboutref,
         },
     ];
-
     const [menuView, setMenuView] = useState(views[0]);
-    const [revealContent, setRevealContent] = useState({
-        show: false,
-        video: "featured-video.mp4",
-        key: "0",
-    });
-
-    // console.log("navigation");
-    // console.log(revealContent.content);
-
-    const closeHamburger = useRef(null);
-    const position =
-        closeHamburger.current && useElementPosition(closeHamburger);
-    // const [position, setposition] = useState(useElementPosition(closeHamburger));
-
-    const dispatch = useGlobalDispatchContext();
-    const { currentTheme } = useGlobalStateContext();
-    const breakpoints = useBreakpoint();
 
     const toggleTheme = () => {
         if (currentTheme === "dark") {
@@ -187,31 +195,49 @@ const Navigation = ({
         }
     };
 
-    const menuHover = () => {
-        console.log("changing burger pos2", position);
-
+    const objectLockHover = (element) => {
         onCursor("locked");
-        console.log("position", position);
-        setHamburgerPosition({ x: position.x, y: position.y + 72 });
+        let eventposition = useElementPosition(element);
+        setHamburgerPosition(eventposition);
+    };
+
+    const objectWrapHover = (element) => {
+        onCursor("wrapped");
+        let eventposition = useElementPosition(element);
+        setHamburgerPosition(eventposition);
+    };
+
+    const RefListenAdd = (ref, func = objectLockHover, type = "mouseenter") => {
+        if (ref && ref.current) {
+            ref.current.addEventListener(type, () => func(ref));
+        }
+    };
+
+    const RefListenRemove = (
+        ref,
+        func = objectLockHover,
+        type = "mouseenter"
+    ) => {
+        if (ref && ref.current) {
+            ref.current.removeEventListener(type, () => func(ref));
+        }
     };
 
     useEffect(() => {
-        const handleResize = () => {
-            console.log(
-                "resized to: ",
-                window.innerWidth,
-                "x",
-                window.innerHeight
-            );
-            // setposition(useElementPosition(closeHamburger));
-        };
-
-        window.addEventListener("resize", handleResize);
+        RefListenAdd(instagramref);
+        RefListenAdd(facebookref);
+        RefListenAdd(phoneref, objectWrapHover);
+        RefListenAdd(projectsref, objectWrapHover);
+        RefListenAdd(aboutref, objectWrapHover);
 
         return () => {
-            window.removeEventListener("resize", handleResize);
+            RefListenRemove(instagramref);
+            RefListenRemove(facebookref);
+            RefListenRemove(phoneref, objectWrapHover);
+            RefListenRemove(projectsref, objectWrapHover);
+            RefListenRemove(aboutref, objectWrapHover);
         };
-    }, []);
+    }, [facebookref, instagramref, phoneref, toggleMenu]);
 
     return (
         <>
@@ -242,9 +268,10 @@ const Navigation = ({
                                                 key={`view_${index}`}
                                                 to="/"
                                                 onClick={() => setMenuView(el)}
-                                                onMouseEnter={() =>
-                                                    onCursor("pointer")
-                                                }
+                                                ref={el.ref}
+                                                // onMouseEnter={() =>
+                                                //     onCursor("pointer")
+                                                // }
                                                 onMouseLeave={onCursor}
                                             >
                                                 {el.name}
@@ -253,20 +280,33 @@ const Navigation = ({
                                     </Flex>
                                     <Flex
                                         spaceBetween
-                                        width={`40%`}
+                                        // width={`40%`}
                                         row={breakpoints.md}
+                                        gap={5}
                                     >
-                                        <FooterContent>
-                                            <p>email@domain.net</p>
+                                        <FooterContent
+                                            ref={phoneref}
+                                            onMouseLeave={onCursor}
+                                        >
+                                            {/* <span> */}
+                                            {/* </span> */}
+                                            {/* <a href="mailto:iafinotan@yahoo.com?subject = Feedback&body = Message">
+                                                iafinotan@yahoo.com
+                                            </a> */}
+                                            <Mailto
+                                                email="iafinotan@yahoo.com"
+                                                subject="Hello & Welcome"
+                                                body="Hello world!"
+                                            >
+                                                iafinotan@yahoo.com
+                                            </Mailto>
                                         </FooterContent>
                                         <FooterContent>
-                                            <p>000.000.000</p>
+                                            <span>000.000.000</span>
                                         </FooterContent>
                                         <FooterSocial>
                                             <a
-                                                onMouseEnter={() =>
-                                                    onCursor("locked")
-                                                }
+                                                ref={instagramref}
                                                 onMouseLeave={onCursor}
                                                 href="/"
                                                 target="_blank"
@@ -274,9 +314,7 @@ const Navigation = ({
                                                 <Instagram />
                                             </a>
                                             <a
-                                                onMouseEnter={() =>
-                                                    onCursor("locked")
-                                                }
+                                                ref={facebookref}
                                                 onMouseLeave={onCursor}
                                                 href="/"
                                                 target="_blank"
@@ -362,3 +400,11 @@ const Navigation = ({
 };
 
 export default Navigation;
+
+const Mailto = ({ email, subject = "", body = "", children }) => {
+    let params = subject || body ? "?" : "";
+    if (subject) params += `subject=${encodeURIComponent(subject)}`;
+    if (body) params += `${subject ? "&" : ""}body=${encodeURIComponent(body)}`;
+
+    return <a href={`mailto:${email}${params}`}>{children}</a>;
+};

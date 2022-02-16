@@ -8,6 +8,10 @@ const GlobalDispatchContext = createContext();
 const globalReducer = (state, action) => {
     switch (action.type) {
         case "TOGGLE_THEME": {
+            if (typeof window !== undefined) {
+                console.log('setting local storage', action.theme)
+                window.localStorage.setItem("theme", action.theme);
+            }
             return {
                 ...state,
                 currentTheme: action.theme,
@@ -31,13 +35,10 @@ export const GlobalProvider = ({ children }) => {
     // console.log("global provider");
     const [state, dispatch] = useReducer(globalReducer, {
         currentTheme: "dark",
-        // currentTheme:
-        //     window && (window.localStorage.getItem("theme") == null
-        //         ? "dark"
-        //         : window.localStorage.getItem("theme")),
         cursorType: false,
         cursorStyles: [
             "pointer",
+            "pointertheme",
             "pointerinv",
             "hovered",
             "locked",

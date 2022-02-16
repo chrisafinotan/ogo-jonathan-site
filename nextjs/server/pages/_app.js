@@ -1,95 +1,101 @@
-"use strict";
+/*
+ * ATTENTION: An "eval-source-map" devtool has been used.
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file with attached SourceMaps in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */
 (() => {
 var exports = {};
-exports.id = 888;
-exports.ids = [888];
+exports.id = "pages/_app";
+exports.ids = ["pages/_app"];
 exports.modules = {
 
-/***/ 8626:
+/***/ "./context/breakpointContext.js":
+/*!**************************************!*\
+  !*** ./context/breakpointContext.js ***!
+  \**************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-// ESM COMPAT FLAG
-__webpack_require__.r(__webpack_exports__);
-
-// EXPORTS
-__webpack_require__.d(__webpack_exports__, {
-  "default": () => (/* binding */ _app)
-});
-
-// EXTERNAL MODULE: ./context/breakpointContext.js
-var breakpointContext = __webpack_require__(8890);
-// EXTERNAL MODULE: external "framer-motion"
-var external_framer_motion_ = __webpack_require__(762);
-// EXTERNAL MODULE: ./context/globalContext.js
-var globalContext = __webpack_require__(231);
-;// CONCATENATED MODULE: external "@fortawesome/fontawesome-svg-core"
-const fontawesome_svg_core_namespaceObject = require("@fortawesome/fontawesome-svg-core");
-// EXTERNAL MODULE: external "react/jsx-runtime"
-var jsx_runtime_ = __webpack_require__(5282);
-;// CONCATENATED MODULE: ./pages/_app.js
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
- // import Font Awesome CSS
-
-
-
-fontawesome_svg_core_namespaceObject.config.autoAddCss = false;
-const queries = {
-  xs: "(max-width: 320px)",
-  sm: "(max-width: 720px)",
-  md: "(max-width: 1024px)",
-  lg: "(min-width: 1200px)",
-  or: "(orientation: portrait)" // we can check orientation also
-
-};
-
-function MyApp({
-  Component,
-  pageProps
-}) {
-  return /*#__PURE__*/jsx_runtime_.jsx(external_framer_motion_.AnimatePresence, {
-    exitBeforeEnter: true,
-    children: /*#__PURE__*/jsx_runtime_.jsx(external_framer_motion_.AnimateSharedLayout, {
-      children: /*#__PURE__*/jsx_runtime_.jsx(globalContext/* GlobalProvider */.R, {
-        children: /*#__PURE__*/jsx_runtime_.jsx(breakpointContext/* BreakpointProvider */.q, {
-          queries: queries,
-          children: /*#__PURE__*/jsx_runtime_.jsx(Component, _objectSpread({}, pageProps))
-        })
-      })
-    })
-  });
-}
-
-/* harmony default export */ const _app = (MyApp);
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"useBreakpoint\": () => (/* binding */ useBreakpoint),\n/* harmony export */   \"BreakpointProvider\": () => (/* binding */ BreakpointProvider)\n/* harmony export */ });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"react\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-dev-runtime */ \"react/jsx-dev-runtime\");\n/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_1__);\nvar _jsxFileName = \"/Users/itsemisanafinotan/Desktop/ogo-jonathan-site/context/breakpointContext.js\";\n\n\nconst defaultValue = {}; //Define Context\n\nconst BreakpointContext = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.createContext)(defaultValue); //Provider\n\nconst BreakpointProvider = ({\n  children,\n  queries\n}) => {\n  const {\n    0: queryMatch,\n    1: setQueryMatch\n  } = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({});\n  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {\n    const mediaQueryLists = {};\n    const keys = Object.keys(queries);\n    let isAttached = false;\n\n    const handleQueryListener = () => {\n      const updatedMatches = keys.reduce((acc, media) => {\n        acc[media] = !!(mediaQueryLists[media] && mediaQueryLists[media].matches);\n        return acc;\n      }, {});\n      setQueryMatch(updatedMatches);\n    };\n\n    if (window && window.matchMedia) {\n      const matches = {};\n      keys.forEach(media => {\n        if (typeof queries[media] === \"string\") {\n          mediaQueryLists[media] = window.matchMedia(queries[media]);\n          matches[media] = mediaQueryLists[media].matches;\n        } else {\n          matches[media] = false;\n        }\n      });\n      setQueryMatch(matches);\n      isAttached = true;\n      keys.forEach(media => {\n        if (typeof queries[media] === \"string\") {\n          mediaQueryLists[media].addListener(handleQueryListener);\n        }\n      });\n    }\n\n    return () => {\n      if (isAttached) {\n        keys.forEach(media => {\n          if (typeof queries[media] === \"string\") {\n            mediaQueryLists[media].removeListener(handleQueryListener);\n          }\n        });\n      }\n    };\n  }, [queries]);\n  return /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxDEV)(BreakpointContext.Provider, {\n    value: queryMatch,\n    children: children\n  }, void 0, false, {\n    fileName: _jsxFileName,\n    lineNumber: 61,\n    columnNumber: 9\n  }, undefined);\n}; //custom hook\n\n\nfunction useBreakpoint() {\n  const context = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(BreakpointContext);\n\n  if (context === defaultValue) {\n    throw new Error(\"useBreakpoint must be used within BreakpointProvider\");\n  }\n\n  return context;\n}\n\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,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QUNBLFNBQVNtQixhQUFULEdBQXlCO0FBQ3JCLFFBQU1DLE9BQU8sR0FBR3hCLGlEQUFVLENBQUNFLGlCQUFELENBQTFCOztBQUNBLE1BQUlzQixPQUFPLEtBQUt2QixZQUFoQixFQUE4QjtBQUMxQixVQUFNLElBQUl3QixLQUFKLENBQVUsc0RBQVYsQ0FBTjtBQUNIOztBQUNELFNBQU9ELE9BQVA7QUFDSCIsInNvdXJjZXMiOlsid2VicGFjazovL29nby1qb25hdGhhbi1zaXRlLy4vY29udGV4dC9icmVha3BvaW50Q29udGV4dC5qcz82ZDcyIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IHVzZVN0YXRlLCB1c2VFZmZlY3QsIGNyZWF0ZUNvbnRleHQsIHVzZUNvbnRleHQgfSBmcm9tIFwicmVhY3RcIjtcblxuY29uc3QgZGVmYXVsdFZhbHVlID0ge307XG5cbi8vRGVmaW5lIENvbnRleHRcbmNvbnN0IEJyZWFrcG9pbnRDb250ZXh0ID0gY3JlYXRlQ29udGV4dChkZWZhdWx0VmFsdWUpO1xuXG5cbi8vUHJvdmlkZXJcbmNvbnN0IEJyZWFrcG9pbnRQcm92aWRlciA9ICh7IGNoaWxkcmVuLCBxdWVyaWVzIH0pID0+IHtcbiAgICBjb25zdCBbcXVlcnlNYXRjaCwgc2V0UXVlcnlNYXRjaF0gPSB1c2VTdGF0ZSh7fSk7XG5cbiAgICB1c2VFZmZlY3QoKCkgPT4ge1xuICAgICAgICBjb25zdCBtZWRpYVF1ZXJ5TGlzdHMgPSB7fTtcbiAgICAgICAgY29uc3Qga2V5cyA9IE9iamVjdC5rZXlzKHF1ZXJpZXMpO1xuICAgICAgICBsZXQgaXNBdHRhY2hlZCA9IGZhbHNlO1xuXG4gICAgICAgIGNvbnN0IGhhbmRsZVF1ZXJ5TGlzdGVuZXIgPSAoKSA9PiB7XG4gICAgICAgICAgICBjb25zdCB1cGRhdGVkTWF0Y2hlcyA9IGtleXMucmVkdWNlKChhY2MsIG1lZGlhKSA9PiB7XG4gICAgICAgICAgICAgICAgYWNjW21lZGlhXSA9ICEhKFxuICAgICAgICAgICAgICAgICAgICBtZWRpYVF1ZXJ5TGlzdHNbbWVkaWFdICYmIG1lZGlhUXVlcnlMaXN0c1ttZWRpYV0ubWF0Y2hlc1xuICAgICAgICAgICAgICAgICk7XG4gICAgICAgICAgICAgICAgcmV0dXJuIGFjYztcbiAgICAgICAgICAgIH0sIHt9KTtcbiAgICAgICAgICAgIHNldFF1ZXJ5TWF0Y2godXBkYXRlZE1hdGNoZXMpO1xuICAgICAgICB9O1xuXG4gICAgICAgIGlmICh3aW5kb3cgJiYgd2luZG93Lm1hdGNoTWVkaWEpIHtcbiAgICAgICAgICAgIGNvbnN0IG1hdGNoZXMgPSB7fTtcbiAgICAgICAgICAgIGtleXMuZm9yRWFjaCgobWVkaWEpID0+IHtcbiAgICAgICAgICAgICAgICBpZiAodHlwZW9mIHF1ZXJpZXNbbWVkaWFdID09PSBcInN0cmluZ1wiKSB7XG4gICAgICAgICAgICAgICAgICAgIG1lZGlhUXVlcnlMaXN0c1ttZWRpYV0gPSB3aW5kb3cubWF0Y2hNZWRpYShxdWVyaWVzW21lZGlhXSk7XG4gICAgICAgICAgICAgICAgICAgIG1hdGNoZXNbbWVkaWFdID0gbWVkaWFRdWVyeUxpc3RzW21lZGlhXS5tYXRjaGVzO1xuICAgICAgICAgICAgICAgIH0gZWxzZSB7XG4gICAgICAgICAgICAgICAgICAgIG1hdGNoZXNbbWVkaWFdID0gZmFsc2U7XG4gICAgICAgICAgICAgICAgfVxuICAgICAgICAgICAgfSk7XG4gICAgICAgICAgICBzZXRRdWVyeU1hdGNoKG1hdGNoZXMpO1xuICAgICAgICAgICAgaXNBdHRhY2hlZCA9IHRydWU7XG4gICAgICAgICAgICBrZXlzLmZvckVhY2goKG1lZGlhKSA9PiB7XG4gICAgICAgICAgICAgICAgaWYgKHR5cGVvZiBxdWVyaWVzW21lZGlhXSA9PT0gXCJzdHJpbmdcIikge1xuICAgICAgICAgICAgICAgICAgICBtZWRpYVF1ZXJ5TGlzdHNbbWVkaWFdLmFkZExpc3RlbmVyKGhhbmRsZVF1ZXJ5TGlzdGVuZXIpO1xuICAgICAgICAgICAgICAgIH1cbiAgICAgICAgICAgIH0pO1xuICAgICAgICB9XG5cbiAgICAgICAgcmV0dXJuICgpID0+IHtcbiAgICAgICAgICAgIGlmIChpc0F0dGFjaGVkKSB7XG4gICAgICAgICAgICAgICAga2V5cy5mb3JFYWNoKChtZWRpYSkgPT4ge1xuICAgICAgICAgICAgICAgICAgICBpZiAodHlwZW9mIHF1ZXJpZXNbbWVkaWFdID09PSBcInN0cmluZ1wiKSB7XG4gICAgICAgICAgICAgICAgICAgICAgICBtZWRpYVF1ZXJ5TGlzdHNbbWVkaWFdLnJlbW92ZUxpc3RlbmVyKFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIGhhbmRsZVF1ZXJ5TGlzdGVuZXJcbiAgICAgICAgICAgICAgICAgICAgICAgICk7XG4gICAgICAgICAgICAgICAgICAgIH1cbiAgICAgICAgICAgICAgICB9KTtcbiAgICAgICAgICAgIH1cbiAgICAgICAgfTtcbiAgICB9LCBbcXVlcmllc10pO1xuXG4gICAgcmV0dXJuIChcbiAgICAgICAgPEJyZWFrcG9pbnRDb250ZXh0LlByb3ZpZGVyIHZhbHVlPXtxdWVyeU1hdGNofT5cbiAgICAgICAgICAgIHtjaGlsZHJlbn1cbiAgICAgICAgPC9CcmVha3BvaW50Q29udGV4dC5Qcm92aWRlcj5cbiAgICApO1xufTtcblxuLy9jdXN0b20gaG9va1xuZnVuY3Rpb24gdXNlQnJlYWtwb2ludCgpIHtcbiAgICBjb25zdCBjb250ZXh0ID0gdXNlQ29udGV4dChCcmVha3BvaW50Q29udGV4dCk7XG4gICAgaWYgKGNvbnRleHQgPT09IGRlZmF1bHRWYWx1ZSkge1xuICAgICAgICB0aHJvdyBuZXcgRXJyb3IoXCJ1c2VCcmVha3BvaW50IG11c3QgYmUgdXNlZCB3aXRoaW4gQnJlYWtwb2ludFByb3ZpZGVyXCIpO1xuICAgIH1cbiAgICByZXR1cm4gY29udGV4dDtcbn1cbmV4cG9ydCB7IHVzZUJyZWFrcG9pbnQsIEJyZWFrcG9pbnRQcm92aWRlciB9O1xuIl0sIm5hbWVzIjpbInVzZVN0YXRlIiwidXNlRWZmZWN0IiwiY3JlYXRlQ29udGV4dCIsInVzZUNvbnRleHQiLCJkZWZhdWx0VmFsdWUiLCJCcmVha3BvaW50Q29udGV4dCIsIkJyZWFrcG9pbnRQcm92aWRlciIsImNoaWxkcmVuIiwicXVlcmllcyIsInF1ZXJ5TWF0Y2giLCJzZXRRdWVyeU1hdGNoIiwibWVkaWFRdWVyeUxpc3RzIiwia2V5cyIsIk9iamVjdCIsImlzQXR0YWNoZWQiLCJoYW5kbGVRdWVyeUxpc3RlbmVyIiwidXBkYXRlZE1hdGNoZXMiLCJyZWR1Y2UiLCJhY2MiLCJtZWRpYSIsIm1hdGNoZXMiLCJ3aW5kb3ciLCJtYXRjaE1lZGlhIiwiZm9yRWFjaCIsImFkZExpc3RlbmVyIiwicmVtb3ZlTGlzdGVuZXIiLCJ1c2VCcmVha3BvaW50IiwiY29udGV4dCIsIkVycm9yIl0sInNvdXJjZVJvb3QiOiIifQ==\n//# sourceURL=webpack-internal:///./context/breakpointContext.js\n");
 
 /***/ }),
 
-/***/ 762:
+/***/ "./context/globalContext.js":
+/*!**********************************!*\
+  !*** ./context/globalContext.js ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"GlobalProvider\": () => (/* binding */ GlobalProvider),\n/* harmony export */   \"useGlobalStateContext\": () => (/* binding */ useGlobalStateContext),\n/* harmony export */   \"useGlobalDispatchContext\": () => (/* binding */ useGlobalDispatchContext)\n/* harmony export */ });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"react\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-dev-runtime */ \"react/jsx-dev-runtime\");\n/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_1__);\nvar _jsxFileName = \"/Users/itsemisanafinotan/Desktop/ogo-jonathan-site/context/globalContext.js\";\n\nfunction ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }\n\nfunction _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }\n\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\n //Define Context\n\n\nconst GlobalStateContext = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.createContext)();\nconst GlobalDispatchContext = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.createContext)(); //Reducer\n\nconst globalReducer = (state, action) => {\n  switch (action.type) {\n    case \"TOGGLE_THEME\":\n      {\n        if (true) {\n          console.log('setting local storage', action.theme);\n          window.localStorage.setItem(\"theme\", action.theme);\n        }\n\n        return _objectSpread(_objectSpread({}, state), {}, {\n          currentTheme: action.theme\n        });\n      }\n\n    case \"CURSOR_TYPE\":\n      {\n        // console.log(\"cursor\", action.cursorType);\n        return _objectSpread(_objectSpread({}, state), {}, {\n          cursorType: action.cursorType\n        });\n      }\n\n    default:\n      {\n        throw new Error(`Unhandled action type: ${action.type}`);\n      }\n  }\n}; //Provider\n\n\nconst GlobalProvider = ({\n  children\n}) => {\n  // console.log(\"global provider\");\n  const {\n    0: state,\n    1: dispatch\n  } = (0,react__WEBPACK_IMPORTED_MODULE_0__.useReducer)(globalReducer, {\n    currentTheme: \"dark\",\n    cursorType: false,\n    cursorStyles: [\"pointer\", \"pointertheme\", \"pointerinv\", \"hovered\", \"locked\", \"white\", \"wrapped\"]\n  });\n  return /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxDEV)(GlobalDispatchContext.Provider, {\n    value: dispatch,\n    children: /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxDEV)(GlobalStateContext.Provider, {\n      value: state,\n      children: children\n    }, void 0, false, {\n      fileName: _jsxFileName,\n      lineNumber: 52,\n      columnNumber: 13\n    }, undefined)\n  }, void 0, false, {\n    fileName: _jsxFileName,\n    lineNumber: 51,\n    columnNumber: 9\n  }, undefined);\n}; //custom hooks\n\nconst useGlobalStateContext = () => (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(GlobalStateContext);\nconst useGlobalDispatchContext = () => (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(GlobalDispatchContext);//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiLi9jb250ZXh0L2dsb2JhbENvbnRleHQuanMuanMiLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7O0NBRUE7OztBQUNBLE1BQU1HLGtCQUFrQixnQkFBR0gsb0RBQWEsRUFBeEM7QUFDQSxNQUFNSSxxQkFBcUIsZ0JBQUdKLG9EQUFhLEVBQTNDLEVBRUE7O0FBQ0EsTUFBTUssYUFBYSxHQUFHLENBQUNDLEtBQUQsRUFBUUMsTUFBUixLQUFtQjtBQUNyQyxVQUFRQSxNQUFNLENBQUNDLElBQWY7QUFDSSxTQUFLLGNBQUw7QUFBcUI7QUFDakIsa0JBQWlDO0FBQzdCQyxVQUFBQSxPQUFPLENBQUNDLEdBQVIsQ0FBWSx1QkFBWixFQUFxQ0gsTUFBTSxDQUFDSSxLQUE1QztBQUNBQyxVQUFBQSxNQUFNLENBQUNDLFlBQVAsQ0FBb0JDLE9BQXBCLENBQTRCLE9BQTVCLEVBQXFDUCxNQUFNLENBQUNJLEtBQTVDO0FBQ0g7O0FBQ0QsK0NBQ09MLEtBRFA7QUFFSVMsVUFBQUEsWUFBWSxFQUFFUixNQUFNLENBQUNJO0FBRnpCO0FBSUg7O0FBQ0QsU0FBSyxhQUFMO0FBQW9CO0FBQ2hCO0FBQ0EsK0NBQ09MLEtBRFA7QUFFSVUsVUFBQUEsVUFBVSxFQUFFVCxNQUFNLENBQUNTO0FBRnZCO0FBSUg7O0FBQ0Q7QUFBUztBQUNMLGNBQU0sSUFBSUMsS0FBSixDQUFXLDBCQUF5QlYsTUFBTSxDQUFDQyxJQUFLLEVBQWhELENBQU47QUFDSDtBQXBCTDtBQXNCSCxDQXZCRCxFQXlCQTs7O0FBQ08sTUFBTVUsY0FBYyxHQUFHLENBQUM7QUFBRUMsRUFBQUE7QUFBRixDQUFELEtBQWtCO0FBQzVDO0FBQ0EsUUFBTTtBQUFBLE9BQUNiLEtBQUQ7QUFBQSxPQUFRYztBQUFSLE1BQW9CbkIsaURBQVUsQ0FBQ0ksYUFBRCxFQUFnQjtBQUNoRFUsSUFBQUEsWUFBWSxFQUFFLE1BRGtDO0FBRWhEQyxJQUFBQSxVQUFVLEVBQUUsS0FGb0M7QUFHaERLLElBQUFBLFlBQVksRUFBRSxDQUNWLFNBRFUsRUFFVixjQUZVLEVBR1YsWUFIVSxFQUlWLFNBSlUsRUFLVixRQUxVLEVBTVYsT0FOVSxFQU9WLFNBUFU7QUFIa0MsR0FBaEIsQ0FBcEM7QUFjQSxzQkFDSSw4REFBQyxxQkFBRCxDQUF1QixRQUF2QjtBQUFnQyxTQUFLLEVBQUVELFFBQXZDO0FBQUEsMkJBQ0ksOERBQUMsa0JBQUQsQ0FBb0IsUUFBcEI7QUFBNkIsV0FBSyxFQUFFZCxLQUFwQztBQUFBLGdCQUNLYTtBQURMO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFESjtBQUFBO0FBQUE7QUFBQTtBQUFBLGVBREo7QUFPSCxDQXZCTSxFQXlCUDs7QUFDTyxNQUFNRyxxQkFBcUIsR0FBRyxNQUFNcEIsaURBQVUsQ0FBQ0Msa0JBQUQsQ0FBOUM7QUFFQSxNQUFNb0Isd0JBQXdCLEdBQUcsTUFBTXJCLGlEQUFVLENBQUNFLHFCQUFELENBQWpEIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vb2dvLWpvbmF0aGFuLXNpdGUvLi9jb250ZXh0L2dsb2JhbENvbnRleHQuanM/ZjQxMiJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBjcmVhdGVDb250ZXh0LCB1c2VSZWR1Y2VyLCB1c2VDb250ZXh0IH0gZnJvbSBcInJlYWN0XCI7XG5cbi8vRGVmaW5lIENvbnRleHRcbmNvbnN0IEdsb2JhbFN0YXRlQ29udGV4dCA9IGNyZWF0ZUNvbnRleHQoKTtcbmNvbnN0IEdsb2JhbERpc3BhdGNoQ29udGV4dCA9IGNyZWF0ZUNvbnRleHQoKTtcblxuLy9SZWR1Y2VyXG5jb25zdCBnbG9iYWxSZWR1Y2VyID0gKHN0YXRlLCBhY3Rpb24pID0+IHtcbiAgICBzd2l0Y2ggKGFjdGlvbi50eXBlKSB7XG4gICAgICAgIGNhc2UgXCJUT0dHTEVfVEhFTUVcIjoge1xuICAgICAgICAgICAgaWYgKHR5cGVvZiB3aW5kb3cgIT09IHVuZGVmaW5lZCkge1xuICAgICAgICAgICAgICAgIGNvbnNvbGUubG9nKCdzZXR0aW5nIGxvY2FsIHN0b3JhZ2UnLCBhY3Rpb24udGhlbWUpXG4gICAgICAgICAgICAgICAgd2luZG93LmxvY2FsU3RvcmFnZS5zZXRJdGVtKFwidGhlbWVcIiwgYWN0aW9uLnRoZW1lKTtcbiAgICAgICAgICAgIH1cbiAgICAgICAgICAgIHJldHVybiB7XG4gICAgICAgICAgICAgICAgLi4uc3RhdGUsXG4gICAgICAgICAgICAgICAgY3VycmVudFRoZW1lOiBhY3Rpb24udGhlbWUsXG4gICAgICAgICAgICB9O1xuICAgICAgICB9XG4gICAgICAgIGNhc2UgXCJDVVJTT1JfVFlQRVwiOiB7XG4gICAgICAgICAgICAvLyBjb25zb2xlLmxvZyhcImN1cnNvclwiLCBhY3Rpb24uY3Vyc29yVHlwZSk7XG4gICAgICAgICAgICByZXR1cm4ge1xuICAgICAgICAgICAgICAgIC4uLnN0YXRlLFxuICAgICAgICAgICAgICAgIGN1cnNvclR5cGU6IGFjdGlvbi5jdXJzb3JUeXBlLFxuICAgICAgICAgICAgfTtcbiAgICAgICAgfVxuICAgICAgICBkZWZhdWx0OiB7XG4gICAgICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYFVuaGFuZGxlZCBhY3Rpb24gdHlwZTogJHthY3Rpb24udHlwZX1gKTtcbiAgICAgICAgfVxuICAgIH1cbn07XG5cbi8vUHJvdmlkZXJcbmV4cG9ydCBjb25zdCBHbG9iYWxQcm92aWRlciA9ICh7IGNoaWxkcmVuIH0pID0+IHtcbiAgICAvLyBjb25zb2xlLmxvZyhcImdsb2JhbCBwcm92aWRlclwiKTtcbiAgICBjb25zdCBbc3RhdGUsIGRpc3BhdGNoXSA9IHVzZVJlZHVjZXIoZ2xvYmFsUmVkdWNlciwge1xuICAgICAgICBjdXJyZW50VGhlbWU6IFwiZGFya1wiLFxuICAgICAgICBjdXJzb3JUeXBlOiBmYWxzZSxcbiAgICAgICAgY3Vyc29yU3R5bGVzOiBbXG4gICAgICAgICAgICBcInBvaW50ZXJcIixcbiAgICAgICAgICAgIFwicG9pbnRlcnRoZW1lXCIsXG4gICAgICAgICAgICBcInBvaW50ZXJpbnZcIixcbiAgICAgICAgICAgIFwiaG92ZXJlZFwiLFxuICAgICAgICAgICAgXCJsb2NrZWRcIixcbiAgICAgICAgICAgIFwid2hpdGVcIixcbiAgICAgICAgICAgIFwid3JhcHBlZFwiLFxuICAgICAgICBdLFxuICAgIH0pO1xuXG4gICAgcmV0dXJuIChcbiAgICAgICAgPEdsb2JhbERpc3BhdGNoQ29udGV4dC5Qcm92aWRlciB2YWx1ZT17ZGlzcGF0Y2h9PlxuICAgICAgICAgICAgPEdsb2JhbFN0YXRlQ29udGV4dC5Qcm92aWRlciB2YWx1ZT17c3RhdGV9PlxuICAgICAgICAgICAgICAgIHtjaGlsZHJlbn1cbiAgICAgICAgICAgIDwvR2xvYmFsU3RhdGVDb250ZXh0LlByb3ZpZGVyPlxuICAgICAgICA8L0dsb2JhbERpc3BhdGNoQ29udGV4dC5Qcm92aWRlcj5cbiAgICApO1xufTtcblxuLy9jdXN0b20gaG9va3NcbmV4cG9ydCBjb25zdCB1c2VHbG9iYWxTdGF0ZUNvbnRleHQgPSAoKSA9PiB1c2VDb250ZXh0KEdsb2JhbFN0YXRlQ29udGV4dCk7XG5cbmV4cG9ydCBjb25zdCB1c2VHbG9iYWxEaXNwYXRjaENvbnRleHQgPSAoKSA9PiB1c2VDb250ZXh0KEdsb2JhbERpc3BhdGNoQ29udGV4dCk7XG4iXSwibmFtZXMiOlsiY3JlYXRlQ29udGV4dCIsInVzZVJlZHVjZXIiLCJ1c2VDb250ZXh0IiwiR2xvYmFsU3RhdGVDb250ZXh0IiwiR2xvYmFsRGlzcGF0Y2hDb250ZXh0IiwiZ2xvYmFsUmVkdWNlciIsInN0YXRlIiwiYWN0aW9uIiwidHlwZSIsImNvbnNvbGUiLCJsb2ciLCJ0aGVtZSIsIndpbmRvdyIsImxvY2FsU3RvcmFnZSIsInNldEl0ZW0iLCJjdXJyZW50VGhlbWUiLCJjdXJzb3JUeXBlIiwiRXJyb3IiLCJHbG9iYWxQcm92aWRlciIsImNoaWxkcmVuIiwiZGlzcGF0Y2giLCJjdXJzb3JTdHlsZXMiLCJ1c2VHbG9iYWxTdGF0ZUNvbnRleHQiLCJ1c2VHbG9iYWxEaXNwYXRjaENvbnRleHQiXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///./context/globalContext.js\n");
+
+/***/ }),
+
+/***/ "./pages/_app.js":
+/*!***********************!*\
+  !*** ./pages/_app.js ***!
+  \***********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _styles_globals_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../styles/globals.css */ \"./styles/globals.css\");\n/* harmony import */ var _styles_globals_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_styles_globals_css__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _context_breakpointContext__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../context/breakpointContext */ \"./context/breakpointContext.js\");\n/* harmony import */ var framer_motion__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! framer-motion */ \"framer-motion\");\n/* harmony import */ var framer_motion__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(framer_motion__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var _context_globalContext__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../context/globalContext */ \"./context/globalContext.js\");\n/* harmony import */ var _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @fortawesome/fontawesome-svg-core */ \"@fortawesome/fontawesome-svg-core\");\n/* harmony import */ var _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_4__);\n/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-dev-runtime */ \"react/jsx-dev-runtime\");\n/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__);\nvar _jsxFileName = \"/Users/itsemisanafinotan/Desktop/ogo-jonathan-site/pages/_app.js\";\n\nfunction ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }\n\nfunction _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }\n\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\n\n\n\n\n // import Font Awesome CSS\n\n\n\n_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_4__.config.autoAddCss = false;\nconst queries = {\n  xs: \"(max-width: 320px)\",\n  sm: \"(max-width: 720px)\",\n  md: \"(max-width: 1024px)\",\n  lg: \"(min-width: 1200px)\",\n  or: \"(orientation: portrait)\" // we can check orientation also\n\n};\n\nfunction MyApp({\n  Component,\n  pageProps\n}) {\n  return /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxDEV)(framer_motion__WEBPACK_IMPORTED_MODULE_2__.AnimatePresence, {\n    exitBeforeEnter: true,\n    children: /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxDEV)(framer_motion__WEBPACK_IMPORTED_MODULE_2__.AnimateSharedLayout, {\n      children: /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxDEV)(_context_globalContext__WEBPACK_IMPORTED_MODULE_3__.GlobalProvider, {\n        children: /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxDEV)(_context_breakpointContext__WEBPACK_IMPORTED_MODULE_1__.BreakpointProvider, {\n          queries: queries,\n          children: /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxDEV)(Component, _objectSpread({}, pageProps), void 0, false, {\n            fileName: _jsxFileName,\n            lineNumber: 24,\n            columnNumber: 25\n          }, this)\n        }, void 0, false, {\n          fileName: _jsxFileName,\n          lineNumber: 23,\n          columnNumber: 21\n        }, this)\n      }, void 0, false, {\n        fileName: _jsxFileName,\n        lineNumber: 22,\n        columnNumber: 17\n      }, this)\n    }, void 0, false, {\n      fileName: _jsxFileName,\n      lineNumber: 21,\n      columnNumber: 13\n    }, this)\n  }, void 0, false, {\n    fileName: _jsxFileName,\n    lineNumber: 20,\n    columnNumber: 9\n  }, this);\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MyApp);//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiLi9wYWdlcy9fYXBwLmpzLmpzIiwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFBQTtBQUVBO0FBQ0E7QUFDQTtDQUN1RDs7QUFDdkQ7O0FBQ0FJLGdGQUFBLEdBQW9CLEtBQXBCO0FBRUEsTUFBTUUsT0FBTyxHQUFHO0FBQ1pDLEVBQUFBLEVBQUUsRUFBRSxvQkFEUTtBQUVaQyxFQUFBQSxFQUFFLEVBQUUsb0JBRlE7QUFHWkMsRUFBQUEsRUFBRSxFQUFFLHFCQUhRO0FBSVpDLEVBQUFBLEVBQUUsRUFBRSxxQkFKUTtBQUtaQyxFQUFBQSxFQUFFLEVBQUUseUJBTFEsQ0FLbUI7O0FBTG5CLENBQWhCOztBQVFBLFNBQVNDLEtBQVQsQ0FBZTtBQUFFQyxFQUFBQSxTQUFGO0FBQWFDLEVBQUFBO0FBQWIsQ0FBZixFQUF5QztBQUNyQyxzQkFDSSw4REFBQywwREFBRDtBQUFpQixtQkFBZSxNQUFoQztBQUFBLDJCQUNJLDhEQUFDLDhEQUFEO0FBQUEsNkJBQ0ksOERBQUMsa0VBQUQ7QUFBQSwrQkFDSSw4REFBQywwRUFBRDtBQUFvQixpQkFBTyxFQUFFUixPQUE3QjtBQUFBLGlDQUNJLDhEQUFDLFNBQUQsb0JBQWVRLFNBQWY7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQURKO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFESjtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBREo7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQURKO0FBQUE7QUFBQTtBQUFBO0FBQUEsVUFESjtBQVdIOztBQUVELGlFQUFlRixLQUFmIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vb2dvLWpvbmF0aGFuLXNpdGUvLi9wYWdlcy9fYXBwLmpzP2Q1MzAiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFwiLi4vc3R5bGVzL2dsb2JhbHMuY3NzXCI7XG5cbmltcG9ydCB7IEJyZWFrcG9pbnRQcm92aWRlciB9IGZyb20gXCIuLi9jb250ZXh0L2JyZWFrcG9pbnRDb250ZXh0XCI7XG5pbXBvcnQgeyBBbmltYXRlUHJlc2VuY2UsIEFuaW1hdGVTaGFyZWRMYXlvdXQgfSBmcm9tIFwiZnJhbWVyLW1vdGlvblwiO1xuaW1wb3J0IHsgR2xvYmFsUHJvdmlkZXIgfSBmcm9tIFwiLi4vY29udGV4dC9nbG9iYWxDb250ZXh0XCI7XG5pbXBvcnQgXCJAZm9ydGF3ZXNvbWUvZm9udGF3ZXNvbWUtc3ZnLWNvcmUvc3R5bGVzLmNzc1wiOyAvLyBpbXBvcnQgRm9udCBBd2Vzb21lIENTU1xuaW1wb3J0IHsgY29uZmlnIH0gZnJvbSBcIkBmb3J0YXdlc29tZS9mb250YXdlc29tZS1zdmctY29yZVwiO1xuY29uZmlnLmF1dG9BZGRDc3MgPSBmYWxzZTtcblxuY29uc3QgcXVlcmllcyA9IHtcbiAgICB4czogXCIobWF4LXdpZHRoOiAzMjBweClcIixcbiAgICBzbTogXCIobWF4LXdpZHRoOiA3MjBweClcIixcbiAgICBtZDogXCIobWF4LXdpZHRoOiAxMDI0cHgpXCIsXG4gICAgbGc6IFwiKG1pbi13aWR0aDogMTIwMHB4KVwiLFxuICAgIG9yOiBcIihvcmllbnRhdGlvbjogcG9ydHJhaXQpXCIsIC8vIHdlIGNhbiBjaGVjayBvcmllbnRhdGlvbiBhbHNvXG59O1xuXG5mdW5jdGlvbiBNeUFwcCh7IENvbXBvbmVudCwgcGFnZVByb3BzIH0pIHtcbiAgICByZXR1cm4gKFxuICAgICAgICA8QW5pbWF0ZVByZXNlbmNlIGV4aXRCZWZvcmVFbnRlcj5cbiAgICAgICAgICAgIDxBbmltYXRlU2hhcmVkTGF5b3V0PlxuICAgICAgICAgICAgICAgIDxHbG9iYWxQcm92aWRlcj5cbiAgICAgICAgICAgICAgICAgICAgPEJyZWFrcG9pbnRQcm92aWRlciBxdWVyaWVzPXtxdWVyaWVzfT5cbiAgICAgICAgICAgICAgICAgICAgICAgIDxDb21wb25lbnQgey4uLnBhZ2VQcm9wc30gLz5cbiAgICAgICAgICAgICAgICAgICAgPC9CcmVha3BvaW50UHJvdmlkZXI+XG4gICAgICAgICAgICAgICAgPC9HbG9iYWxQcm92aWRlcj5cbiAgICAgICAgICAgIDwvQW5pbWF0ZVNoYXJlZExheW91dD5cbiAgICAgICAgPC9BbmltYXRlUHJlc2VuY2U+XG4gICAgKTtcbn1cblxuZXhwb3J0IGRlZmF1bHQgTXlBcHA7XG4iXSwibmFtZXMiOlsiQnJlYWtwb2ludFByb3ZpZGVyIiwiQW5pbWF0ZVByZXNlbmNlIiwiQW5pbWF0ZVNoYXJlZExheW91dCIsIkdsb2JhbFByb3ZpZGVyIiwiY29uZmlnIiwiYXV0b0FkZENzcyIsInF1ZXJpZXMiLCJ4cyIsInNtIiwibWQiLCJsZyIsIm9yIiwiTXlBcHAiLCJDb21wb25lbnQiLCJwYWdlUHJvcHMiXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///./pages/_app.js\n");
+
+/***/ }),
+
+/***/ "./styles/globals.css":
+/*!****************************!*\
+  !*** ./styles/globals.css ***!
+  \****************************/
+/***/ (() => {
+
+
+
+/***/ }),
+
+/***/ "@fortawesome/fontawesome-svg-core":
+/*!****************************************************!*\
+  !*** external "@fortawesome/fontawesome-svg-core" ***!
+  \****************************************************/
 /***/ ((module) => {
 
+"use strict";
+module.exports = require("@fortawesome/fontawesome-svg-core");
+
+/***/ }),
+
+/***/ "framer-motion":
+/*!********************************!*\
+  !*** external "framer-motion" ***!
+  \********************************/
+/***/ ((module) => {
+
+"use strict";
 module.exports = require("framer-motion");
 
 /***/ }),
 
-/***/ 9297:
+/***/ "react":
+/*!************************!*\
+  !*** external "react" ***!
+  \************************/
 /***/ ((module) => {
 
+"use strict";
 module.exports = require("react");
 
 /***/ }),
 
-/***/ 5282:
+/***/ "react/jsx-dev-runtime":
+/*!****************************************!*\
+  !*** external "react/jsx-dev-runtime" ***!
+  \****************************************/
 /***/ ((module) => {
 
-module.exports = require("react/jsx-runtime");
+"use strict";
+module.exports = require("react/jsx-dev-runtime");
 
 /***/ })
 
@@ -100,7 +106,7 @@ module.exports = require("react/jsx-runtime");
 var __webpack_require__ = require("../webpack-runtime.js");
 __webpack_require__.C(exports);
 var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-var __webpack_exports__ = __webpack_require__.X(0, [822], () => (__webpack_exec__(8626)));
+var __webpack_exports__ = (__webpack_exec__("./pages/_app.js"));
 module.exports = __webpack_exports__;
 
 })();

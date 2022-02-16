@@ -20,7 +20,9 @@ export const HeaderNav = styled(motion.div)`
     top: 72px;
     right: 0;
     left: 0;
-    z-index: 999;
+    * {
+        z-index: 100;
+    }
 `;
 
 export const Logo = styled.div`
@@ -54,24 +56,17 @@ export const Logo = styled.div`
 `;
 
 export const Menu = styled.div`
-    button {
-        transform-origin: center;
-        border: none;
-        padding: 20px;
-        background: none;
-        outline: none;
-        span {
-            width: 36px;
-            height: 8px;
-            display: block;
-            background: ${(props) => props.theme.text};
-            margin: ${(props) => !props.open && "8px"};
+    .hamburger-react {
+        color: ${(props) =>
+            props.invert ? props.theme.inv_text : props.theme.text};
+        * {
+            mix-blend-mode: difference;
+            // color: #fff;
+            // background: ${(props) => props.theme.background} !important;
         }
-        .first {
-            transform: translate(-8px, 4px) rotateZ(-45deg);
-        }
-        .second {
-            transform: translate(-8px, -4px) rotateZ(45deg);
-        }
+        mix-blend-mode: color-dodge;
+        // background: ${(props) => props.theme.background} !important;
+        font-weight: 700;
+        // color: #fff;
     }
 `;

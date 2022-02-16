@@ -1,22 +1,21 @@
 import Layout from "../components/layout";
 //ANIME IMPORTS';
 import anime from "animejs";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { getAllHomeProjects, getAllProjects } from "../lib/projectsLib";
-
-import { projectStorage } from "../firebase/fire-config";
-import { ref, getDownloadURL } from "firebase/storage";
 
 import Link from "next/link";
 
 import { ContentBox, TitleBanner } from "../styles/indexStyles";
 
-import { useGlobalDispatchContext, useGlobalStateContext } from "../context/globalContext";
+import {
+    useGlobalDispatchContext,
+    useGlobalStateContext,
+} from "../context/globalContext";
 
 export async function getStaticProps() {
     let projects = await getAllHomeProjects();
     let projects2 = await getAllProjects();
-    projects = Shuffle(projects);
     return {
         props: { projects, projects2 },
     };
@@ -25,20 +24,14 @@ export async function getStaticProps() {
 const Shuffle = (array) => {
     let currentIndex = array.length,
         randomIndex;
-
-    // While there remain elements to shuffle...
     while (currentIndex != 0) {
-        // Pick a remaining element...
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex--;
-
-        // And swap it with the current element.
         [array[currentIndex], array[randomIndex]] = [
             array[randomIndex],
             array[currentIndex],
         ];
     }
-
     return array;
 };
 
@@ -53,6 +46,8 @@ const sizes = {
 };
 
 export default function Home({ projects, projects2 }) {
+    projects = Shuffle(projects);
+    const { cursorStyles, currentTheme } = useGlobalStateContext();
     const dispatch = useGlobalDispatchContext();
     const RandomizeParams = (index, size) => {
         if (index === 0) {
@@ -163,14 +158,12 @@ export default function Home({ projects, projects2 }) {
         //     setspawnState(newArr);
         //     ChangeContent();
         // });
+        //get theme if in browser
     }, []);
 
     useEffect(() => {
         ChangeContent();
     }, [spawnState]);
-
-    const { cursorStyles, currentTheme } = useGlobalStateContext();
-
 
     const onCursor = (cursorType) => {
         cursorType = (cursorStyles.includes(cursorType) && cursorType) || false;

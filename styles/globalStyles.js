@@ -33,6 +33,16 @@ export const Flex = styled.div`
     color: ${(props) => props.theme.inv_text};
 
     ${(props) =>
+        props.test &&
+        css`
+            border: 2px solid yellow;
+        `};
+    ${(props) =>
+        props.grow &&
+        css`
+            flex-grow: 1;
+        `};
+    ${(props) =>
         props.row &&
         css`
             flex-direction: column;
@@ -74,48 +84,52 @@ export const Flex = styled.div`
         css`
             width: ${props.width};
         `};
-        ${(props) =>
-            props.gap &&
-            css`
-                gap: ${props.gap}px;
-            `};
+    ${(props) =>
+        props.gap &&
+        css`
+            gap: ${props.gap}px;
+        `};
 `;
 
 export const Cursor = styled.div`
     position: fixed;
     top: 400px;
     left: 400px;
-    width: 32px;
-    height: 32px;
+    width: 16px;
+    height: 16px;
     background: ${(props) => props.theme.main};
     border-radius: 100%;
     transform: translate(-50%, -50%);
-    transition: all 0.2s ease-out;
+    transition: all 0.1s ease-out;
     transition-property: width, height, border;
     will-change: width, height, transform, border;
     pointer-events: none;
-    z-index: 999;
+    z-index: 101;
     &.pointer {
+        width: 32px;
+        height: 32px;
         border: 4px solid ${(props) => props.theme.main} !important;
     }
     &.nav-open,
     &.pointer {
         border: 4px solid ${(props) => props.theme.inv_background} !important;
     }
+    &.pointertheme {
+        border: 4px solid ${(props) => props.theme.main} !important;
+    }
     &.pointerinv {
         border: 4px solid ${(props) => props.theme.inv_main} !important;
     }
     &.hovered {
         background: transparent !important;
-        // width: 56px;
-        // height: 56px;
-        border: 4px solid ${(props) => props.theme.main};
+        width: 56px;
+        height: 56px;
         border: 4px solid ${(props) => props.theme.main};
     }
     &.locked {
         background: transparent !important;
-        width: 56px;
-        height: 56px;
+        // width: 56px;
+        // height: 56px;
         width: ${(props) => props.theme.width} !important;
         height: ${(props) => props.theme.height} !important;
         border: 4px solid ${(props) => props.theme.text} !important;
@@ -123,7 +137,7 @@ export const Cursor = styled.div`
         left: ${(props) => props.theme.left} !important;
     }
     &.wrapped {
-    transition: all 0.1s ease-out;
+        transition: all 0.1s ease-out;
         background: transparent !important;
         width: ${(props) => props.theme.width} !important;
         height: ${(props) => props.theme.height} !important;
@@ -136,8 +150,10 @@ export const Cursor = styled.div`
     &.nav-open {
         background: ${(props) => props.theme.text};
     }
-    &.nav-open,
-    &.locked {
-        border: 4px solid ${(props) => props.theme.text} !important;
+    &.nav-open {
+        &.locked,
+        &.wrapped {
+            border: 4px solid ${(props) => props.theme.inv_text} !important;
+        }
     }
 `;

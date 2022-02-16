@@ -1,5 +1,4 @@
-import { useState } from "react";
-import Navbar from "./navbar";
+import { useState, useEffect } from "react";
 import Navigation from "./navigation";
 import Header from "./header";
 import CCursor from "./CCursor";
@@ -75,13 +74,45 @@ export default function Layout({ children, projects }) {
         height: `${hamburgerPosition.height}px`,
     };
 
+    const ferhatTheme = {
+        background: "#825f45",
+        text: "#797d62",
+        main: "#c8691c",
+        inv_background: "#797d62",
+        inv_text: "#e4ceaf",
+        inv_main: "#825f45",
+        left: `${hamburgerPosition.x}px`,
+        top: `${hamburgerPosition.y}px`,
+        width: `${hamburgerPosition.width}px`,
+        height: `${hamburgerPosition.height}px`,
+    };
+
+    const themes = [darkTheme, lightTheme, ferhatTheme];
+    const themeName = ["dark", "light", "ferhat"];
+
     const onCursor = (cursorType) => {
         cursorType = (cursorStyles.includes(cursorType) && cursorType) || false;
         dispatch({ type: "CURSOR_TYPE", cursorType: cursorType });
     };
 
+    useEffect(() => {
+        let thisCurrentTheme =
+            window &&
+            (window.localStorage.getItem("theme") == null
+                ? "dark"
+                : window.localStorage.getItem("theme"));
+        if (thisCurrentTheme !== currentTheme) {
+            dispatch({ type: "TOGGLE_THEME", theme: `${thisCurrentTheme}` });
+        }
+    }, []);
+
     return (
-        <ThemeProvider theme={currentTheme === "dark" ? darkTheme : lightTheme}>
+        <ThemeProvider
+            theme={() => {
+                let index = themeName.findIndex((el) => el === currentTheme);
+                return themes[index];
+            }}
+        >
             <GlobalStyle />
             <Head>
                 <title>Ogo Jonathan</title>

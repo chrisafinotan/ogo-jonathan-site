@@ -48,6 +48,11 @@ import {
     useGlobalStateContext,
 } from "../../context/globalContext";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import the icons you need
+import { faPlay, faStop } from "@fortawesome/free-solid-svg-icons";
+import { ref } from "firebase/storage";
+
 SwiperCore.use([Navigation, Pagination, Mousewheel, Autoplay, FreeMode]);
 
 export async function getStaticPaths() {
@@ -86,12 +91,16 @@ export default function work({
     projectData,
     projectPictures,
 }) {
+    const dispatch = useGlobalDispatchContext();
+    const { cursorStyles } = useGlobalStateContext();
     const breakpoints = useBreakpoint();
     const elRef = useRef();
+    const swiperRef = useRef(null);
     const [nextProj, showNext] = useState(false);
     const [prevProj, showPrev] = useState(false);
     const [linkIndex, setLinkIndex] = useState(1);
     const [display, setDisplay] = useState(true);
+    const [play, setplay] = useState(false);
 
     const getProjectIndex = () => {
         let index = projects.findIndex((el) => el.id === projectID);
@@ -118,14 +127,22 @@ export default function work({
             behavior: "smooth",
         });
     }, []);
-    const dispatch = useGlobalDispatchContext();
-    const { cursorStyles, currentTheme } = useGlobalStateContext();
+
+    const handlePlayPause = () => {
+        setplay(!play);
+        if (swiperRef && swiperRef.current) {
+            console.log(swiperRef.current.swiper.autoplay);
+            play
+                ? swiperRef.current.swiper.autoplay.stop()
+                : swiperRef.current.swiper.autoplay.start();
+        }
+    };
 
     const onCursor = (cursorType) => {
         cursorType = (cursorStyles.includes(cursorType) && cursorType) || false;
         dispatch({ type: "CURSOR_TYPE", cursorType: cursorType });
     };
-
+    
     return (
         <Layout projects={projects}>
             {display ? (
@@ -138,28 +155,50 @@ export default function work({
                             animate="show"
                             exit="exit"
                         >
-                            <StyledSwiperWrapper spaceBetween>
-                                <StyledSwiperPagination className="swiper-mypagination"></StyledSwiperPagination>
-                                <StyledSwiperNavBtn
-                                    left
-                                    className="prevBtn"
-                                    onMouseEnter={() => onCursor("pointer")}
-                                    onMouseLeave={onCursor}
-                                >
-                                    <div className="arrow one"></div>
-                                    <div className="arrow two"></div>
-                                    <div className="arrow three"></div>
-                                </StyledSwiperNavBtn>
-                                <StyledSwiperNavBtn
-                                    right
-                                    className="nextBtn"
-                                    onMouseEnter={() => onCursor("pointer")}
-                                    onMouseLeave={onCursor}
-                                >
-                                    <div className="arrow one"></div>
-                                    <div className="arrow two"></div>
-                                    <div className="arrow three"></div>
-                                </StyledSwiperNavBtn>
+                            <StyledSwiperWrapper>
+                                <Flex>
+                                    {!play ? (
+                                        <FontAwesomeIcon
+                                            icon={faPlay}
+                                            onMouseEnter={() =>
+                                                onCursor("pointertheme")
+                                            }
+                                            onMouseLeave={onCursor}
+                                            onClick={() => handlePlayPause()}
+                                        />
+                                    ) : (
+                                        <FontAwesomeIcon
+                                            icon={faStop}
+                                            onMouseEnter={() =>
+                                                onCursor("pointertheme")
+                                            }
+                                            onMouseLeave={onCursor}
+                                            onClick={() => handlePlayPause()}
+                                        />
+                                    )}
+                                    {/* <FontAwesomeIcon icon={faPause} /> */}
+                                </Flex>
+                                <Flex grow>
+                                    <StyledSwiperPagination className="swiper-mypagination"></StyledSwiperPagination>
+                                </Flex>
+                                <Flex width={"20%"} flexCenter>
+                                    <StyledSwiperNavBtn
+                                        left
+                                        className="prevBtn"
+                                        onMouseEnter={() =>
+                                            onCursor("pointertheme")
+                                        }
+                                        onMouseLeave={onCursor}
+                                    ></StyledSwiperNavBtn>
+                                    <StyledSwiperNavBtn
+                                        right
+                                        className="nextBtn"
+                                        onMouseEnter={() =>
+                                            onCursor("pointertheme")
+                                        }
+                                        onMouseLeave={onCursor}
+                                    ></StyledSwiperNavBtn>
+                                </Flex>
                             </StyledSwiperWrapper>
 
                             <Swiper
@@ -192,10 +231,15 @@ export default function work({
                                     releaseOnEdges: true,
                                 }}
                                 slidesPerView={"auto"}
-                                // autoplay={{
-                                //     delay: 2000,
-                                //     disableOnInteraction: true,
-                                // }}
+                                ref={swiperRef}
+                                autoplay={
+                                    play === true
+                                        ? {
+                                              delay: 2000,
+                                              disableOnInteraction: false,
+                                          }
+                                        : false
+                                }
                             >
                                 <SwiperSlide
                                     key={`desc_slide_lrg`}

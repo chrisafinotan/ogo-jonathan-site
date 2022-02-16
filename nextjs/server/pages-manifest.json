@@ -1,11 +1,7 @@
 {
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
-  "/about": "pages/about.html",
-  "/contact": "pages/contact.html",
-  "/": "pages/index.js",
-  "/project/[id]": "pages/project/[id].js",
-  "/projects": "pages/projects.js",
   "/_error": "pages/_error.js",
-  "/404": "pages/404.html"
+  "/next/dist/pages/_error": "pages/next/dist/pages/_error.js",
+  "/project/[id]": "pages/project/[id].js"
 }

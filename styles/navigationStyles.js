@@ -10,7 +10,7 @@ export const Nav = styled(motion.div)`
     display: block;
     background: ${(props) => props.theme.main};
     color: #000;
-    z-index: 100;
+    z-index: 99;
     overflow: scroll;
     ::-webkit-scrollbar {
         display: none;
@@ -58,11 +58,14 @@ export const NavList = styled.div`
     display: flex;
     align-items: center;
     padding: 10% 0;
+    z-index: 3;
+
     ul {
         // overflow: scroll;
         height: 100%;
         margin: 0;
         padding: 2rem 0;
+        z-index: 3;
 
         li {
             list-style: none;
@@ -73,11 +76,16 @@ export const NavList = styled.div`
             height: min-content;
             line-height: 96px;
             overflow: hidden;
+            z-index: 3;
             .link {
                 color: ${(props) => props.theme.background};
                 position: relative;
                 display: flex;
                 align-items: center;
+                &:hover {
+                    z-index: 6;
+                }
+                z-index: 3;
                 .arrow {
                     display: flex;
                     align-items: center;
@@ -103,7 +111,7 @@ export const NavFooter = styled.div`
     bottom: 0;
     left: 0;
     width: 100%;
-    z-index: 500;
+    z-index: 99;
     // background: ${(props) => props.theme.background};
     // background: ${(props) => props.theme.inv_main};
     height: fit-content;
@@ -122,16 +130,14 @@ export const NavContent = styled.div`
     top: 0;
     bottom: 0;
     // left: 0;
-    z-index: -1;
     height: 80%;
     width: 80%;
-    background: #000;
+    background: none;
     transform: translate(20%, 15%);
 
     .reveal {
         width: 100%;
         background: ${(props) => props.theme.main};
-        // background: #0f0;
         position: absolute;
         border: none;
         top: 0;
@@ -140,21 +146,22 @@ export const NavContent = styled.div`
     }
 
     .video {
-        background: ${(props) => props.theme.main};
+        // background: ${(props) => props.theme.main};
+        background: transparent;
         position: absolute;
         height: 100%;
         width: 100%;
         margin: 0;
-        z-index: -1;
         video {
-            background: ${(props) => props.theme.main};
             height: 100%;
             width: 100%;
         }
     }
 
     .image {
-        background: ${(props) => props.theme.main};
+        // background: ${(props) => props.theme.main};
+        background: transparent;
+        // position: absolute;
         height: 100%;
         width: 100%;
         img {

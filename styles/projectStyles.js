@@ -7,97 +7,73 @@ export const StyledSwiperImg = styled(motion.img)`
     /* aspect-ratio: 16/9; */
     height: 100%;
     object-fit: contain;
-    margin: 1em;
+    // margin: 1em;
 `;
 
 export const StyledSwiperWrapper = styled.div`
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     position: absolute;
     width: 50%;
     transform: translate(50%, 50%);
     bottom: 10vh;
     height: fit-content;
     z-index: 1000;
+    gap: 10px;
+    svg {
+        width: 50px;
+        height: 50px;
+        path {
+            fill: ${(props) => props.theme.text};
+        }
+    }
 `;
 
 export const StyledSwiperPagination = styled.div`
-    bottom: 0 !important;
-    top: calc(100% - 5px) !important;
     height: 5px !important;
-    width: 50% !important;
-    transform: translateX(50%);
+    // flex-grow: 1;
 `;
 
 export const StyledSwiperNavBtn = styled.div`
-    display: block;
-    width: 4em;
-    height: 4em;
-    position: absolute;
-    // top: 50%;
-    ${(props) =>
-        props.left &&
-        css`
-            transform: rotateZ(90deg);
-            // border: 3px solid blue;
-            left: 10%;
-        `};
+    top: 50%;
+    width: 25px;
+    height: 25px;
+    background: transparent;
+    border-top: 6px solid ${(props) => props.theme.text};
+    border-right: 6px solid ${(props) => props.theme.text};
+    box-shadow: 0 0 0 lightgray;
+    transition: all 200ms ease;
+    &.swiper-button-disabled {
+        // display: none;
+        opacity: 0;
+        pointer-events: none;
+    }
     ${(props) =>
         props.right &&
         css`
-            transform: rotateZ(-90deg);
-            // border: 3px solid red;
-            left: 90%;
+            transform: rotate(45deg);
         `};
+
+    ${(props) =>
+        props.left &&
+        css`
+            transform: rotate(-135deg);
+        `};
+
     &:hover {
-        cursor: pointer;
-        .arrow {
-            top: 50%;
-            &:before {
-                transform: translate(-50%, -50%) rotateZ(-30deg);
-            }
-            &:after {
-                transform: translate(-50%, -50%) rotateZ(30deg);
-            }
-        }
+        border-color: ${(props) => props.theme.main};
+        box-shadow: 3px -3px 0 ${(props) => props.theme.text};
     }
-    &.swiper-button-disabled {
-        display: none;
-    }
-    .arrow {
+
+    &:before {
+        content: "";
         position: absolute;
+        top: 50%;
         left: 50%;
-        transition: all 0.4s ease;
-        &:before,
-        &:after {
-            transition: all 0.4s ease;
-            content: "";
-            display: block;
-            position: absolute;
-            transform-origin: bottom right;
-            background: ${(props) => props.theme.text};
-            width: 4px;
-            height: 50px;
-            border-radius: 10px;
-            transform: translate(-50%, -50%) rotateZ(-45deg);
-        }
-        &:after {
-            transform-origin: bottom left;
-            transform: translate(-50%, -50%) rotateZ(45deg);
-        }
-    }
-    .one {
-        opacity: 0.3;
-        top: 20%;
-    }
-    .two {
-        opacity: 0.6;
-        top: 40%;
-    }
-    .three {
-        opacity: 0.9;
-        top: 60%;
+        transform: translate(-40%, -60%) rotate(45deg);
+        width: 200%;
+        height: 200%;
     }
 `;
 

@@ -1,15 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import Link from "next/link";
-// Styled Components
 import { Container, Flex } from "../styles/globalStyles";
 import { HeaderNav, Logo, Menu } from "../styles/headerStyles";
-
-//context
+import { Squeeze as Hamburger } from "hamburger-react";
 import {
     useGlobalDispatchContext,
     useGlobalStateContext,
 } from "../context/globalContext";
-//Custom Hook
 import useElementPosition from "../hooks/useElementPosition";
 
 const Header = ({
@@ -21,30 +18,32 @@ const Header = ({
     const dispatch = useGlobalDispatchContext();
     const { currentTheme } = useGlobalStateContext();
     const hamburger = useRef(null);
-    // const position = useElementPosition(hamburger);
 
+    // const themes = [darkTheme, lightTheme, ferhatTheme];
+    const themeName = ["dark", "light", "ferhat"];
     const toggleTheme = () => {
-        if (currentTheme === "dark") {
-            dispatch({ type: "TOGGLE_THEME", theme: "light" });
-        } else {
-            dispatch({ type: "TOGGLE_THEME", theme: "dark" });
+        let index = themeName.findIndex((el) => el === currentTheme);
+        let newindex = 1;
+        if (index > 0 && index < themeName.length) {
+            newindex = (index + 1) % themeName.length;
         }
+        // if (currentTheme !== "dark") {
+            dispatch({ type: "TOGGLE_THEME", theme: themeName[newindex] });
+        // } else {
+            // dispatch({ type: "TOGGLE_THEME", theme: "dark" });
+        // }
     };
 
     const menuHover = (element) => {
-        // console.log("changing burger pos", position);
-        console.log("event source", element);
-
         onCursor("locked");
         let eventposition = useElementPosition(element);
-        console.log(eventposition);
-        //
-        // setHamburgerPosition({ x: position.x, y: position.y + 72 });
         setHamburgerPosition(eventposition);
     };
 
     useEffect(() => {
-        window.localStorage.setItem("theme", currentTheme);
+        window &&
+            window.localStorage.getItem("theme") == null &&
+            window.localStorage.setItem("theme", currentTheme);
     }, [currentTheme]);
 
     useEffect(() => {
@@ -91,15 +90,9 @@ const Header = ({
                         ref={hamburger}
                         onMouseLeave={onCursor}
                         open={toggleMenu}
+                        invert={toggleMenu && true}
                     >
-                        <button>
-                            <span
-                                className={toggleMenu ? "first" : undefined}
-                            ></span>
-                            <span
-                                className={toggleMenu ? "second" : undefined}
-                            ></span>
-                        </button>
+                        <Hamburger toggled={toggleMenu} />
                     </Menu>
                 </Flex>
             </Container>

@@ -11,10 +11,11 @@ export const Nav = styled(motion.div)`
     background: ${(props) => props.theme.main};
     color: #000;
     z-index: 99;
-    overflow: scroll;
-    ::-webkit-scrollbar {
-        display: none;
-    }
+    // overflow: scroll;
+    // ::-webkit-scrollbar {
+    //     display: none;
+    // }
+    // border: 3px solid red;
 `;
 
 export const NavHeader = styled.div`
@@ -53,30 +54,35 @@ export const CloseNav = styled.div`
 `;
 
 export const NavList = styled.div`
-    height: 100%;
+    top: 0;
+    position: relative;
+    height: 70vh;
     width: 100%;
     display: flex;
     align-items: center;
-    padding: 10% 0;
-    z-index: 3;
-
+    // border: 3px solid black;
     ul {
-        // overflow: scroll;
+        // border: 3px solid yellow;
+        overflow: scroll;
+        ::-webkit-scrollbar {
+            display: none;
+        }
         height: 100%;
+        width: 100%;
         margin: 0;
-        padding: 2rem 0;
-        z-index: 3;
-
+        // padding: 2rem 0;
         li {
             list-style: none;
+            margin: 0.5em 0;
+            // border: 3px solid green;
             font-size: 3rem;
             text-transform: uppercase;
             font-weight: 900;
             height: 96px;
             height: min-content;
-            line-height: 96px;
+            // line-height: 2em;
             overflow: hidden;
-            z-index: 3;
+            width: fit-content;
             .link {
                 color: ${(props) => props.theme.background};
                 position: relative;
@@ -84,8 +90,24 @@ export const NavList = styled.div`
                 align-items: center;
                 &:hover {
                     z-index: 6;
+                    transform: translate(40%, 0);
                 }
-                z-index: 3;
+                transition: all 200ms ease;
+                &:before {
+                    content: "";
+                    position: absolute;
+                    bottom: 0;
+                    border: 2px solid ${(props) => props.theme.inv_main};
+                    width: 100px;
+                }
+                &:hover:after {
+                    content: "";
+                    position: absolute;
+                    bottom: 0;
+                    border: 2px solid ${(props) => props.theme.inv_main};
+                    width: 100%;
+                }
+
                 .arrow {
                     display: flex;
                     align-items: center;
@@ -115,7 +137,7 @@ export const NavFooter = styled.div`
     // background: ${(props) => props.theme.background};
     // background: ${(props) => props.theme.inv_main};
     height: fit-content;
-    padding: 6px 0px;
+    padding: 1rem 0px;
     p {
         color: ${(props) => props.theme.background};
     }
@@ -125,14 +147,16 @@ export const NavFooter = styled.div`
 `;
 
 export const NavContent = styled.div`
-    position: fixed;
+    position: absolute;
+    z-index: -1;
     display: block;
     top: 0;
-    bottom: 0;
+    // bottom: 0;
     // left: 0;
     height: 80%;
     width: 80%;
     background: none;
+    // border: 3px solid purple;
     transform: translate(20%, 15%);
 
     .reveal {
@@ -174,26 +198,31 @@ export const NavContent = styled.div`
 `;
 
 export const NavAbout = styled.div`
+    position: relative;
     display: flex;
     flex-direction: row;
     gap: 1em;
-    padding: 1em;
-    border: none;
-    height: 100%;
+    // padding: 5em;
+    // border: 3px solid yellow;
+    height: 70vh;
     width: 100%;
+    // height: fit-content;
+
     align-items: center;
     justify-content: center;
     .aboutImageWrapper {
         max-width: 50vw;
         width: 100%;
+        height: 50;
         position: relative;
         .aboutImage {
-            object-fit: cover;
+            object-fit: contain;
             width: 100%;
             height: 100%;
         }
         @media (max-width: 820px) {
             width: 100%;
+            // height: 100%;
             height: 80vh;
             max-width: none;
         }

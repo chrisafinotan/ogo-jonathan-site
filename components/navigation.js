@@ -1,10 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import useElementPosition from "../hooks/useElementPosition";
-import {
-    useGlobalDispatchContext,
-    useGlobalStateContext,
-} from "../context/globalContext";
 //Styled Components
 import { Container, Flex } from "../styles/globalStyles";
 import { Logo } from "../styles/headerStyles";
@@ -185,18 +181,22 @@ const Navigation = ({
         setHamburgerPosition(eventposition);
     };
 
-    const RefListenAdd = (ref, func = objectLockHover, type = "mouseenter") => {
-        if (ref && ref.current) {
+    const RefListenAdd = (
+        ref = window,
+        func = objectLockHover,
+        type = "mouseenter"
+    ) => {
+        if ((ref && ref.current) || ref === window) {
             ref.current.addEventListener(type, () => func(ref));
         }
     };
 
     const RefListenRemove = (
-        ref,
+        ref = window,
         func = objectLockHover,
         type = "mouseenter"
     ) => {
-        if (ref && ref.current) {
+        if ((ref && ref.current) || ref == window) {
             ref.current.removeEventListener(type, () => func(ref));
         }
     };
@@ -230,71 +230,79 @@ const Navigation = ({
                             ease: [0.6, 0.05, -0.01, 0.9],
                         }}
                     >
-                        <Container>
+                        <Container
+                            padding={"5em"}
+                            fluid
+                            height={"80vh"}
+                            // width={"80vw"}
+                        >
+                            {/* <Flex row> */}
                             {menuView.view}
+                            {/* </Flex> */}
+                        </Container>
 
-                            <NavFooter>
-                                <Flex spaceBetween width={`100%`}>
-                                    <Flex
-                                        spaceBetween
-                                        noHeight
-                                        width={`20%`}
-                                        row={breakpoints.md}
-                                    >
-                                        {views.map((el, index) => (
-                                            <h2
-                                                key={`view_${index}`}
-                                                to="/"
-                                                onClick={() => setMenuView(el)}
-                                                ref={el.ref}
-                                                // onMouseEnter={() =>
-                                                //     onCursor("pointer")
-                                                // }
-                                                onMouseLeave={onCursor}
-                                            >
-                                                {el.name}
-                                            </h2>
-                                        ))}
-                                    </Flex>
-                                    <Flex
-                                        spaceBetween
-                                        // width={`40%`}
-                                        row={breakpoints.md}
-                                        gap={5}
-                                    >
-                                        <FooterContent
-                                            ref={phoneref}
+                        <NavFooter>
+                            <Flex spaceBetween width={`100%`}>
+                                <Flex
+                                    spaceBetween
+                                    noHeight
+                                    width={`20%`}
+                                    row={breakpoints.md}
+                                >
+                                    {views.map((el, index) => (
+                                        <h2
+                                            key={`view_${index}`}
+                                            to="/"
+                                            onClick={() => setMenuView(el)}
+                                            ref={el.ref}
+                                            // onMouseEnter={() =>
+                                            //     onCursor("pointer")
+                                            // }
                                             onMouseLeave={onCursor}
                                         >
-                                            <Mailto
-                                                email="iafinotan@yahoo.com"
-                                                subject="Hello & Welcome"
-                                                body="Hello world!"
-                                            >
-                                                iafinotan@yahoo.com
-                                            </Mailto>
-                                        </FooterContent>
-                                        <FooterContent>
-                                            <span>000.000.000</span>
-                                        </FooterContent>
-                                        <FooterSocial>
-                                            <a
-                                                ref={instagramref}
-                                                onMouseLeave={onCursor}
-                                                href="/"
-                                                target="_blank"
-                                            >
-                                                <Instagram />
-                                            </a>
-                                            <a
-                                                ref={facebookref}
-                                                onMouseLeave={onCursor}
-                                                href="/"
-                                                target="_blank"
-                                            >
-                                                <Facebook />
-                                            </a>
-                                            {/* <a
+                                            {el.name}
+                                        </h2>
+                                    ))}
+                                </Flex>
+                                <Flex
+                                    spaceBetween
+                                    // width={`40%`}
+                                    row={breakpoints.md}
+                                    gap={5}
+                                >
+                                    <FooterContent
+                                        ref={phoneref}
+                                        onMouseLeave={onCursor}
+                                    >
+                                        <Mailto
+                                            email="iafinotan@yahoo.com"
+                                            subject="Hello & Welcome"
+                                            body="Hello world!"
+                                        >
+                                            iafinotan@yahoo.com
+                                        </Mailto>
+                                    </FooterContent>
+                                    <FooterContent>
+                                        <span>000.000.000</span>
+                                    </FooterContent>
+                                    <FooterSocial>
+                                        <a
+                                            ref={instagramref}
+                                            onMouseLeave={onCursor}
+                                            href="/"
+                                            target="_blank"
+                                        >
+                                            <Instagram />
+                                        </a>
+                                        <a
+                                            ref={facebookref}
+                                            onMouseLeave={onCursor}
+                                            href="/"
+                                            target="_blank"
+                                        >
+                                            <Facebook />
+                                        </a>
+                                        {/* <a
                                                 onMouseEnter={() =>
                                                     onCursor("locked")
                                                 }
@@ -304,11 +312,10 @@ const Navigation = ({
                                             >
                                                 <Vimeo />
                                             </a> */}
-                                        </FooterSocial>
-                                    </Flex>
+                                    </FooterSocial>
                                 </Flex>
-                            </NavFooter>
-                        </Container>
+                            </Flex>
+                        </NavFooter>
 
                         <NavContent>
                             <motion.div

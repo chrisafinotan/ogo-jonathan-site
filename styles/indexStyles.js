@@ -63,7 +63,9 @@ export const ContentBox = styled.div`
         position: absolute;
         width: 100%;
         height: 100%;
+        
         img {
+            // z-index: 9;
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -125,7 +127,6 @@ export const TitleBanner = styled(motion.div)`
     align-items: center;
     justify-content: center;
     height: 100vh;
-    position: relative;
     pointer-events: none;
     .text {
         position: relative;

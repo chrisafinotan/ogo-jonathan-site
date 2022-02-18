@@ -1,4 +1,54 @@
-import styled, { css } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
+import { motion } from "framer-motion";
+
+const blink = keyframes`
+0% {
+    opacity: 1;
+    scale: 1;
+}
+50% {
+    opacity: .3;
+    scale: 2;
+}
+100% {
+    opacity: 1;
+    scale: 1;
+}
+`;
+
+const textShadow = keyframes`
+    0% {
+        // transform: translateY(0);
+        text-shadow: 0 0 0 var(--main-bg-red), 0 0 0 var(--main-bg-blue),
+            0 0 0 var(--main-bg-green), 0 0 0 var(--main-bg-orange);
+    }
+
+    20% {
+        // transform: translateY(-0.35em);
+        text-shadow: 0 0.125em 0 var(--main-bg-red), 0 0.25em 0 var(--main-bg-blue),
+            0 -0.125em 0 var(--main-bg-green), 0 -0.25em 0 var(--main-bg-orange);
+    }
+
+    40% {
+        // transform: translateY(0.25em);
+        text-shadow: 0 -0.0625em 0 var(--main-bg-red),
+            0 -0.125em 0 var(--main-bg-blue), 0 0.0625em 0 var(--main-bg-green),
+            0 0.125em 0 var(--main-bg-orange);
+    }
+
+    60% {
+        // transform: translateY(-0.125em);
+        text-shadow: 0 0.03125em 0 var(--main-bg-red),
+            0 0.0625em 0 var(--main-bg-blue), 0 -0.03125em 0 var(--main-bg-green),
+            0 -0.0625em 0 var(--main-bg-orange);
+    }
+
+    80% {
+        // transform: translateY(0);
+        text-shadow: 0 0 0 var(--main-bg-red), 0 0 0 var(--main-bg-blue),
+            0 0 0 var(--main-bg-green), 0 0 0 var(--main-bg-orange);
+    }
+`;
 
 export const Container = styled.div`
     flex-grow: 1;
@@ -21,9 +71,29 @@ export const Container = styled.div`
         css`
             padding: 0;
             margin: 0;
-            background: ${(props) => props.theme.background};
+            // background: ${(props) => props.theme.background};
             max-width: 100% !important;
         `}
+    ${(props) =>
+        props.padding &&
+        css`
+            padding: ${(props) => props.padding};
+        `}
+    ${(props) =>
+        props.margin &&
+        css`
+            margin: ${(props) => props.margin};
+        `}
+    ${(props) =>
+        props.width &&
+        css`
+            width: ${(props) => props.width} !important;
+        `}
+        ${(props) =>
+            props.height &&
+            css`
+                height: ${(props) => props.height};
+            `}
 `;
 
 export const Flex = styled.div`
@@ -46,8 +116,8 @@ export const Flex = styled.div`
         props.row &&
         css`
             flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
+            // justify-content: flex-start;
+            // align-items: center;
         `};
     ${(props) =>
         props.spaceBetween &&
@@ -156,4 +226,67 @@ export const Cursor = styled.div`
             border: 4px solid ${(props) => props.theme.inv_text} !important;
         }
     }
+`;
+
+export const LoadingBanner = styled(motion.div)`
+    // background: #000;
+    background: ${(props) => props.color};
+    z-index: 105;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    // pointer-events: none;
+    ${(props) =>
+        props.loading === "loading"
+            ? css`
+                  .row {
+                      // transform: translate(50%);
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      width: 100vw;
+                  }
+                  .text {
+                      //   position: relative;
+                      width: fit-content;
+                      font-size: 5em;
+                      text-transform: uppercase;
+                      text-align: center;
+                      letter-spacing: 40px;
+                      // margin-right:-40px;
+                      font-weight: 700;
+                      color: #fff;
+                      mix-blend-mode: difference;
+                      z-index: 8;
+                      overflow: hidden;
+                      white-space: nowrap;
+                      animation: ${textShadow} 1s ease-in-out infinite;
+                      line-height: 2;
+                  }
+                  span {
+                      // mix-blend-mode: revert;
+                      height: 2em;
+                      width: 2em;
+                      // z-index: 8;
+                      background: ${(props) => props.theme.main};
+                      margin: 0.2em;
+                      background: yellow;
+                      border-radius: 100%;
+                      //   position: relative;
+                      animation: ${blink} 3s linear infinite;
+                  }
+
+                  @media (prefers-reduced-motion: reduce) {
+                      * {
+                          animation: none !important;
+                          transition: none !important;
+                      }
+                  }
+              `
+            : css`
+                  display: none;
+              `}
 `;

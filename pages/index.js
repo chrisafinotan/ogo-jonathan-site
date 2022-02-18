@@ -1,17 +1,13 @@
-import Layout from "../components/layout";
-//ANIME IMPORTS';
-import anime from "animejs";
-import { useEffect, useState } from "react";
-import { getAllHomeProjects, getAllProjects } from "../lib/projectsLib";
-
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
-
-import { ContentBox, TitleBanner } from "../styles/indexStyles";
-
+import Layout from "../components/layout";
 import {
     useGlobalDispatchContext,
     useGlobalStateContext,
 } from "../context/globalContext";
+import { getAllHomeProjects, getAllProjects } from "../lib/projectsLib";
+import { ContentBox, TitleBanner } from "../styles/indexStyles";
+import { Container } from "../styles/globalStyles";
 
 export async function getStaticProps() {
     let projects = await getAllHomeProjects();
@@ -39,6 +35,7 @@ const minW = 20,
     maxW = 40,
     minH = 20,
     maxH = 30;
+
 const sizes = {
     small: [minW, minH, 4],
     medium: [30, 25, 3],
@@ -46,8 +43,8 @@ const sizes = {
 };
 
 export default function Home({ projects, projects2 }) {
-    projects = Shuffle(projects);
-    const { cursorStyles, currentTheme } = useGlobalStateContext();
+    const mainRef = useRef(null);
+    const { cursorStyles } = useGlobalStateContext();
     const dispatch = useGlobalDispatchContext();
     const RandomizeParams = (index, size) => {
         if (index === 0) {
@@ -77,12 +74,7 @@ export default function Home({ projects, projects2 }) {
 
         let top = GetRandomInt(range2[0], range2[1]);
         top -= height;
-        // if ((index+1) % 4 === 0) {
-        //     left = (100 - width) / 2;
-        //     top = (100 - height) / 2;
-        // }
         let obj = { left: left, top: top, height: height, width: width };
-        // console.log("random", obj, size, sizes[`${size}`], index);
         return obj;
     };
 
@@ -92,7 +84,7 @@ export default function Home({ projects, projects2 }) {
 
     const [spawnState, setspawnState] = useState(
         Array.from(Array(projects.length)).map((e, i) => {
-            return true;
+            // return true;
             return i < 6 ? true : false;
         })
     );
@@ -101,12 +93,9 @@ export default function Home({ projects, projects2 }) {
             return RandomizeParams(i, projects[i].size);
         })
     );
-    const [display, setdisplay] = useState(<div>LOADING</div>);
+    const [display, setdisplay] = useState(null);
 
     const SpawnContent = (el, index) => {
-        // console.log("hi", el.name, el);
-        // console.log("sizes", sizes[`${el.size}`], sizes);
-
         return (
             <ContentBox
                 key={`${el}_${index}`}
@@ -114,7 +103,6 @@ export default function Home({ projects, projects2 }) {
                 left={randVals[index].left}
                 height={randVals[index].height}
                 width={randVals[index].width}
-                // width={randVals[index].width}
                 hide={!spawnState[index]}
                 zindex={index === 0 ? 0 : sizes[`${el.size}`][2]}
                 onMouseEnter={() => onCursor("hovered")}
@@ -137,29 +125,55 @@ export default function Home({ projects, projects2 }) {
     };
 
     const ChangeContent = () => {
+        projects = Shuffle(projects);
+        console.log("shuflled");
         let arr = projects.map((el, index) => {
             return SpawnContent(el, index);
         });
         setdisplay(arr);
     };
 
-    const delay = (t) => new Promise((resolve) => setTimeout(resolve, t));
+    const ReSpawnContent = () => {
+        setrandVals(
+            Array.from(Array(projects.length)).map((e, i) => {
+                return RandomizeParams(i, projects[i].size);
+            })
+        );
+        ChangeContent();
+    };
+
+    useEffect(() => {}, []);
+
+    const RefListenAdd = (
+        ref = window,
+        func = objectLockHover,
+        type = "mouseenter"
+    ) => {
+        if ((ref && ref.current) || ref === window) {
+            ref.current.addEventListener(type, () => func(ref));
+        }
+    };
+
+    const RefListenRemove = (
+        ref = window,
+        func = objectLockHover,
+        type = "mouseenter"
+    ) => {
+        if ((ref && ref.current) || ref == window) {
+            ref.current.removeEventListener(type, () => func(ref));
+        }
+    };
 
     useEffect(() => {
-        // delay(4000).then(() => {
-        //     let newArr = spawnState;
-        //     newArr[0] = false;
-        //     setspawnState(newArr);
-        //     ChangeContent();
-        // });
-        // delay(3000).then(() => {
-        //     let newArr = spawnState;
-        //     newArr[3] = true;
-        //     setspawnState(newArr);
-        //     ChangeContent();
-        // });
-        //get theme if in browser
-    }, []);
+        RefListenAdd(mainRef, ReSpawnContent, "click");
+        return () => {
+            RefListenRemove(mainRef, ReSpawnContent, "click");
+        };
+    }, [mainRef]);
+
+    // useEffect(() => {
+    //     router.events.on("routeChangeStart", () => ReSpawnContent());
+    // }, [router]);
 
     useEffect(() => {
         ChangeContent();
@@ -172,14 +186,14 @@ export default function Home({ projects, projects2 }) {
 
     return (
         <Layout projects={projects2}>
-            {display}
-            <TitleBanner>
-                {/* <div className="row"> */}
-                <div className="text">Ogo</div>
-                <div className="text 2">Jonathan</div>
-                <span></span>
-                {/* </div> */}
-            </TitleBanner>
+            <Container fluid ref={mainRef}>
+                {display}
+                <TitleBanner>
+                    <div className="row">
+                        <div className="text">OgoJonathan</div>
+                    </div>
+                </TitleBanner>
+            </Container>
         </Layout>
     );
 }

@@ -8,6 +8,7 @@ export const StyledSwiperImg = styled(motion.img)`
     height: 100%;
     object-fit: contain;
     // margin: 1em;
+    z-index: 9;
 `;
 
 export const StyledSwiperWrapper = styled.div`
@@ -32,7 +33,6 @@ export const StyledSwiperWrapper = styled.div`
 
 export const StyledSwiperPagination = styled.div`
     height: 5px !important;
-    // flex-grow: 1;
 `;
 
 export const StyledSwiperNavBtn = styled.div`
@@ -138,9 +138,12 @@ export const Info = styled(motion.div)`
     padding-top: 15vh;
     scroll-snap-align: start;
     text-align: center;
+    // border: 2px solid yellow;
     .name {
     }
     .desc {
+        width: 100%;
+        // border: 2px solid yellow;
     }
 `;
 

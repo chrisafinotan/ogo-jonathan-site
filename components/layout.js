@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+
 import Navigation from "./navigation";
 import Header from "./header";
 import CCursor from "./CCursor";
 import Head from "next/head";
+
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { normalize } from "styled-normalize";
 
@@ -10,6 +12,7 @@ import {
     useGlobalStateContext,
     useGlobalDispatchContext,
 } from "../context/globalContext";
+
 
 const GlobalStyle = createGlobalStyle`
   ${normalize}
@@ -117,7 +120,6 @@ export default function Layout({ children, projects }) {
             <Head>
                 <title>Ogo Jonathan</title>
             </Head>
-            {/* <Navbar></Navbar> */}
             <CCursor toggleMenu={toggleMenu} />
             <Header
                 onCursor={onCursor}
@@ -125,13 +127,11 @@ export default function Layout({ children, projects }) {
                 setToggleMenu={setToggleMenu}
                 hamburgerPosition={hamburgerPosition}
                 setHamburgerPosition={setHamburgerPosition}
-                // siteTitle={data.site.siteMetadata.title}
             />
             <Navigation
                 toggleMenu={toggleMenu}
                 setToggleMenu={setToggleMenu}
                 onCursor={onCursor}
-                // hamburgerPosition={hamburgerPosition}
                 setHamburgerPosition={setHamburgerPosition}
                 projects={projects}
             />

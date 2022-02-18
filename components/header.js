@@ -19,7 +19,6 @@ const Header = ({
     const { currentTheme } = useGlobalStateContext();
     const hamburger = useRef(null);
 
-    // const themes = [darkTheme, lightTheme, ferhatTheme];
     const themeName = ["dark", "light", "ferhat"];
     const toggleTheme = () => {
         let index = themeName.findIndex((el) => el === currentTheme);
@@ -27,11 +26,7 @@ const Header = ({
         if (index > 0 && index < themeName.length) {
             newindex = (index + 1) % themeName.length;
         }
-        // if (currentTheme !== "dark") {
             dispatch({ type: "TOGGLE_THEME", theme: themeName[newindex] });
-        // } else {
-            // dispatch({ type: "TOGGLE_THEME", theme: "dark" });
-        // }
     };
 
     const menuHover = (element) => {
@@ -71,7 +66,7 @@ const Header = ({
                 ease: [0.6, 0.05, -0.01, 0.9],
             }}
         >
-            <Container>
+            <Container fluid padding={'0 2em'}>
                 <Flex spaceBetween noHeight>
                     <Logo
                         onMouseEnter={() => onCursor("hovered")}

@@ -20,7 +20,7 @@ const queries = {
 
 function MyApp({ Component, pageProps }) {
     const router = useRouter();
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const handleStart = async (url) => {
@@ -45,7 +45,7 @@ function MyApp({ Component, pageProps }) {
                 <GlobalProvider>
                     <BreakpointProvider queries={queries}>
                         <Loading loading={loading} />
-                        <Component {...pageProps} />
+                        <Component {...pageProps} setLoading={setLoading}/>
                     </BreakpointProvider>
                 </GlobalProvider>
             </AnimateSharedLayout>

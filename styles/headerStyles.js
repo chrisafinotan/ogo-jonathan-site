@@ -26,32 +26,36 @@ export const HeaderNav = styled(motion.div)`
 `;
 
 export const Logo = styled.div`
+    padding: 0.5em;
+    display: flex;
+    align-items: center;
+    // border: 2px solid yellow;
     a {
-        font-size: 1.8rem;
+        height: fit-content;
+        width: fit-content;
+        display: inline-block;
+        font-size: 2.2rem;
         text-decoration: none;
         font-weight: 800;
-        color: #000;
         color: ${(props) =>
             props.invert ? props.theme.inv_text : props.theme.text};
     }
     span {
         height: 16px;
         width: 16px;
-        // background: ${(props) => props.theme.main};
         background: ${(props) =>
             props.invert ? props.theme.inv_main : props.theme.main};
-        margin: 0 4px;
+        margin: 0 1rem;
         border-radius: 100%;
         display: inline-block;
         position: relative;
-        bottom: 2px;
-        // css
-        //     padding: 0;
-        //     margin: 0;
-        //     background: ${(props) => props.theme.background};
-        //     max-width: 100% !important;
-        //
+        transform: translate(0%, 0%);
+        // bottom: 2px;
         animation: ${blink} 3s linear infinite;
+        &:hover {
+            transform: scale(2);
+            transition: all 0.5s ease-out;
+        }
     }
 `;
 

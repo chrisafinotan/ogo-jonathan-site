@@ -26,7 +26,7 @@ const Header = ({
         if (index > 0 && index < themeName.length) {
             newindex = (index + 1) % themeName.length;
         }
-            dispatch({ type: "TOGGLE_THEME", theme: themeName[newindex] });
+        dispatch({ type: "TOGGLE_THEME", theme: themeName[newindex] });
     };
 
     const menuHover = (element) => {
@@ -66,18 +66,23 @@ const Header = ({
                 ease: [0.6, 0.05, -0.01, 0.9],
             }}
         >
-            <Container fluid padding={'0 2em'}>
+            <Container fluid padding={"0 2em"}>
                 <Flex spaceBetween noHeight>
                     <Logo
-                        onMouseEnter={() => onCursor("hovered")}
-                        onMouseLeave={onCursor}
+                    onMouseEnter={() => onCursor("hovered")}
+                    onMouseLeave={onCursor}
                         invert={toggleMenu && true}
                     >
-                        <Link href="/">OJ</Link>
+                        <Link
+                            href="/"
+                            onClick={() => setToggleMenu(false)}
+                        >
+                            OJ
+                        </Link>
                         <span
                             onClick={toggleTheme}
                             onMouseEnter={() => onCursor("pointerinv")}
-                            onMouseLeave={onCursor}
+                            onMouseLeave={() => onCursor("hovered")}
                         ></span>
                     </Logo>
                     <Menu

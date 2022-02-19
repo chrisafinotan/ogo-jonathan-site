@@ -85,6 +85,7 @@ export default function work({
     projects,
     projectData,
     projectPictures,
+    setLoading,
 }) {
     const dispatch = useGlobalDispatchContext();
     const { cursorStyles } = useGlobalStateContext();
@@ -128,6 +129,7 @@ export default function work({
             }
         };
         router.events.on("routeChangeComplete", () => handleRouteChange());
+        setLoading(false);
     }, []);
 
     const handlePlayPause = () => {

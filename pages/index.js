@@ -42,14 +42,14 @@ const sizes = {
     large: [maxW, maxH, 2],
 };
 
-export default function Home({ projects, projects2 }) {
+export default function Home({ projects, projects2, setLoading }) {
     const mainRef = useRef(null);
     const { cursorStyles } = useGlobalStateContext();
     const dispatch = useGlobalDispatchContext();
     const RandomizeParams = (index, size) => {
-        if (index === 0) {
-            return { left: 37.5, top: 25, height: 50, width: 25 };
-        }
+        // if (index === 0) {
+        //     return { left: 37.5, top: 25, height: 50, width: 25 };
+        // }
         let width = size ? sizes[`${size}`][0] : GetRandomInt(minW, maxW);
         let height = size ? sizes[`${size}`][1] : GetRandomInt(minH, maxH);
         // let height = GetRandomInt(20, 50);
@@ -66,7 +66,7 @@ export default function Home({ projects, projects2 }) {
         if (index % 2 === 0) {
             range2 = [height, 40];
         } else if (index % 2 === 1) {
-            range2 = [80, 95];
+            range2 = [60, 95];
         }
 
         let left = GetRandomInt(range[0], range[1]);
@@ -95,14 +95,16 @@ export default function Home({ projects, projects2 }) {
     );
     const [display, setdisplay] = useState(null);
 
-    const SpawnContent = (el, index) => {
+    const SpawnContent = (el, index, rands) => {
+        rands = rands!==undefined ? rands : randVals;
+        // console.log('random', rands)
         return (
             <ContentBox
                 key={`${el}_${index}`}
-                top={randVals[index].top}
-                left={randVals[index].left}
-                height={randVals[index].height}
-                width={randVals[index].width}
+                top={rands[index].top}
+                left={rands[index].left}
+                height={rands[index].height}
+                width={rands[index].width}
                 hide={!spawnState[index]}
                 zindex={index === 0 ? 0 : sizes[`${el.size}`][2]}
                 onMouseEnter={() => onCursor("hovered")}
@@ -127,18 +129,17 @@ export default function Home({ projects, projects2 }) {
     const ChangeContent = () => {
         projects = Shuffle(projects);
         console.log("shuflled");
+        let random = Array.from(Array(projects.length)).map((e, i) => {
+            return RandomizeParams(i, projects[i].size);
+        });
         let arr = projects.map((el, index) => {
-            return SpawnContent(el, index);
+            return SpawnContent(el, index, random);
         });
         setdisplay(arr);
     };
 
     const ReSpawnContent = () => {
-        setrandVals(
-            Array.from(Array(projects.length)).map((e, i) => {
-                return RandomizeParams(i, projects[i].size);
-            })
-        );
+        
         ChangeContent();
     };
 
@@ -165,11 +166,13 @@ export default function Home({ projects, projects2 }) {
     };
 
     useEffect(() => {
+        setLoading(false);
+        console.log("done loading");
         RefListenAdd(mainRef, ReSpawnContent, "click");
         return () => {
             RefListenRemove(mainRef, ReSpawnContent, "click");
         };
-    }, [mainRef]);
+    }, []);
 
     // useEffect(() => {
     //     router.events.on("routeChangeStart", () => ReSpawnContent());

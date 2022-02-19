@@ -60,9 +60,7 @@ export const NavList = styled.div`
     width: 100%;
     display: flex;
     align-items: center;
-    // border: 3px solid black;
     ul {
-        // border: 3px solid yellow;
         overflow: scroll;
         ::-webkit-scrollbar {
             display: none;
@@ -70,11 +68,9 @@ export const NavList = styled.div`
         height: 100%;
         width: 100%;
         margin: 0;
-        // padding: 2rem 0;
         li {
             list-style: none;
             margin: 0.5em 0;
-            // border: 3px solid green;
             font-size: 3rem;
             text-transform: uppercase;
             font-weight: 900;
@@ -93,12 +89,12 @@ export const NavList = styled.div`
                     transform: translate(40%, 0);
                 }
                 transition: all 200ms ease;
-                &:before {
+                &:after {
                     content: "";
                     position: absolute;
                     bottom: 0;
                     border: 2px solid ${(props) => props.theme.inv_main};
-                    width: 100px;
+                    width: 70px;
                 }
                 &:hover:after {
                     content: "";
@@ -106,6 +102,7 @@ export const NavList = styled.div`
                     bottom: 0;
                     border: 2px solid ${(props) => props.theme.inv_main};
                     width: 100%;
+                    transition: width 0.5s ease-out;
                 }
 
                 .arrow {
@@ -115,7 +112,6 @@ export const NavList = styled.div`
                     width: 60px;
                     margin-right: 8px;
                     pointer-events: none;
-                    // background: ${(props) => props.theme.inv_main};
                 }
             }
             svg {
@@ -134,8 +130,6 @@ export const NavFooter = styled.div`
     left: 0;
     width: 100%;
     z-index: 99;
-    // background: ${(props) => props.theme.background};
-    // background: ${(props) => props.theme.inv_main};
     height: fit-content;
     padding: 1rem 0px;
     p {
@@ -151,13 +145,11 @@ export const NavContent = styled.div`
     z-index: -1;
     display: block;
     top: 0;
-    // bottom: 0;
-    // left: 0;
     height: 80%;
     width: 80%;
     background: none;
-    // border: 3px solid purple;
     transform: translate(20%, 15%);
+    border: none;
 
     .reveal {
         width: 100%;
@@ -185,7 +177,6 @@ export const NavContent = styled.div`
     .image {
         // background: ${(props) => props.theme.main};
         background: transparent;
-        // position: absolute;
         height: 100%;
         width: 100%;
         img {
@@ -198,23 +189,16 @@ export const NavContent = styled.div`
 `;
 
 export const NavAbout = styled.div`
+    color: ${(props) => props.theme.inv_text};
     position: relative;
+    height: 70vh;
+    width: 100%;
     display: flex;
     flex-direction: row;
     gap: 1em;
-    // padding: 5em;
-    // border: 3px solid yellow;
-    height: 70vh;
-    width: 100%;
-    // height: fit-content;
-
     align-items: center;
     justify-content: center;
     .aboutImageWrapper {
-        max-width: 50vw;
-        width: 100%;
-        height: 50;
-        position: relative;
         .aboutImage {
             object-fit: contain;
             width: 100%;
@@ -222,7 +206,6 @@ export const NavAbout = styled.div`
         }
         @media (max-width: 820px) {
             width: 100%;
-            // height: 100%;
             height: 80vh;
             max-width: none;
         }
@@ -236,6 +219,7 @@ export const NavAbout = styled.div`
     }
     .aboutText__span {
         font-size: 1.2em;
+        font-weight: 500;
         @media (min-height: 1180px) {
             font-size: 2em;
         }

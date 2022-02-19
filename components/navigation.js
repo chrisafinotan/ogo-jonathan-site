@@ -1,12 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import useElementPosition from "../hooks/useElementPosition";
 //Styled Components
 import { Container, Flex } from "../styles/globalStyles";
-import { Logo } from "../styles/headerStyles";
 import {
     Nav,
-    NavHeader,
     NavList,
     NavFooter,
     NavContent,
@@ -14,7 +13,7 @@ import {
 } from "../styles/navigationStyles";
 import { FooterContent, FooterSocial } from "../styles/footerStyles";
 //Icons
-import { Instagram, Facebook, Vimeo } from "../assets/svg/social-icons";
+import { Instagram, Facebook } from "../assets/svg/social-icons";
 //Framer Motion
 import { motion, AnimatePresence } from "framer-motion";
 import { imageWrapper, spanContainer, spanText } from "../framer/variants";
@@ -26,6 +25,7 @@ import {
     // faAmbulance,
     faCamera,
 } from "@fortawesome/free-solid-svg-icons";
+import profilePicture from "../assets/profilePic.jpg";
 
 const Navigation = ({
     projects,
@@ -108,12 +108,12 @@ const Navigation = ({
                 variants={imageWrapper}
                 initial="init"
                 animate="anim"
-                whileHover="color"
+                // whileHover="color"
                 className="aboutImageWrapper"
             >
                 {/* <Image */}
                 <img
-                    src="/images/profilePic.jpg"
+                    src={profilePicture.src}
                     alt="Profile Picture of Ogo Jonathan"
                     width={1440}
                     height={1440}
@@ -121,6 +121,16 @@ const Navigation = ({
                     className="aboutImage"
                     style={{ position: "relative" }}
                 />
+                {/* <Image
+                    src={profilePicture}
+                    alt="Picture of the author"
+                    width="1048px"
+                    height="1048px"
+                    // className="aboutImage"
+                    layout="fill"
+                    style={{ position: "relative" }}
+
+                /> */}
             </motion.div>
             <motion.div className="aboutText">
                 <motion.div

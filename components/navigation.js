@@ -10,6 +10,7 @@ import {
     NavFooter,
     NavContent,
     NavAbout,
+    H2,
 } from "../styles/navigationStyles";
 import { FooterContent, FooterSocial } from "../styles/footerStyles";
 //Icons
@@ -49,7 +50,7 @@ const Navigation = ({
     const breakpoints = useBreakpoint();
 
     const ProjectsView = projects ? (
-        <NavList>
+        <NavList small={false}>
             <ul>
                 {projects.map((route, index) => (
                     <motion.li
@@ -78,7 +79,7 @@ const Navigation = ({
                     >
                         <Link href={`/project/${route.id}`}>
                             <motion.div
-                                initial={{ x: -60 }}
+                                // initial={!breakpoints.sm ? { x: -60 } : { x: 0 }}
                                 className="link"
                                 whileHover={{
                                     x: 0,
@@ -88,9 +89,11 @@ const Navigation = ({
                                     },
                                 }}
                             >
-                                <span className="arrow">
-                                    <FontAwesomeIcon icon={faCamera} />
-                                </span>
+                                {!breakpoints.sm && (
+                                    <span className="arrow">
+                                        <FontAwesomeIcon icon={faCamera} />
+                                    </span>
+                                )}
                                 {route.name}
                             </motion.div>
                         </Link>
@@ -227,6 +230,7 @@ const Navigation = ({
         };
     }, [facebookref, instagramref, phoneref, toggleMenu]);
 
+
     return (
         <>
             <AnimatePresence>
@@ -241,9 +245,9 @@ const Navigation = ({
                         }}
                     >
                         <Container
-                            padding={"5em"}
+                            padding={!breakpoints.sm ? "5em" : "6em 0.5em 2em 0.5em"}
                             fluid
-                            height={"80vh"}
+                            // height={"100vh"}
                             // width={"80vw"}
                         >
                             {/* <Flex row> */}
@@ -252,18 +256,22 @@ const Navigation = ({
                         </Container>
 
                         <NavFooter>
-                            <Flex spaceBetween width={`100%`}>
+                            <Flex spaceBetween={!breakpoints.sm} row={breakpoints.md}>
                                 <Flex
                                     spaceBetween
-                                    noHeight
-                                    width={`20%`}
-                                    row={breakpoints.md}
+                                    // width={!breakpoints.sm ? `20%`:`60%`}
+                                    height={'fit-content'}
                                 >
                                     {views.map((el, index) => (
-                                        <h2
+                                        <H2
                                             key={`view_${index}`}
                                             to="/"
                                             onClick={() => setMenuView(el)}
+                                            className={
+                                                menuView.name == el.name
+                                                    ? "activeView"
+                                                    : ""
+                                            }
                                             ref={el.ref}
                                             // onMouseEnter={() =>
                                             //     onCursor("pointer")
@@ -271,13 +279,13 @@ const Navigation = ({
                                             onMouseLeave={onCursor}
                                         >
                                             {el.name}
-                                        </h2>
+                                        </H2>
                                     ))}
                                 </Flex>
                                 <Flex
                                     spaceBetween
                                     // width={`40%`}
-                                    row={breakpoints.md}
+                                    // row={breakpoints.md}
                                     gap={5}
                                 >
                                     <FooterContent
@@ -304,14 +312,14 @@ const Navigation = ({
                                         >
                                             <Instagram />
                                         </a>
-                                        <a
+                                        {/* <a
                                             ref={facebookref}
                                             onMouseLeave={onCursor}
                                             href="/"
                                             target="_blank"
                                         >
                                             <Facebook />
-                                        </a>
+                                        </a> */}
                                         {/* <a
                                                 onMouseEnter={() =>
                                                     onCursor("locked")

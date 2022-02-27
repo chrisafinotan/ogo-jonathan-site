@@ -14,10 +14,10 @@ const blink = keyframes`
 `;
 
 export const HeaderNav = styled(motion.div)`
-    height: 0px;
+    height: fit-content;
     width: 100%;
     position: absolute;
-    top: 72px;
+    top: 32px;
     right: 0;
     left: 0;
     * {

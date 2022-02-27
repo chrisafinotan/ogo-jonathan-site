@@ -24,11 +24,11 @@ function MyApp({ Component, pageProps }) {
 
     useEffect(() => {
         const handleStart = async (url) => {
-            console.log("i changed it");
+            // console.log("i changed it");
             url !== router.pathname ? setLoading(true) : setLoading(false);
         };
         const handleComplete = async (url) => {
-            console.log("no i did");
+            // console.log("no i did");
             sleep(1 * 1000).then(() => {
                 setLoading(false);
             });

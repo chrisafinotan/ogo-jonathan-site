@@ -9,7 +9,7 @@ const globalReducer = (state, action) => {
     switch (action.type) {
         case "TOGGLE_THEME": {
             if (typeof window !== undefined) {
-                console.log('setting local storage', action.theme)
+                // console.log('setting local storage', action.theme)
                 window.localStorage.setItem("theme", action.theme);
             }
             return {

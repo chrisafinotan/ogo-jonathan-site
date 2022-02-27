@@ -15,7 +15,7 @@ const blink = keyframes`
     scale: 1;
   }
 `;
-export const ContentBox = styled.div`
+export const ContentBox = styled(motion.div)`
     display: block;
     position: fixed;
     width: 15vw;
@@ -63,7 +63,7 @@ export const ContentBox = styled.div`
         position: absolute;
         width: 100%;
         height: 100%;
-        
+
         img {
             // z-index: 9;
             width: 100%;
@@ -129,6 +129,7 @@ export const TitleBanner = styled(motion.div)`
     height: 100vh;
     pointer-events: none;
     .text {
+        // transform: rotateZ(90deg);
         position: relative;
         width: fit-content;
         font-size: 5em;
@@ -142,6 +143,18 @@ export const TitleBanner = styled(motion.div)`
         z-index: 8;
         overflow: hidden;
         white-space: nowrap;
+        @media (max-width: 1050px) {
+            font-size: 3em;
+            letter-spacing: 20px;
+        }
+        @media (max-width: 600px) {
+            font-size: 2em;
+            letter-spacing: 10px;
+        }
+        @media (max-width: 400px) {
+            font-size: 1.5em;
+            letter-spacing: 5px;
+        }
     }
     span {
         mix-blend-mode: revert;

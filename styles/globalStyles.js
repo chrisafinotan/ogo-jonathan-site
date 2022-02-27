@@ -90,10 +90,10 @@ export const Container = styled.div`
             width: ${(props) => props.width} !important;
         `}
         ${(props) =>
-            props.height &&
-            css`
-                height: ${(props) => props.height};
-            `}
+        props.height &&
+        css`
+            height: ${(props) => props.height};
+        `}
 `;
 
 export const Flex = styled.div`
@@ -150,6 +150,11 @@ export const Flex = styled.div`
             height: 0;
         `};
     ${(props) =>
+        props.height &&
+        css`
+            height: ${(props) => props.height};
+        `}
+    ${(props) =>
         props.width &&
         css`
             width: ${props.width};
@@ -158,6 +163,16 @@ export const Flex = styled.div`
         props.gap &&
         css`
             gap: ${props.gap}px;
+        `};
+    ${(props) =>
+        props.padding &&
+        css`
+            padding: ${props.padding};
+        `};
+    ${(props) =>
+        props.margin &&
+        css`
+            margin: ${props.margin};
         `};
 `;
 
@@ -265,6 +280,18 @@ export const LoadingBanner = styled(motion.div)`
                       white-space: nowrap;
                       animation: ${textShadow} 1s ease-in-out infinite;
                       line-height: 2;
+                      @media (max-width: 1050px) {
+                          font-size: 3em;
+                          letter-spacing: 20px;
+                      }
+                      @media (max-width: 600px) {
+                          font-size: 2em;
+                          letter-spacing: 10px;
+                      }
+                      @media (max-width: 400px) {
+                          font-size: 1.5em;
+                          letter-spacing: 5px;
+                      }
                   }
                   span {
                       // mix-blend-mode: revert;

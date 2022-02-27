@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import { motion } from "framer-motion";
 
 export const Nav = styled(motion.div)`
@@ -68,6 +68,7 @@ export const NavList = styled.div`
         height: 100%;
         width: 100%;
         margin: 0;
+
         li {
             list-style: none;
             margin: 0.5em 0;
@@ -79,11 +80,13 @@ export const NavList = styled.div`
             // line-height: 2em;
             overflow: hidden;
             width: fit-content;
+
             .link {
                 color: ${(props) => props.theme.background};
                 position: relative;
                 display: flex;
                 align-items: center;
+                height: 76px;
                 &:hover {
                     z-index: 6;
                     transform: translate(40%, 0);
@@ -122,16 +125,47 @@ export const NavList = styled.div`
             }
         }
     }
+
+    @media (max-width: 820px) {
+        ul {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 0;
+            // border: 2px solid red;
+            li {
+                // border: 2px solid red;
+                font-size: 1.5rem;
+                .link {
+                    .arrow {
+                        display: none;
+                    }
+                    &:after {
+                        display: none;
+                    }
+                }
+                .arrow {
+                    display: none;
+                }
+            }
+            svg {
+                display: none;
+            }
+        }
+    }
 `;
 
 export const NavFooter = styled.div`
     position: sticky;
+    // border: 2px solid red;
     bottom: 0;
     left: 0;
     width: 100%;
     z-index: 99;
     height: fit-content;
-    padding: 1rem 0px;
+    // padding: 1rem 0px;
+    background: ${(props) => props.theme.main};
     p {
         color: ${(props) => props.theme.background};
     }
@@ -150,6 +184,10 @@ export const NavContent = styled.div`
     background: none;
     transform: translate(20%, 15%);
     border: none;
+
+    @media (max-width: 820px) {
+        display: none;
+    }
 
     .reveal {
         width: 100%;
@@ -199,6 +237,7 @@ export const NavAbout = styled.div`
     align-items: center;
     justify-content: center;
     .aboutImageWrapper {
+        overflow: hidden;
         .aboutImage {
             object-fit: contain;
             width: 100%;
@@ -220,6 +259,11 @@ export const NavAbout = styled.div`
     .aboutText__span {
         font-size: 1.2em;
         font-weight: 500;
+        height: 80%;
+        overflow-y: scroll;
+        &::-webkit-scrollbar {
+            display: none;
+        }
         @media (min-height: 1180px) {
             font-size: 2em;
         }
@@ -227,4 +271,21 @@ export const NavAbout = styled.div`
     @media (max-width: 820px) {
         flex-direction: column;
     }
+`;
+
+export const H2 = styled.span`
+    font-weight: 600;
+    margin: 0.5em 1em;
+    font-size: 1.5em;
+    &.activeView {
+        // text-decoration-color: ${(props) => props.theme.inv_main};
+        text-decoration: underline ${(props) => props.theme.inv_main};
+    }
+`;
+
+export const AboutTextWrapper = styled(motion.div)`
+    overflow: scroll;
+    height: 100%;
+    width: 100%;
+    border: 2px solid red;
 `;

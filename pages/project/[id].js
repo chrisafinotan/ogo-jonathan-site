@@ -124,7 +124,7 @@ export default function work({
     useEffect(() => {
         const handleRouteChange = () => {
             window.scrollTo(0, 0);
-            if (swiperRef && swiperRef.current.swiper) {
+            if (swiperRef && swiperRef.current && swiperRef.current.swiper) {
                 swiperRef.current.swiper.slideTo(0);
             }
         };
@@ -135,7 +135,7 @@ export default function work({
     const handlePlayPause = () => {
         setplay(!play);
         if (swiperRef && swiperRef.current) {
-            console.log(swiperRef.current.swiper.autoplay);
+            // console.log(swiperRef.current.swiper.autoplay);
             play
                 ? swiperRef.current.swiper.autoplay.stop()
                 : swiperRef.current.swiper.autoplay.start();

@@ -161,7 +161,7 @@ export const NextLink = styled(motion.a)`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 2em;
+    margin: 1rem;
     position: absolute;
     right: 0;
     bottom: 0;
@@ -173,7 +173,7 @@ export const PrevLink = styled(motion.a)`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 2em;
+    margin: 1rem;
     position: absolute;
     left: 0;
     bottom: 0;
@@ -189,10 +189,13 @@ export const Links = styled.div`
     bottom: 0;
     left: 0;
     a {
-        color: ${(props) => props.theme.main};
+        color: ${(props) => props.theme.text};
         font-size: 2em;
         .name {
             font-size: 0.5em;
         }
+    }
+    @media (max-width: 1050px) {
+        font-size: 0.7em;
     }
 `;

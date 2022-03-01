@@ -55,6 +55,7 @@ export const Container = styled.div`
     margin: 0 auto;
     padding: 0 32px;
     position: relative;
+    box-sizing: border-box;
     width: auto;
     height: 100%;
     @media (min-width: 1024px) {
@@ -89,11 +90,16 @@ export const Container = styled.div`
         css`
             width: ${(props) => props.width} !important;
         `}
-        ${(props) =>
+    ${(props) =>
         props.height &&
         css`
             height: ${(props) => props.height};
         `}
+    ${(props) =>
+        props.test &&
+        css`
+            border: 2px solid yellow;
+        `};
 `;
 
 export const Flex = styled.div`
@@ -177,6 +183,7 @@ export const Flex = styled.div`
 `;
 
 export const Cursor = styled.div`
+    cursor: none;
     position: fixed;
     top: 400px;
     left: 400px;

@@ -6,10 +6,12 @@ import {
     useGlobalStateContext,
 } from "../context/globalContext";
 import { getAllHomeProjects, getAllProjects } from "../lib/projectsLib";
-import { ContentBox, TitleBanner } from "../styles/indexStyles";
+import { ContentBox, IndexWrapper, TitleBanner } from "../styles/indexStyles";
 import { Container } from "../styles/globalStyles";
 import { motion, useAnimation, AnimatePresence } from "framer-motion";
 import { sleep } from "../lib/projectsLib";
+import { useBreakpoint } from "../context/breakpointContext";
+import { useRouter } from "next/router";
 
 export async function getStaticProps() {
     let projects = await getAllHomeProjects();
@@ -38,6 +40,9 @@ const GetRandomInt = (min, max) => {
     return Math.floor(Math.random() * (max - min) + min);
 };
 
+let reg = { left: 25, top: 25, height: 50, width: 50 };
+let big = { left: 10, top: 10, height: 80, width: 80 };
+
 const RandomizeParams = (index, size) => {
     let width = size ? sizes[`${size}`][0] : GetRandomInt(minW, maxW);
     let height = size ? sizes[`${size}`][1] : GetRandomInt(minH, maxH);
@@ -45,7 +50,7 @@ const RandomizeParams = (index, size) => {
     // return { left: 15, top: 15, height: 70, width: 70 };
 
     if (index % 3 === 1) {
-        return { left: 25, top: 25, height: 50, width: 50 };
+        return reg;
     }
 
     let range, range2;
@@ -60,7 +65,7 @@ const RandomizeParams = (index, size) => {
     let lr = GetRandomInt(0, 2);
     // // console.log("lr", lr);
     if (lr) {
-        range2 = [height, 30];
+        range2 = [height, 45];
     } else {
         range2 = [60, 95];
     }
@@ -76,12 +81,12 @@ const RandomizeParams = (index, size) => {
 
 const minW = 20,
     maxW = 40,
-    minH = 20,
-    maxH = 30;
+    minH = 30,
+    maxH = 40;
 
 const sizes = {
     small: [minW, minH, 4],
-    medium: [30, 25, 3],
+    medium: [30, 35, 3],
     large: [maxW, maxH, 2],
 };
 
@@ -114,42 +119,47 @@ const item2 = {
 };
 
 export default function Home({ projects, projects2, setLoading }) {
-    const startcount = 3;
     const transitionTime = 6;
     const mainRef = useRef(null);
+    const router = useRouter();
     const { cursorStyles } = useGlobalStateContext();
     const dispatch = useGlobalDispatchContext();
+    const breakpoints = useBreakpoint();
 
-    let initrandom = () => {
-        // console.log("init randoms");
-        let arr = [];
-        for (let i = 0; i < projects.length; i++) {
-            arr.push(RandomizeParams(i, projects[i].size));
+    const initrandom = (large) => {
+        let randomArr = [];
+        if (large) {
+            for (let i = 0; i < projects.length; i++) {
+                randomArr.push(RandomizeParams(i, projects[i].size));
+            }
+        } else {
+            randomArr = Array(projects.length).fill(big);
         }
-        // console.log(arr);
-        return arr;
+        return randomArr;
+    };
+
+    const getArr = () => {
+        let newstartcount =
+            breakpoints.lg !== undefined ? (breakpoints.lg ? 3 : 1) : 3;
+        let newArr = Array.from(Array(projects.length)).map((e, i) => {
+            return i < newstartcount ? true : false;
+        });
+        return newArr;
     };
 
     const [shuffledProjects, setShuffledProject] = useState(() =>
         Shuffle(projects)
     );
-    const [random, setRandom] = useState(initrandom);
-    const [spawnState, setSpawnState] = useState(
-        Array.from(Array(projects.length)).map((e, i) => {
-            return i < startcount ? true : false;
-        })
-    );
-    const [display, setDisplay] = useState(null);
+    const [display, setDisplay] = useState(<div>'hello'</div>);
 
-    const SpawnContent = (el, index) => {
-        // console.log("spawnc", el.name, index);
+    const SpawnContent = (el, index, random) => {
         return (
             <ContentBox
                 key={`${el}_${index}`}
-                top={random[index].top}
-                left={random[index].left}
-                height={random[index].height}
-                width={random[index].width}
+                top={random.top}
+                left={random.left}
+                height={random.height}
+                width={random.width}
                 onMouseEnter={() => onCursor("hovered")}
                 onMouseLeave={onCursor}
                 transition={{ ease: "easeInOut", duration: 0.5 }}
@@ -160,7 +170,7 @@ export default function Home({ projects, projects2, setLoading }) {
                 exit="exit"
                 style={{ originX: 0.5, originY: 0.5 }}
             >
-                <Link href={`/project/${el.link}`} >
+                <Link href={`/project/${el.link}`}>
                     <a>
                         {el.type.includes("im") ? (
                             <img src={el.content}></img>
@@ -176,29 +186,34 @@ export default function Home({ projects, projects2, setLoading }) {
         );
     };
 
-    const SpawnAll = () => {
-        let arr = shuffledProjects.map((el, index) => {
-            // console.log(el.name);
-            if (spawnState[index] === true) return SpawnContent(el, index);
+    const SpawnAll = (arrToSpawn, positions) => {
+        let arr = arrToSpawn.map((el, index) => {
+            if (el === true)
+                return SpawnContent(
+                    shuffledProjects[index],
+                    index,
+                    positions[index]
+                );
         });
-        // console.log("spawnall", arr);
         setDisplay(
-            <motion.div
+            <IndexWrapper
                 initial="hidden"
-                // animate={homeControls}
                 animate="visible"
                 exit="exit"
                 variants={list}
+                className={"indexDisplay"}
             >
                 {arr}
-            </motion.div>
+            </IndexWrapper>
         );
     };
 
-    const ChangeContent = () => {
-        setShuffledProject(() => Shuffle(projects));
-        setRandom(initrandom);
-        // setRefresh((prev) => prev + 1);
+    const getNew = (arr, random) => {
+        console.log("interval", arr);
+        let newSpawnState = arr;
+        let end = newSpawnState.pop();
+        newSpawnState.unshift(end);
+        SpawnAll(newSpawnState, random);
     };
 
     const RefListenAdd = (
@@ -225,26 +240,36 @@ export default function Home({ projects, projects2, setLoading }) {
         setLoading(false);
         // console.log("done loading");
         // RefListenAdd(mainRef, ChangeContent, "click");
-
-        setInterval(() => {
-            let testarr = spawnState;
-            let end = testarr.pop();
-            testarr.unshift(end);
-            setSpawnState((prev) => [...testarr]);
-        }, transitionTime * 1000);
         return () => {
             // RefListenRemove(mainRef, ChangeContent, "click");
         };
     }, []);
 
     useEffect(() => {
-        // console.log("spawn state change", spawnState);
-        SpawnAll();
-    }, [spawnState, random]);
-
-    // useEffect(() => {
-    //     homeControls.start('visible')
-    // }, [refresh])
+        console.log("breakpoint changed", breakpoints, spawnInterval);
+        let initSpawnState = [],
+            random = [];
+        if (breakpoints.lg !== undefined) {
+            initSpawnState = getArr();
+            random = initrandom(breakpoints.lg);
+        }
+        getNew(initSpawnState, random);
+        // setup new interval
+        let spawnInterval = setInterval(
+            getNew,
+            transitionTime * 1000,
+            initSpawnState,
+            random
+        );
+        return () => {
+            // clear prev interval if it exists
+            console.log(
+                "i am leaving and cleaning your ugly interval",
+                spawnInterval
+            );
+            clearInterval(spawnInterval);
+        };
+    }, [breakpoints.lg]);
 
     const onCursor = (cursorType) => {
         cursorType = (cursorStyles.includes(cursorType) && cursorType) || false;
@@ -253,7 +278,7 @@ export default function Home({ projects, projects2, setLoading }) {
 
     return (
         <Layout projects={projects2}>
-            <Container fluid ref={mainRef}>
+            <Container fluid ref={mainRef} test>
                 <AnimatePresence>{display}</AnimatePresence>
                 <TitleBanner>
                     <div className="row">

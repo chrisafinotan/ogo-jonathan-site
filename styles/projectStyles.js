@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 export const StyledSwiperImg = styled(motion.img)`
     display: block;
-    width: 100%;
+    // width: 100%;
     /* aspect-ratio: 16/9; */
     height: 100%;
     object-fit: contain;
@@ -20,7 +20,7 @@ export const StyledSwiperWrapper = styled.div`
     transform: translate(50%, 50%);
     bottom: 10vh;
     height: fit-content;
-    z-index: 1000;
+    z-index: 10;
     gap: 10px;
     svg {
         width: 50px;
@@ -112,7 +112,7 @@ export const ImagesContainer = styled(motion.div)`
     flex-wrap: nowrap;
     object-fit: fill;
     .projectImageWrapper {
-        scroll-snap-align: start;
+        // scroll-snap-align: start;
         display: flex;
         width: 100%;
         height: 100%;

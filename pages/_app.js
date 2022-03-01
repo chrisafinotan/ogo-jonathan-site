@@ -7,7 +7,9 @@ import Loading from "../components/Loading";
 import "../styles/globals.css";
 import { AnimatePresence, AnimateSharedLayout } from "framer-motion";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import Div100vh from "react-div-100vh";
 import { config } from "@fortawesome/fontawesome-svg-core";
+
 config.autoAddCss = false;
 
 const queries = {
@@ -44,8 +46,10 @@ function MyApp({ Component, pageProps }) {
             <AnimateSharedLayout>
                 <GlobalProvider>
                     <BreakpointProvider queries={queries}>
-                        <Loading loading={loading} />
-                        <Component {...pageProps} setLoading={setLoading}/>
+                        <Div100vh>
+                            <Loading loading={loading} />
+                            <Component {...pageProps} setLoading={setLoading} />
+                        </Div100vh>
                     </BreakpointProvider>
                 </GlobalProvider>
             </AnimateSharedLayout>

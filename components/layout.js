@@ -13,6 +13,7 @@ import {
     useGlobalDispatchContext,
 } from "../context/globalContext";
 
+import { useBreakpoint } from "../context/breakpointContext";
 
 const GlobalStyle = createGlobalStyle`
   ${normalize}
@@ -21,15 +22,15 @@ const GlobalStyle = createGlobalStyle`
   }
   * {
     text-decoration: none;
-    cursor: none;
+    cursor: ${(props) => props.theme.cursor};
   }
+
   html {
       box-sizing: border-box;
       -webkit-font-smoothing: antialiased;
       font-size: 16px;
-    
-    
   }
+
   body {
     font-size: 16px;
     font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -40,6 +41,7 @@ const GlobalStyle = createGlobalStyle`
   `;
 
 export default function Layout({ children, projects }) {
+    const breakpoints = useBreakpoint();
     const dispatch = useGlobalDispatchContext();
     const { cursorStyles, currentTheme } = useGlobalStateContext();
     const [hamburgerPosition, setHamburgerPosition] = useState({
@@ -62,6 +64,7 @@ export default function Layout({ children, projects }) {
         top: `${hamburgerPosition.y}px`,
         width: `${hamburgerPosition.width}px`,
         height: `${hamburgerPosition.height}px`,
+        cursor: "none",
     };
 
     const lightTheme = {
@@ -75,6 +78,7 @@ export default function Layout({ children, projects }) {
         top: `${hamburgerPosition.y}px`,
         width: `${hamburgerPosition.width}px`,
         height: `${hamburgerPosition.height}px`,
+        cursor: "none",
     };
 
     const ferhatTheme = {
@@ -88,6 +92,7 @@ export default function Layout({ children, projects }) {
         top: `${hamburgerPosition.y}px`,
         width: `${hamburgerPosition.width}px`,
         height: `${hamburgerPosition.height}px`,
+        cursor: "none",
     };
 
     const themes = [darkTheme, lightTheme, ferhatTheme];
@@ -113,14 +118,17 @@ export default function Layout({ children, projects }) {
         <ThemeProvider
             theme={() => {
                 let index = themeName.findIndex((el) => el === currentTheme);
-                return themes[index];
+                let ret = themes[index];
+                ret.cursor = breakpoints.md ? "auto" : "none";
+                return ret;
             }}
         >
             <GlobalStyle />
             <Head>
                 <title>Ogo Jonathan</title>
             </Head>
-            <CCursor toggleMenu={toggleMenu} />
+            {breakpoints.lg && <CCursor toggleMenu={toggleMenu} />}
+
             <Header
                 onCursor={onCursor}
                 toggleMenu={toggleMenu}

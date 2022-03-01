@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/router";
+import { Router, useRouter } from "next/router";
 import Link from "next/link";
 import Layout from "../../components/layout";
 import { useBreakpoint } from "../../context/breakpointContext";
@@ -96,7 +96,11 @@ export default function work({
     const [prevProj, showPrev] = useState(false);
     const [linkIndex, setLinkIndex] = useState(1);
     const [play, setplay] = useState(false);
+    const [pics, setpics] = useState(projectPictures);
+    const [display, setDisplay] = useState("loading");
     const router = useRouter();
+    console.log(projectData, pics, projectID);
+    const currentRoute = useRef(null);
 
     const getProjectIndex = () => {
         let index = projects.findIndex((el) => el.id === projectID);
@@ -111,7 +115,12 @@ export default function work({
         setLinkIndex(index);
     };
 
+    const forceRefresh = () => {
+        router.reload(window.location.pathname);
+    };
+
     useEffect(() => {
+        console.log("HI", projectID);
         getProjectIndex();
         onCursor();
         window.scrollTo({
@@ -119,9 +128,11 @@ export default function work({
             left: 0,
             behavior: "smooth",
         });
+        setplay(false);
     }, [projectID]);
 
     useEffect(() => {
+        console.log("FIRST", projectID);
         const handleRouteChange = () => {
             window.scrollTo(0, 0);
             if (swiperRef && swiperRef.current && swiperRef.current.swiper) {
@@ -131,6 +142,14 @@ export default function work({
         router.events.on("routeChangeComplete", () => handleRouteChange());
         setLoading(false);
     }, []);
+
+    useEffect(() => {
+        if (swiperRef && swiperRef.current && swiperRef.current.swiper) {
+            console.log(swiperRef.current.swiper);
+            // swiperRef.current.swiper.slideTo(0);
+        }
+        setpics((prev) => [...projectPictures]);
+    }, [projectPictures]);
 
     const handlePlayPause = () => {
         setplay(!play);
@@ -151,6 +170,46 @@ export default function work({
         <Layout projects={projects}>
             {!breakpoints.md ? (
                 <Container fluid>
+                    <StyledSwiperWrapper>
+                        <Flex>
+                            {!play ? (
+                                <FontAwesomeIcon
+                                    icon={faPlay}
+                                    onMouseEnter={() =>
+                                        onCursor("pointertheme")
+                                    }
+                                    onMouseLeave={onCursor}
+                                    onClick={() => handlePlayPause()}
+                                />
+                            ) : (
+                                <FontAwesomeIcon
+                                    icon={faStop}
+                                    onMouseEnter={() =>
+                                        onCursor("pointertheme")
+                                    }
+                                    onMouseLeave={onCursor}
+                                    onClick={() => handlePlayPause()}
+                                />
+                            )}
+                        </Flex>
+                        <Flex grow height={"100%"}>
+                            <StyledSwiperPagination className="swiper-mypagination"></StyledSwiperPagination>
+                        </Flex>
+                        <Flex width={"20%"} flexCenter>
+                            <StyledSwiperNavBtn
+                                left
+                                className="prevBtn"
+                                onMouseEnter={() => onCursor("pointertheme")}
+                                onMouseLeave={onCursor}
+                            ></StyledSwiperNavBtn>
+                            <StyledSwiperNavBtn
+                                right
+                                className="nextBtn"
+                                onMouseEnter={() => onCursor("pointertheme")}
+                                onMouseLeave={onCursor}
+                            ></StyledSwiperNavBtn>
+                        </Flex>
+                    </StyledSwiperWrapper>
                     <ImagesWrapper
                         ref={elRef}
                         variants={projectsContainer__motion}
@@ -158,53 +217,10 @@ export default function work({
                         animate="show"
                         exit="exit"
                     >
-                        <StyledSwiperWrapper>
-                            <Flex>
-                                {!play ? (
-                                    <FontAwesomeIcon
-                                        icon={faPlay}
-                                        onMouseEnter={() =>
-                                            onCursor("pointertheme")
-                                        }
-                                        onMouseLeave={onCursor}
-                                        onClick={() => handlePlayPause()}
-                                    />
-                                ) : (
-                                    <FontAwesomeIcon
-                                        icon={faStop}
-                                        onMouseEnter={() =>
-                                            onCursor("pointertheme")
-                                        }
-                                        onMouseLeave={onCursor}
-                                        onClick={() => handlePlayPause()}
-                                    />
-                                )}
-                            </Flex>
-                            <Flex grow>
-                                <StyledSwiperPagination className="swiper-mypagination"></StyledSwiperPagination>
-                            </Flex>
-                            <Flex width={"20%"} flexCenter>
-                                <StyledSwiperNavBtn
-                                    left
-                                    className="prevBtn"
-                                    onMouseEnter={() =>
-                                        onCursor("pointertheme")
-                                    }
-                                    onMouseLeave={onCursor}
-                                ></StyledSwiperNavBtn>
-                                <StyledSwiperNavBtn
-                                    right
-                                    className="nextBtn"
-                                    onMouseEnter={() =>
-                                        onCursor("pointertheme")
-                                    }
-                                    onMouseLeave={onCursor}
-                                ></StyledSwiperNavBtn>
-                            </Flex>
-                        </StyledSwiperWrapper>
-
                         <Swiper
                             className="mySwiperID"
+                            observer={true}
+                            observerParents={true}
                             modules={[
                                 Navigation,
                                 Pagination,
@@ -273,7 +289,7 @@ export default function work({
                                                 el.background &&
                                                 `${projectID}_pic`
                                             }
-                                            key={`${index}_project_pics_lrg`}
+                                            key={`${index}_project_projectPlrg`}
                                             src={el.pic}
                                             variants={
                                                 !el.background &&
@@ -315,10 +331,10 @@ export default function work({
                             </motion.div>
                         </Info>
                         <ImagesContainer>
-                            {projectPictures.map((el, index) => {
+                            {pics.map((el, index) => {
                                 return (
                                     <motion.div
-                                        key={`id_${projectData.id}_img_div_sml`}
+                                        key={`id_${projectData.id}_${index}_img_div_sml`}
                                         className="projectImageWrapper"
                                         variants={project__motion}
                                     >
@@ -333,25 +349,39 @@ export default function work({
                     </ImagesWrapperSmall>
                 </Container>
             )}
-            <Links>
+            <Links
+            // onClick={() => forceRefresh()}
+            >
                 {prevProj && (
                     <Link href={`/project/${projects[linkIndex - 1].id}`}>
-                        <PrevLink>
-                            <div>PREV</div>
-                            <div className="name">
-                                {projects[linkIndex - 1].name}
-                            </div>
-                        </PrevLink>
+                    <PrevLink
+                        // onClick={() =>
+                        //     router.push(
+                        //         `/project/${projects[linkIndex - 1].id}`
+                        //     )
+                        // }
+                    >
+                        <div>PREV</div>
+                        <div className="name">
+                            {projects[linkIndex - 1].name}
+                        </div>
+                    </PrevLink>
                     </Link>
                 )}
                 {nextProj && (
                     <Link href={`/project/${projects[linkIndex + 1].id}`}>
-                        <NextLink>
-                            <div>NEXT</div>
-                            <div className="name">
-                                {projects[linkIndex + 1].name}
-                            </div>
-                        </NextLink>
+                    <NextLink
+                        // onClick={() =>
+                        //     router.push(
+                        //         `/project/${projects[linkIndex + 1].id}`
+                        //     )
+                        // }
+                    >
+                        <div>NEXT</div>
+                        <div className="name">
+                            {projects[linkIndex + 1].name}
+                        </div>
+                    </NextLink>
                     </Link>
                 )}
             </Links>

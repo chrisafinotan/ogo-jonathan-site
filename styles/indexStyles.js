@@ -15,6 +15,15 @@ const blink = keyframes`
     scale: 1;
   }
 `;
+
+export const IndexWrapper = styled(motion.div)`
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border: 3px solid purple;
+    box-sizing: border-box;
+`;
+
 export const ContentBox = styled(motion.div)`
     display: block;
     position: fixed;
@@ -32,22 +41,22 @@ export const ContentBox = styled(motion.div)`
     ${(props) =>
         props.width &&
         css`
-            width: ${(props) => props.width}vw;
+            width: ${(props) => props.width}%;
         `};
     ${(props) =>
         props.height &&
         css`
-            height: ${(props) => props.height}vh;
+            height: ${(props) => props.height}%;
         `};
     ${(props) =>
         props.top &&
         css`
-            top: ${(props) => props.top}vh;
+            top: ${(props) => props.top}%;
         `};
     ${(props) =>
         props.left &&
         css`
-            left: ${(props) => props.left}vw;
+            left: ${(props) => props.left}%;
         `};
     ${(props) =>
         props.ar &&

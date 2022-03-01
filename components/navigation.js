@@ -11,6 +11,7 @@ import {
     NavContent,
     NavAbout,
     H2,
+    NavListSmall,
 } from "../styles/navigationStyles";
 import { FooterContent, FooterSocial } from "../styles/footerStyles";
 //Icons
@@ -50,57 +51,83 @@ const Navigation = ({
     const breakpoints = useBreakpoint();
 
     const ProjectsView = projects ? (
-        <NavList small={false}>
-            <ul>
-                {projects.map((route, index) => (
-                    <motion.li
-                        key={route.id}
-                        onMouseEnter={() => onCursor("pointer")}
-                        onMouseLeave={onCursor}
-                        onHoverStart={() =>
-                            setRevealContent({
-                                show: true,
-                                content: route.content,
-                                key: `route_${index}`,
-                                type: route.type,
-                            })
-                        }
-                        onHoverEnd={() =>
-                            setRevealContent({
-                                show: false,
-                                content: route.content,
-                                key: `route_${index}`,
-                                type: route.type,
-                            })
-                        }
-                        onClick={() => {
-                            setToggleMenu(false);
-                        }}
-                    >
-                        <Link href={`/project/${route.id}`}>
-                            <motion.div
-                                // initial={!breakpoints.sm ? { x: -60 } : { x: 0 }}
-                                className="link"
-                                whileHover={{
-                                    x: 0,
-                                    transition: {
-                                        duration: 0.4,
-                                        ease: [0.6, 0.05, -0.01, 0.9],
-                                    },
-                                }}
-                            >
-                                {!breakpoints.sm && (
+        !breakpoints.md ? (
+            <NavList small={false}>
+                <ul>
+                    {projects.map((route, index) => (
+                        <motion.li
+                            key={route.id}
+                            onMouseEnter={() => onCursor("pointer")}
+                            onMouseLeave={onCursor}
+                            onHoverStart={() =>
+                                setRevealContent({
+                                    show: true,
+                                    content: route.content,
+                                    key: `route_${index}`,
+                                    type: route.type,
+                                })
+                            }
+                            onHoverEnd={() =>
+                                setRevealContent({
+                                    show: false,
+                                    content: route.content,
+                                    key: `route_${index}`,
+                                    type: route.type,
+                                })
+                            }
+                            onClick={() => {
+                                setToggleMenu(false);
+                            }}
+                        >
+                            <Link href={`/project/${route.id}`}>
+                                <motion.div
+                                    className="link"
+                                    whileHover={{
+                                        x: 0,
+                                        transition: {
+                                            duration: 0.4,
+                                            ease: [0.6, 0.05, -0.01, 0.9],
+                                        },
+                                    }}
+                                >
                                     <span className="arrow">
                                         <FontAwesomeIcon icon={faCamera} />
                                     </span>
-                                )}
-                                {route.name}
-                            </motion.div>
-                        </Link>
-                    </motion.li>
-                ))}
-            </ul>
-        </NavList>
+                                    {route.name}
+                                </motion.div>
+                            </Link>
+                        </motion.li>
+                    ))}
+                </ul>
+            </NavList>
+        ) : (
+            <NavListSmall>
+                <div className="list">
+                    <div className="scroll">
+                        <span className="up">UP</span>
+                        <span className="mid">.</span>
+                        <span className="down">DOWN</span>
+                    </div>
+                    <ul>
+                        {[...projects, ...projects].map((route, index) => (
+                            <motion.li
+                                key={route.id}
+                                onClick={() => {
+                                    setToggleMenu(false);
+                                }}
+                            >
+                                <Link href={`/project/${route.id}`}>
+                                    <motion.div className="link">
+                                        <span className="index">{`${index}.`}</span>
+                                        {route.name}
+                                    </motion.div>
+                                </Link>
+                            </motion.li>
+                        ))}
+                    </ul>
+                </div>
+            </NavListSmall>
+        )
     ) : (
         <div>PROJECTS</div>
     );
@@ -170,7 +197,7 @@ const Navigation = ({
 
     const views = [
         {
-            name: "Projects",
+            name: `Projects`,
             view: ProjectsView,
             ref: projectsref,
         },
@@ -215,6 +242,10 @@ const Navigation = ({
     };
 
     useEffect(() => {
+        setMenuView(views[0]);
+    }, [breakpoints.md]);
+
+    useEffect(() => {
         RefListenAdd(instagramref);
         RefListenAdd(facebookref);
         RefListenAdd(phoneref, objectWrapHover);
@@ -230,7 +261,6 @@ const Navigation = ({
         };
     }, [facebookref, instagramref, phoneref, toggleMenu]);
 
-
     return (
         <>
             <AnimatePresence>
@@ -245,7 +275,9 @@ const Navigation = ({
                         }}
                     >
                         <Container
-                            padding={!breakpoints.sm ? "5em" : "6em 0.5em 2em 0.5em"}
+                            padding={
+                                !breakpoints.sm ? "5em" : "6em 0.5em 2em 0.5em"
+                            }
                             fluid
                             // height={"100vh"}
                             // width={"80vw"}
@@ -256,11 +288,14 @@ const Navigation = ({
                         </Container>
 
                         <NavFooter>
-                            <Flex spaceBetween={!breakpoints.sm} row={breakpoints.md}>
+                            <Flex
+                                spaceBetween={!breakpoints.sm}
+                                row={breakpoints.md}
+                            >
                                 <Flex
                                     spaceBetween
                                     // width={!breakpoints.sm ? `20%`:`60%`}
-                                    height={'fit-content'}
+                                    height={"fit-content"}
                                 >
                                     {views.map((el, index) => (
                                         <H2
@@ -334,67 +369,68 @@ const Navigation = ({
                                 </Flex>
                             </Flex>
                         </NavFooter>
-
-                        <NavContent>
-                            <motion.div
-                                animate={{
-                                    width: revealContent.show ? 0 : "100%",
-                                }}
-                                transition={{
-                                    duration: 0.5,
-                                    ease: "easeInOut",
-                                }}
-                                className="reveal"
-                            ></motion.div>
-                            {revealContent.type === "video" ? (
-                                <motion.div className="video">
-                                    <AnimatePresence
-                                        initial={false}
-                                        exitBeforeEnter
-                                    >
-                                        <motion.video
-                                            key={revealContent.id}
-                                            src={`/video/easy.mp4`}
-                                            layoutId={`${revealContent.id}_pic`}
-                                            initial={{ opacity: 0 }}
-                                            exit={{ opacity: 0 }}
-                                            animate={{
-                                                opacity: 1,
-                                            }}
-                                            transition={{
-                                                duration: 0.2,
-                                                ease: "easeInOut",
-                                            }}
-                                            loop
-                                            autoPlay
-                                        ></motion.video>
-                                    </AnimatePresence>
-                                </motion.div>
-                            ) : (
-                                <motion.div className="image">
-                                    <AnimatePresence
-                                        initial={false}
-                                        exitBeforeEnter
-                                    >
-                                        <motion.img
-                                            key={revealContent.id}
-                                            src={revealContent.content}
-                                            layoutId={`${revealContent.id}_pic`}
-                                            initial={{ opacity: 0 }}
-                                            exit={{ opacity: 0 }}
-                                            animate={{
-                                                opacity: 1,
-                                                // zIndex: 5,
-                                            }}
-                                            transition={{
-                                                duration: 0.5,
-                                                ease: "easeInOut",
-                                            }}
-                                        ></motion.img>
-                                    </AnimatePresence>
-                                </motion.div>
-                            )}
-                        </NavContent>
+                        {!breakpoints.md && (
+                            <NavContent>
+                                <motion.div
+                                    animate={{
+                                        width: revealContent.show ? 0 : "100%",
+                                    }}
+                                    transition={{
+                                        duration: 0.5,
+                                        ease: "easeInOut",
+                                    }}
+                                    className="reveal"
+                                ></motion.div>
+                                {revealContent.type === "video" ? (
+                                    <motion.div className="video">
+                                        <AnimatePresence
+                                            initial={false}
+                                            exitBeforeEnter
+                                        >
+                                            <motion.video
+                                                key={revealContent.id}
+                                                src={`/video/easy.mp4`}
+                                                layoutId={`${revealContent.id}_pic`}
+                                                initial={{ opacity: 0 }}
+                                                exit={{ opacity: 0 }}
+                                                animate={{
+                                                    opacity: 1,
+                                                }}
+                                                transition={{
+                                                    duration: 0.2,
+                                                    ease: "easeInOut",
+                                                }}
+                                                loop
+                                                autoPlay
+                                            ></motion.video>
+                                        </AnimatePresence>
+                                    </motion.div>
+                                ) : (
+                                    <motion.div className="image">
+                                        <AnimatePresence
+                                            initial={false}
+                                            exitBeforeEnter
+                                        >
+                                            <motion.img
+                                                key={revealContent.id}
+                                                src={revealContent.content}
+                                                layoutId={`${revealContent.id}_pic`}
+                                                initial={{ opacity: 0 }}
+                                                exit={{ opacity: 0 }}
+                                                animate={{
+                                                    opacity: 1,
+                                                    // zIndex: 5,
+                                                }}
+                                                transition={{
+                                                    duration: 0.5,
+                                                    ease: "easeInOut",
+                                                }}
+                                            ></motion.img>
+                                        </AnimatePresence>
+                                    </motion.div>
+                                )}
+                            </NavContent>
+                        )}
                     </Nav>
                 )}
             </AnimatePresence>

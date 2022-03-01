@@ -118,7 +118,7 @@ export const NavList = styled.div`
                 }
             }
             svg {
-                width: 100px;
+                width: 100%;
                 path {
                     fill: ${(props) => props.theme.background};
                 }
@@ -126,31 +126,86 @@ export const NavList = styled.div`
         }
     }
 
-    @media (max-width: 820px) {
-        ul {
+    // @media (max-width: 820px) {
+    //     ul {
+    //         display: flex;
+    //         justify-content: center;
+    //         align-items: center;
+    //         flex-direction: column;
+    //         padding: 0;
+    //         // border: 2px solid red;
+    //         li {
+    //             // border: 2px solid red;
+    //             font-size: 1.5rem;
+    //             .link {
+    //                 .arrow {
+    //                     display: none;
+    //                 }
+    //                 &:after {
+    //                     display: none;
+    //                 }
+    //             }
+    //             .arrow {
+    //                 display: none;
+    //             }
+    //         }
+    //         svg {
+    //             display: none;
+    //         }
+    //     }
+    // }
+`;
+
+export const NavListSmall = styled.div`
+    height: 80%;
+    border: 2px solid purple;
+    * {
+        box-sizing: border-box;
+    }
+    .list {
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        .scroll {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
+            border: 2px solid yellow;
+
+            span {
+                transform: rotate(90deg);
+                border: 2px solid yellow;
+                width: fit-content;
+                height: fit-content;
+            }
+        }
+        ul {
+            border: 2px solid yellow;
+            display: flex;
+            flex-grow: 1;
+            box-sizing: border-box;
             flex-direction: column;
             padding: 0;
-            // border: 2px solid red;
+            margin: 0;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            height: 100%;
             li {
-                // border: 2px solid red;
-                font-size: 1.5rem;
+                list-style: none;
+                margin: 0.5rem 0;
+                font-size: 2rem;
+                font-weight: 900;
+                height: min-content;
+                width: 100%;
+                // font-size: 1.5rem;
                 .link {
                     .arrow {
-                        display: none;
                     }
                     &:after {
                         display: none;
                     }
                 }
-                .arrow {
-                    display: none;
-                }
-            }
-            svg {
-                display: none;
             }
         }
     }

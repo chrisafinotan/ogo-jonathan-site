@@ -2,18 +2,11 @@
     "name": "ogo-jonathan-site",
     "version": "0.1.0",
     "private": true,
-    "main": "server.js",
-    "engines": {
-        "node": "10"
-    },
     "scripts": {
-        "clean": "rimraf nextjs/",
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "export": "next export",
-        "predeploy": "npm run clean && next build",
-        "deploy": "firebase deploy"
+        "export": "next export"
     },
     "dependencies": {
         "@fortawesome/fontawesome-svg-core": "^1.3.0",
@@ -23,9 +16,6 @@
         "animejs": "^3.2.1",
         "babel-plugin-macros": "^3.1.0",
         "date-fns": "^2.25.0",
-        "firebase": "^9.6.1",
-        "firebase-admin": "^10.0.2",
-        "firebase-functions": "^3.18.1",
         "framer-motion": "^5.5.5",
         "hamburger-react": "^2.4.1",
         "next": "^12.1.0",

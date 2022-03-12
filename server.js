@@ -1,9 +1,9 @@
-const admin = require("firebase-admin");
-const functions = require("firebase-functions");
+// const admin = require("firebase-admin");
+// const functions = require("firebase-functions");
 const next = require("next");
 const config = require("./next.config");
 
-admin.initializeApp();
+// admin.initializeApp();
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({

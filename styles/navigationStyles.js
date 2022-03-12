@@ -1,6 +1,20 @@
 import styled, { css, keyframes } from "styled-components";
 import { motion } from "framer-motion";
 
+const bounceUP = keyframes`
+0%   { transform: translateY(0); }
+        30%  { transform: translateY(10px); }
+        50%  { transform: translateY(0); }
+        100% { transform: translateY(0); }
+`;
+
+const bounceDOWN = keyframes`
+0%   { transform: translateY(0); }
+        30%  { transform: translateY(-10px); }
+        50%  { transform: translateY(0); }
+        100% { transform: translateY(0); }
+`;
+
 export const Nav = styled(motion.div)`
     position: fixed;
     top: 0;
@@ -54,111 +68,126 @@ export const CloseNav = styled.div`
 `;
 
 export const NavList = styled.div`
-    top: 0;
-    position: relative;
-    height: 70vh;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    ul {
-        overflow: scroll;
-        ::-webkit-scrollbar {
-            display: none;
-        }
+    height: 90%;
+    color: ${(props) => props.theme.background};
+    * {
+        box-sizing: border-box;
+    }
+    .list {
         height: 100%;
-        width: 100%;
-        margin: 0;
-
-        li {
-            list-style: none;
-            margin: 0.5em 0;
-            font-size: 3rem;
-            text-transform: uppercase;
-            font-weight: 900;
-            height: 96px;
-            height: min-content;
-            // line-height: 2em;
-            overflow: hidden;
-            width: fit-content;
-
-            .link {
-                color: ${(props) => props.theme.background};
-                position: relative;
-                display: flex;
-                align-items: center;
-                height: 76px;
-                &:hover {
-                    z-index: 6;
-                    transform: translate(40%, 0);
-                }
-                transition: all 200ms ease;
-                &:after {
-                    content: "";
-                    position: absolute;
-                    bottom: 0;
-                    border: 2px solid ${(props) => props.theme.inv_main};
-                    width: 70px;
-                }
-                &:hover:after {
-                    content: "";
-                    position: absolute;
-                    bottom: 0;
-                    border: 2px solid ${(props) => props.theme.inv_main};
-                    width: 100%;
-                    transition: width 0.5s ease-out;
-                }
-
-                .arrow {
-                    display: flex;
-                    align-items: center;
-                    height: 76px;
-                    width: 60px;
-                    margin-right: 8px;
-                    pointer-events: none;
-                }
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        .scroll {
+            display: grid;
+            grid-template-rows: 0.1fr 1.2fr 0.1fr;
+            width: 2em;
+            height: 100%;
+            span {
+                width: fit-content;
+                height: fit-content;
+                justify-self: center;
+                align-self: center;
+                opacity: 0.3;
             }
-            svg {
-                width: 100%;
-                path {
-                    fill: ${(props) => props.theme.background};
+            .mid {
+                border: 1px solid ${(props) => props.theme.background};
+                white-space: nowrap;
+                height: 100%;
+                text-align: center;
+            }
+            .up {
+                animation: ${bounceUP} 2s cubic-bezier(0.25, 1.7, 0.35, 0.8)
+                    infinite;
+                transition: opacity 0.5s ease-in;
+                align-self: end;
+            }
+            .down {
+                animation: ${bounceDOWN} 2s cubic-bezier(0.25, 1.7, 0.35, 0.8)
+                    infinite;
+                transition: opacity 0.5s ease-in;
+                align-self: start;
+            }
+        }
+        ul {
+            // display: flex;
+            flex-direction: column;
+            align-items: start;
+            height: fit-content;
+            max-height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: scroll;
+            ::-webkit-scrollbar {
+                display: none;
+            }
+            li {
+                list-style: none;
+                margin: 0.5em 0;
+                font-size: 3rem;
+                text-transform: uppercase;
+                font-weight: 900;
+                height: min-content;
+                overflow: hidden;
+                width: fit-content;
+                .link {
+                    color: ${(props) => props.theme.background};
+                    position: relative;
+                    display: flex;
+                    gap: 0.4rem;
+                    align-items: center;
+                    .index {
+                        font-size: 0.4em;
+                        opacity: 0.3;
+                        align-self: start;
+                    }
+                    &:hover {
+                        z-index: 6;
+                        transform: translate(40%, 0);
+                    }
+                    transition: all 0.2s ease;
+                    &:after {
+                        content: "";
+                        position: absolute;
+                        bottom: 0;
+                        border: 0px solid ${(props) => props.theme.inv_main};
+                        // border: none;
+                        width: 0px;
+                        transition: all 0.5s ease-in-out;
+                    }
+                    &:hover:after {
+                        content: "";
+                        position: absolute;
+                        bottom: 0;
+                        border: 2px solid ${(props) => props.theme.inv_main};
+                        width: 100%;
+                    }
+                    .arrow {
+                        display: flex;
+                        align-items: center;
+                        height: 76px;
+                        width: 60px;
+                        margin-right: 8px;
+                        pointer-events: none;
+                    }
+                }
+                svg {
+                    width: 100%;
+                    path {
+                        fill: ${(props) => props.theme.background};
+                    }
                 }
             }
         }
     }
-
-    // @media (max-width: 820px) {
-    //     ul {
-    //         display: flex;
-    //         justify-content: center;
-    //         align-items: center;
-    //         flex-direction: column;
-    //         padding: 0;
-    //         // border: 2px solid red;
-    //         li {
-    //             // border: 2px solid red;
-    //             font-size: 1.5rem;
-    //             .link {
-    //                 .arrow {
-    //                     display: none;
-    //                 }
-    //                 &:after {
-    //                     display: none;
-    //                 }
-    //             }
-    //             .arrow {
-    //                 display: none;
-    //             }
-    //         }
-    //         svg {
-    //             display: none;
-    //         }
-    //     }
-    // }
 `;
 
 export const NavListSmall = styled.div`
-    height: 80%;
-    border: 2px solid purple;
+    height: 85%;
+    color: ${(props) => props.theme.background};
     * {
         box-sizing: border-box;
     }
@@ -166,22 +195,41 @@ export const NavListSmall = styled.div`
         height: 100%;
         display: flex;
         flex-direction: row;
+        gap: 0.5em;
         .scroll {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-rows: 0.1fr 1.2fr 0.1fr;
             align-items: center;
             justify-content: center;
-            border: 2px solid yellow;
-
+            width: 2em;
             span {
-                transform: rotate(90deg);
-                border: 2px solid yellow;
+                // transform: rotate(90deg);
                 width: fit-content;
                 height: fit-content;
+                justify-self: center;
+                opacity: 0.3;
+            }
+            .mid {
+                border: 1px solid ${(props) => props.theme.background};
+                white-space: nowrap;
+                height: 100%;
+                text-align: center;
+            }
+            .up {
+                animation: ${bounceUP} 2s cubic-bezier(0.25, 1.7, 0.35, 0.8)
+                    infinite;
+                transition: opacity 0.5s ease-in;
+                align-self: end;
+            }
+            .down {
+                animation: ${bounceDOWN} 2s cubic-bezier(0.25, 1.7, 0.35, 0.8)
+                    infinite;
+                transition: opacity 0.5s ease-in;
+
+                align-self: start;
             }
         }
         ul {
-            border: 2px solid yellow;
             display: flex;
             flex-grow: 1;
             box-sizing: border-box;
@@ -190,6 +238,9 @@ export const NavListSmall = styled.div`
             margin: 0;
             overflow-y: scroll;
             overflow-x: hidden;
+            ::-webkit-scrollbar {
+                display: none;
+            }
             height: 100%;
             li {
                 list-style: none;
@@ -200,7 +251,11 @@ export const NavListSmall = styled.div`
                 width: 100%;
                 // font-size: 1.5rem;
                 .link {
-                    .arrow {
+                    display: flex;
+                    gap: 0.4rem;
+                    .index {
+                        font-size: 0.4em;
+                        opacity: 0.3;
                     }
                     &:after {
                         display: none;
@@ -214,12 +269,13 @@ export const NavListSmall = styled.div`
 export const NavFooter = styled.div`
     position: sticky;
     // border: 2px solid red;
+    box-sizing: border-box;
     bottom: 0;
     left: 0;
     width: 100%;
     z-index: 99;
     height: fit-content;
-    // padding: 1rem 0px;
+    padding: 1rem;
     background: ${(props) => props.theme.main};
     p {
         color: ${(props) => props.theme.background};

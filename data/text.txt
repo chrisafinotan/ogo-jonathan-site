@@ -1,0 +1,21 @@
+// "homeproject2": {
+    //     "File": "public/projects/project1",
+    //     "Link": "project1",
+    //     "Name": "Project Display name",
+    //     "Size": "medium",
+    //     "Type": "image"
+    // },
+    // "homeproject3": {
+    //     "File": "public/projects/project1",
+    //     "Link": "project1",
+    //     "Name": "Project Display name",
+    //     "Size": "medium",
+    //     "Type": "image"
+    // },
+    // "homeproject4": {
+    //     "File": "public/projects/project1",
+    //     "Link": "project1",
+    //     "Name": "Project Display name",
+    //     "Size": "medium",
+    //     "Type": "image"
+    // }

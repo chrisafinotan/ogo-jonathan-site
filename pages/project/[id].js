@@ -99,7 +99,7 @@ export default function work({
     const [pics, setpics] = useState(projectPictures);
     const [display, setDisplay] = useState("loading");
     const router = useRouter();
-    console.log(projectData, pics, projectID);
+    // console.log(projectData, pics, projectID);
     const currentRoute = useRef(null);
 
     const getProjectIndex = () => {
@@ -120,7 +120,6 @@ export default function work({
     };
 
     useEffect(() => {
-        console.log("HI", projectID);
         getProjectIndex();
         onCursor();
         window.scrollTo({
@@ -132,7 +131,6 @@ export default function work({
     }, [projectID]);
 
     useEffect(() => {
-        console.log("FIRST", projectID);
         const handleRouteChange = () => {
             window.scrollTo(0, 0);
             if (swiperRef && swiperRef.current && swiperRef.current.swiper) {
@@ -145,7 +143,6 @@ export default function work({
 
     useEffect(() => {
         if (swiperRef && swiperRef.current && swiperRef.current.swiper) {
-            console.log(swiperRef.current.swiper);
             // swiperRef.current.swiper.slideTo(0);
         }
         setpics((prev) => [...projectPictures]);
@@ -220,7 +217,7 @@ export default function work({
                         <Swiper
                             className="mySwiperID"
                             observer={true}
-                            observerParents={true}
+                            // observerParents={true}
                             modules={[
                                 Navigation,
                                 Pagination,
@@ -354,34 +351,38 @@ export default function work({
             >
                 {prevProj && (
                     <Link href={`/project/${projects[linkIndex - 1].id}`}>
-                    <PrevLink
-                        // onClick={() =>
-                        //     router.push(
-                        //         `/project/${projects[linkIndex - 1].id}`
-                        //     )
-                        // }
-                    >
-                        <div>PREV</div>
-                        <div className="name">
-                            {projects[linkIndex - 1].name}
-                        </div>
-                    </PrevLink>
+                        <PrevLink
+                            // onClick={() =>
+                            //     router.push(
+                            //         `/project/${projects[linkIndex - 1].id}`
+                            //     )
+                            // }
+                            onMouseEnter={() => onCursor("pointertheme")}
+                            onMouseLeave={onCursor}
+                        >
+                            <div>PREV</div>
+                            <div className="name">
+                                {projects[linkIndex - 1].name}
+                            </div>
+                        </PrevLink>
                     </Link>
                 )}
                 {nextProj && (
                     <Link href={`/project/${projects[linkIndex + 1].id}`}>
-                    <NextLink
-                        // onClick={() =>
-                        //     router.push(
-                        //         `/project/${projects[linkIndex + 1].id}`
-                        //     )
-                        // }
-                    >
-                        <div>NEXT</div>
-                        <div className="name">
-                            {projects[linkIndex + 1].name}
-                        </div>
-                    </NextLink>
+                        <NextLink
+                            // onClick={() =>
+                            //     router.push(
+                            //         `/project/${projects[linkIndex + 1].id}`
+                            //     )
+                            // }
+                            onMouseEnter={() => onCursor("pointertheme")}
+                            onMouseLeave={onCursor}
+                        >
+                            <div>NEXT</div>
+                            <div className="name">
+                                {projects[linkIndex + 1].name}
+                            </div>
+                        </NextLink>
                     </Link>
                 )}
             </Links>

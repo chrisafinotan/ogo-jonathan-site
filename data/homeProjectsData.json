@@ -1,0 +1,16 @@
+{
+    "homeproject1": {
+        "File": "lojay/lojaycover.JPG",
+        "Link": "lojay",
+        "Name": "LOJAY",
+        "Size": "medium",
+        "Type": "image"
+    },
+    "homeproject_naijboys": {
+        "File": "naijboys/naijboyscover.JPG",
+        "Link": "naijboys",
+        "Name": "Naija Boys",
+        "Size": "large",
+        "Type": "image"
+    }
+}

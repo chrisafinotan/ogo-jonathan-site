@@ -26,8 +26,10 @@ import {
     // faSearch,
     // faAmbulance,
     faCamera,
+    faAngleDown,
+    faAngleUp,
 } from "@fortawesome/free-solid-svg-icons";
-import profilePicture from "../assets/profilePic.jpg";
+import profilePicture from "../public/images/profilePic.jpg";
 
 const Navigation = ({
     projects,
@@ -41,6 +43,8 @@ const Navigation = ({
     const phoneref = useRef(null);
     const projectsref = useRef(null);
     const aboutref = useRef(null);
+    const navListScrollref = useRef(null);
+    const navListScroll2ref = useRef(null);
 
     const [revealContent, setRevealContent] = useState({
         show: false,
@@ -50,87 +54,155 @@ const Navigation = ({
 
     const breakpoints = useBreakpoint();
 
-    const ProjectsView = projects ? (
-        !breakpoints.md ? (
-            <NavList small={false}>
-                <ul>
-                    {projects.map((route, index) => (
-                        <motion.li
-                            key={route.id}
-                            onMouseEnter={() => onCursor("pointer")}
-                            onMouseLeave={onCursor}
-                            onHoverStart={() =>
-                                setRevealContent({
-                                    show: true,
-                                    content: route.content,
-                                    key: `route_${index}`,
-                                    type: route.type,
-                                })
-                            }
-                            onHoverEnd={() =>
-                                setRevealContent({
-                                    show: false,
-                                    content: route.content,
-                                    key: `route_${index}`,
-                                    type: route.type,
-                                })
-                            }
-                            onClick={() => {
-                                setToggleMenu(false);
-                            }}
-                        >
-                            <Link href={`/project/${route.id}`}>
-                                <motion.div
-                                    className="link"
-                                    whileHover={{
-                                        x: 0,
-                                        transition: {
-                                            duration: 0.4,
-                                            ease: [0.6, 0.05, -0.01, 0.9],
-                                        },
+    const ProjectsView = (arrow) => {
+        return projects ? (
+            !breakpoints.md ? (
+                <NavList>
+                    <div className="list">
+                        <div className="scroll">
+                            <span
+                                className="up"
+                                style={
+                                    arrow === "top"
+                                        ? { opacity: "0.3" }
+                                        : { opacity: "0" }
+                                }
+                            >
+                                <FontAwesomeIcon icon={faAngleUp} />
+                            </span>
+                            <span
+                                className="mid"
+                                style={
+                                    arrow === "null"
+                                        ? { opacity: "0" }
+                                        : { opacity: "1" }
+                                }
+                            ></span>
+                            <span
+                                className="down"
+                                style={
+                                    arrow === "bottom"
+                                        ? { opacity: "0.3" }
+                                        : { opacity: "0" }
+                                }
+                            >
+                                <FontAwesomeIcon icon={faAngleDown} />
+                            </span>
+                        </div>
+                        <ul ref={navListScroll2ref}>
+                            {/* {projects.map((route, index) => ( */}
+                            {projects.map((route, index) => (
+                                <motion.li
+                                    key={`large_${route.id}_${index}`}
+                                    onMouseEnter={() => onCursor("pointer")}
+                                    onMouseLeave={onCursor}
+                                    onHoverStart={() =>
+                                        setRevealContent({
+                                            show: true,
+                                            content: route.content,
+                                            key: `route_${index}`,
+                                            type: route.type,
+                                        })
+                                    }
+                                    onHoverEnd={() =>
+                                        setRevealContent({
+                                            show: false,
+                                            content: route.content,
+                                            key: `route_${index}`,
+                                            type: route.type,
+                                        })
+                                    }
+                                    onClick={() => {
+                                        setToggleMenu(false);
                                     }}
                                 >
-                                    <span className="arrow">
-                                        <FontAwesomeIcon icon={faCamera} />
-                                    </span>
-                                    {route.name}
-                                </motion.div>
-                            </Link>
-                        </motion.li>
-                    ))}
-                </ul>
-            </NavList>
-        ) : (
-            <NavListSmall>
-                <div className="list">
-                    <div className="scroll">
-                        <span className="up">UP</span>
-                        <span className="mid">.</span>
-                        <span className="down">DOWN</span>
+                                    <Link href={`/project/${route.id}`}>
+                                        <motion.div
+                                            className="link"
+                                            whileHover={{
+                                                x: 0,
+                                                transition: {
+                                                    duration: 0.4,
+                                                    ease: [
+                                                        0.6, 0.05, -0.01, 0.9,
+                                                    ],
+                                                },
+                                            }}
+                                        >
+                                            {/* <span className="arrow">
+                                                <FontAwesomeIcon
+                                                    icon={faCamera}
+                                                />
+                                            </span> */}
+                                            <span className="index">{`${index}`}</span>
+                                            <span>{route.name}</span>
+                                        </motion.div>
+                                    </Link>
+                                </motion.li>
+                            ))}
+                        </ul>
                     </div>
-                    <ul>
-                        {[...projects, ...projects].map((route, index) => (
-                            <motion.li
-                                key={route.id}
-                                onClick={() => {
-                                    setToggleMenu(false);
-                                }}
+                </NavList>
+            ) : (
+                <NavListSmall arrow={arrow}>
+                    <div className="list">
+                        <div className="scroll">
+                            <span
+                                className="up"
+                                style={
+                                    arrow === "top"
+                                        ? { opacity: "0.3" }
+                                        : { opacity: "0" }
+                                }
                             >
-                                <Link href={`/project/${route.id}`}>
-                                    <motion.div className="link">
-                                        <span className="index">{`${index}.`}</span>
-                                        {route.name}
-                                    </motion.div>
-                                </Link>
-                            </motion.li>
-                        ))}
-                    </ul>
-                </div>
-            </NavListSmall>
-        )
-    ) : (
-        <div>PROJECTS</div>
-    );
+                                <FontAwesomeIcon icon={faAngleUp} />
+                            </span>
+                            <span
+                                className="mid"
+                                style={
+                                    arrow === "null"
+                                        ? { opacity: "0" }
+                                        : { opacity: "1" }
+                                }
+                            >
+                                {/* {`SCROLL ${arrow ? 'UP': 'DOWN'}`} */}
+                            </span>
+                            <span
+                                className="down"
+                                style={
+                                    arrow === "bottom"
+                                        ? { opacity: "0.3" }
+                                        : { opacity: "0" }
+                                }
+                            >
+                                <FontAwesomeIcon icon={faAngleDown} />
+                            </span>
+                        </div>
+                        <ul ref={navListScrollref}>
+                            {projects.map((route, index) => (
+                                <motion.li
+                                    key={`small_${route.id}_${index}`}
+                                    onClick={() => {
+                                        setToggleMenu(false);
+                                    }}
+                                >
+                                    <Link href={`/project/${route.id}`}>
+                                        <motion.div className="link">
+                                            <span className="index">{`${index}`}</span>
+
+                                            <span>{route.name}</span>
+                                        </motion.div>
+                                    </Link>
+                                </motion.li>
+                            ))}
+                        </ul>
+                    </div>
+                </NavListSmall>
+            )
+        ) : (
+            <div>PROJECTS</div>
+        );
+    };
 
     const AboutView = (
         <NavAbout>
@@ -195,10 +267,12 @@ const Navigation = ({
         </NavAbout>
     );
 
+    const [atBottom, setatBottom] = useState(null);
+
     const views = [
         {
             name: `Projects`,
-            view: ProjectsView,
+            view: ProjectsView(atBottom),
             ref: projectsref,
         },
         {
@@ -219,6 +293,31 @@ const Navigation = ({
         onCursor("wrapped");
         let eventposition = useElementPosition(element);
         setHamburgerPosition(eventposition);
+    };
+
+    const scrollChecker = (element) => {
+        console.log(
+            "scrollchecker",
+            element.current.offsetHeight,
+            element.current.scrollTop,
+            element.current.scrollHeight,
+            atBottom
+        );
+        if (element.current.offsetHeight === element.current.scrollHeight) {
+            setatBottom("null");
+        } else if (
+            element.current.offsetHeight + element.current.scrollTop >=
+            element.current.scrollHeight
+        ) {
+            setatBottom("top");
+        } else if (
+            element.current.scrollTop <= 0 &&
+            element.current.scrollHeight > element.current.offsetHeight
+        ) {
+            setatBottom("bottom");
+        } else {
+            setatBottom("null");
+        }
     };
 
     const RefListenAdd = (
@@ -242,24 +341,40 @@ const Navigation = ({
     };
 
     useEffect(() => {
+        views[0].view;
         setMenuView(views[0]);
-    }, [breakpoints.md]);
+    }, [breakpoints.md, atBottom]);
 
     useEffect(() => {
+        navListScrollref.current && scrollChecker(navListScrollref);
+        navListScroll2ref.current && scrollChecker(navListScroll2ref);
+
         RefListenAdd(instagramref);
         RefListenAdd(facebookref);
         RefListenAdd(phoneref, objectWrapHover);
-        RefListenAdd(projectsref, objectWrapHover);
-        RefListenAdd(aboutref, objectWrapHover);
+        // RefListenAdd(projectsref, objectWrapHover);
+        // RefListenAdd(aboutref, objectWrapHover);
+        RefListenAdd(navListScrollref, scrollChecker, "scroll");
+        RefListenAdd(navListScroll2ref, scrollChecker, "scroll");
 
         return () => {
             RefListenRemove(instagramref);
             RefListenRemove(facebookref);
             RefListenRemove(phoneref, objectWrapHover);
-            RefListenRemove(projectsref, objectWrapHover);
-            RefListenRemove(aboutref, objectWrapHover);
+            // RefListenRemove(projectsref, objectWrapHover);
+            // RefListenRemove(aboutref, objectWrapHover);
+            RefListenRemove(navListScrollref, scrollChecker, "scroll");
+            RefListenRemove(navListScroll2ref, scrollChecker, "scroll");
         };
-    }, [facebookref, instagramref, phoneref, toggleMenu]);
+    }, [
+        facebookref,
+        instagramref,
+        phoneref,
+        toggleMenu,
+        navListScrollref,
+        navListScroll2ref,
+        menuView,
+    ]);
 
     return (
         <>
@@ -279,8 +394,6 @@ const Navigation = ({
                                 !breakpoints.sm ? "5em" : "6em 0.5em 2em 0.5em"
                             }
                             fluid
-                            // height={"100vh"}
-                            // width={"80vw"}
                         >
                             {/* <Flex row> */}
                             {menuView.view}
@@ -294,7 +407,6 @@ const Navigation = ({
                             >
                                 <Flex
                                     spaceBetween
-                                    // width={!breakpoints.sm ? `20%`:`60%`}
                                     height={"fit-content"}
                                 >
                                     {views.map((el, index) => (
@@ -308,9 +420,9 @@ const Navigation = ({
                                                     : ""
                                             }
                                             ref={el.ref}
-                                            // onMouseEnter={() =>
-                                            //     onCursor("pointer")
-                                            // }
+                                            onMouseEnter={() =>
+                                                onCursor("pointer")
+                                            }
                                             onMouseLeave={onCursor}
                                         >
                                             {el.name}
@@ -319,52 +431,29 @@ const Navigation = ({
                                 </Flex>
                                 <Flex
                                     spaceBetween
-                                    // width={`40%`}
-                                    // row={breakpoints.md}
-                                    gap={5}
+                                    gap={30}
                                 >
                                     <FooterContent
                                         ref={phoneref}
                                         onMouseLeave={onCursor}
                                     >
                                         <Mailto
-                                            email="iafinotan@yahoo.com"
+                                            email="ogojonathanp@gmail.com"
                                             subject="Hello & Welcome"
                                             body="Hello world!"
                                         >
-                                            iafinotan@yahoo.com
+                                            ogojonathanp@gmail.com
                                         </Mailto>
-                                    </FooterContent>
-                                    <FooterContent>
-                                        <span>000.000.000</span>
                                     </FooterContent>
                                     <FooterSocial>
                                         <a
                                             ref={instagramref}
                                             onMouseLeave={onCursor}
-                                            href="/"
+                                            href="https://www.instagram.com/___chr1ss/"
                                             target="_blank"
                                         >
                                             <Instagram />
                                         </a>
-                                        {/* <a
-                                            ref={facebookref}
-                                            onMouseLeave={onCursor}
-                                            href="/"
-                                            target="_blank"
-                                        >
-                                            <Facebook />
-                                        </a> */}
-                                        {/* <a
-                                                onMouseEnter={() =>
-                                                    onCursor("locked")
-                                                }
-                                                onMouseLeave={onCursor}
-                                                href="/"
-                                                target="_blank"
-                                            >
-                                                <Vimeo />
-                                            </a> */}
                                     </FooterSocial>
                                 </Flex>
                             </Flex>

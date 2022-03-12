@@ -2,12 +2,11 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { BreakpointProvider } from "../context/breakpointContext";
 import { GlobalProvider } from "../context/globalContext";
-import { sleep } from "../lib/projectsLib";
+import { sleep } from "../utils/helper";
 import Loading from "../components/Loading";
 import "../styles/globals.css";
 import { AnimatePresence, AnimateSharedLayout } from "framer-motion";
 import "@fortawesome/fontawesome-svg-core/styles.css";
-import Div100vh from "react-div-100vh";
 import { config } from "@fortawesome/fontawesome-svg-core";
 
 config.autoAddCss = false;
@@ -41,15 +40,29 @@ function MyApp({ Component, pageProps }) {
         router.events.on("routeChangeError", () => handleComplete());
         window.scrollTo(0, 0);
     }, [router]);
+
+    useEffect(() => {
+        const appHeight = () => {
+            const doc = document.documentElement;
+            doc.style.setProperty("--app-height", `${window.innerHeight}px`);
+        };
+        window.addEventListener("resize", appHeight);
+        appHeight();
+
+        return () => {
+            window.removeEventListener("resize", appHeight);
+        };
+    }, []);
+
     return (
         <AnimatePresence exitBeforeEnter>
             <AnimateSharedLayout>
                 <GlobalProvider>
                     <BreakpointProvider queries={queries}>
-                        <Div100vh>
-                            <Loading loading={loading} />
-                            <Component {...pageProps} setLoading={setLoading} />
-                        </Div100vh>
+                        {/* <Div100vh> */}
+                        <Loading loading={loading} />
+                        <Component {...pageProps} setLoading={setLoading} />
+                        {/* </Div100vh> */}
                     </BreakpointProvider>
                 </GlobalProvider>
             </AnimateSharedLayout>

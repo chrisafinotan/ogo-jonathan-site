@@ -7,6 +7,7 @@
     --main-bg-white: #fff;
     --main-bg-yellow: #cbd660;
     --main-bg-brown: #825f45;
+    --app-height: 100%;
 }
 
 html {
@@ -22,6 +23,8 @@ body,
     padding: 0;
     margin: 0;
     overflow: hidden;
+    width: 100%;
+    height: var(--app-height);
 }
 
 body {
@@ -48,10 +51,8 @@ a {
 
 .siteContent {
     width: 100%;
-    border: 2px solid red;
-    height: 100%;
-    /* padding: 1rem; */
-    /* z-index: 500; */
+    height: 100vh;
+    height: var(--app-height);
     position: fixed;
     box-sizing: border-box;
 }

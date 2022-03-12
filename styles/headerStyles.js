@@ -52,9 +52,9 @@ export const Logo = styled.div`
         transform: translate(0%, 0%);
         // bottom: 2px;
         animation: ${blink} 3s linear infinite;
+        transition: all 0.5s ease-out;
         &:hover {
             transform: scale(2);
-            transition: all 0.5s ease-out;
         }
     }
 `;

@@ -127,7 +127,7 @@ export default function Layout({ children, projects }) {
             <Head>
                 <title>Ogo Jonathan</title>
             </Head>
-            {breakpoints.lg && <CCursor toggleMenu={toggleMenu} />}
+            {!breakpoints.md && <CCursor toggleMenu={toggleMenu} />}
 
             <Header
                 onCursor={onCursor}

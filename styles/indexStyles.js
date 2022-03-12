@@ -20,7 +20,6 @@ export const IndexWrapper = styled(motion.div)`
     position: relative;
     width: 100%;
     height: 100%;
-    border: 3px solid purple;
     box-sizing: border-box;
 `;
 
@@ -131,11 +130,13 @@ export const ContentBox = styled(motion.div)`
 `;
 
 export const TitleBanner = styled(motion.div)`
-    position: relative;
+    position: absolute;
+    top: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: 100%;
+    width: 100%;
     pointer-events: none;
     .text {
         // transform: rotateZ(90deg);

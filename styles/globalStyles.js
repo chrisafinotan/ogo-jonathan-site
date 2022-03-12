@@ -227,6 +227,7 @@ export const Cursor = styled.div`
         border: 4px solid ${(props) => props.theme.text} !important;
         top: ${(props) => props.theme.top} !important;
         left: ${(props) => props.theme.left} !important;
+        transition: border 0.5s ease-in-out;
     }
     &.wrapped {
         transition: all 0.1s ease-out;
@@ -240,11 +241,13 @@ export const Cursor = styled.div`
         border-radius: 2em;
     }
     &.nav-open {
-        background: ${(props) => props.theme.text};
+        background: ${(props) => props.theme.inv_text};
+        border: 4px solid ${(props) => props.theme.inv_text} !important;
     }
     &.nav-open {
         &.locked,
         &.wrapped {
+            transition: all 0.1s ease-out;
             border: 4px solid ${(props) => props.theme.inv_text} !important;
         }
     }

@@ -5,17 +5,22 @@ import {
     useGlobalDispatchContext,
     useGlobalStateContext,
 } from "../context/globalContext";
-import { getAllHomeProjects, getAllProjects } from "../lib/projectsLib";
+import {
+    getAllHomeProjects,
+    getAllProjects,
+} from "../lib/projectsLib";
 import { ContentBox, IndexWrapper, TitleBanner } from "../styles/indexStyles";
 import { Container } from "../styles/globalStyles";
 import { motion, useAnimation, AnimatePresence } from "framer-motion";
-import { sleep } from "../lib/projectsLib";
 import { useBreakpoint } from "../context/breakpointContext";
 import { useRouter } from "next/router";
 
 export async function getStaticProps() {
     let projects = await getAllHomeProjects();
     let projects2 = await getAllProjects();
+    console.log('results', projects2)
+    // let projects3 = getAllProjects2();
+    // console.log("bye", projects3);
     return {
         props: { projects, projects2 },
     };
@@ -140,7 +145,7 @@ export default function Home({ projects, projects2, setLoading }) {
 
     const getArr = () => {
         let newstartcount =
-            breakpoints.lg !== undefined ? (breakpoints.lg ? 3 : 1) : 3;
+            !breakpoints.md !== undefined ? (!breakpoints.md ? 3 : 1) : 3;
         let newArr = Array.from(Array(projects.length)).map((e, i) => {
             return i < newstartcount ? true : false;
         });
@@ -209,7 +214,7 @@ export default function Home({ projects, projects2, setLoading }) {
     };
 
     const getNew = (arr, random) => {
-        console.log("interval", arr);
+        // console.log("interval", arr);
         let newSpawnState = arr;
         let end = newSpawnState.pop();
         newSpawnState.unshift(end);
@@ -246,12 +251,11 @@ export default function Home({ projects, projects2, setLoading }) {
     }, []);
 
     useEffect(() => {
-        console.log("breakpoint changed", breakpoints, spawnInterval);
         let initSpawnState = [],
             random = [];
-        if (breakpoints.lg !== undefined) {
+        if (!breakpoints.md !== undefined) {
             initSpawnState = getArr();
-            random = initrandom(breakpoints.lg);
+            random = initrandom(!breakpoints.md);
         }
         getNew(initSpawnState, random);
         // setup new interval
@@ -263,13 +267,9 @@ export default function Home({ projects, projects2, setLoading }) {
         );
         return () => {
             // clear prev interval if it exists
-            console.log(
-                "i am leaving and cleaning your ugly interval",
-                spawnInterval
-            );
             clearInterval(spawnInterval);
         };
-    }, [breakpoints.lg]);
+    }, [breakpoints]);
 
     const onCursor = (cursorType) => {
         cursorType = (cursorStyles.includes(cursorType) && cursorType) || false;
@@ -278,7 +278,7 @@ export default function Home({ projects, projects2, setLoading }) {
 
     return (
         <Layout projects={projects2}>
-            <Container fluid ref={mainRef} test>
+            <Container fluid ref={mainRef}>
                 <AnimatePresence>{display}</AnimatePresence>
                 <TitleBanner>
                     <div className="row">

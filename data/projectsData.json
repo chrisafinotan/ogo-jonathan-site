@@ -1,0 +1,82 @@
+{
+    "project1": {
+        "Cover": "project1/project1cover.JPG",
+        "Covertype": "image",
+        "Date": "08/02/1989",
+        "Description": "some description about it",
+        "Files": "project1",
+        "Name": "Project 1"
+    },
+    "lojay": {
+        "Cover": "lojay/lojaycover.JPG",
+        "Covertype": "image",
+        "Date": "08/02/2022",
+        "Description": "some description about it",
+        "Files": "lojay",
+        "Name": "Lojay"
+    },
+    "naijboys": {
+        "Cover": "naijboys/naijboyscover.JPG",
+        "Covertype": "image",
+        "Date": "06/01/2022",
+        "Description": "Naija Boys no dey carry last at all at all\n Naija Boys no dey carry last at all at all.",
+        "Files": "naijboys",
+        "Name": "Naija Boys"
+    },
+    "project4": {
+        "Cover": "lojay/lojaycover.JPG",
+        "Covertype": "image",
+        "Date": "08/02/1989",
+        "Description": "some description about it",
+        "Files": "lojay",
+        "Name": "Project 3"
+    }, 
+    "project5": {
+        "Cover": "lojay/lojaycover.JPG",
+        "Covertype": "image",
+        "Date": "08/02/1989",
+        "Description": "some description about it",
+        "Files": "lojay",
+        "Name": "Project 3"
+    }, 
+    "project6": {
+        "Cover": "lojay/lojaycover.JPG",
+        "Covertype": "image",
+        "Date": "08/02/1989",
+        "Description": "some description about it",
+        "Files": "lojay",
+        "Name": "Project 3"
+    }, 
+    "project7": {
+        "Cover": "lojay/lojaycover.JPG",
+        "Covertype": "image",
+        "Date": "08/02/1989",
+        "Description": "some description about it",
+        "Files": "lojay",
+        "Name": "Project 3"
+    }, 
+    "project8": {
+        "Cover": "lojay/lojaycover.JPG",
+        "Covertype": "image",
+        "Date": "08/02/1989",
+        "Description": "some description about it",
+        "Files": "lojay",
+        "Name": "Project 3"
+    }, 
+    "project9": {
+        "Cover": "lojay/lojaycover.JPG",
+        "Covertype": "image",
+        "Date": "08/02/1989",
+        "Description": "some description about it",
+        "Files": "lojay",
+        "Name": "Project 3"
+    }, 
+    "project10": {
+        "Cover": "lojay/lojaycover.JPG",
+        "Covertype": "image",
+        "Date": "08/02/1989",
+        "Description": "some description about it",
+        "Files": "lojay",
+        "Name": "Project 3"
+    }
+}

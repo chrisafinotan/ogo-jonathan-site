@@ -134,7 +134,9 @@ const Navigation = ({
                                                     icon={faCamera}
                                                 />
                                             </span> */}
-                                            <span className="index">{`${index}`}</span>
+                                            <span className="index">{`${
+                                                index + 1
+                                            }`}</span>
                                             <span>{route.name}</span>
                                         </motion.div>
                                     </Link>
@@ -243,24 +245,26 @@ const Navigation = ({
                     className="aboutText__span"
                 >
                     <motion.div variants={spanText} style={{ originX: 0 }}>
-                        BLAH BLAH BLAH BLAH ...This is taking longer than
-                        expected
+                        Nigerian born portrait and fashion photographer based in
+                        Canada.
                     </motion.div>
                     <motion.div variants={spanText} style={{ originX: 0 }}>
-                        words words words words words i actually typed it out...
-                        not copy and paste
+                        My art is an expression of my freedom.
                     </motion.div>
                     <motion.div variants={spanText} style={{ originX: 0 }}>
-                        Lorem ipsum dolor sit amet consectetur, adipisicing
+                        I present my work as if it were a boundless blank
+                        canvas,
                     </motion.div>
                     <motion.div variants={spanText} style={{ originX: 0 }}>
-                        elit. Aliquid cupiditate dolores suscipit error, ratione
+                        rarely bearing a fixed meaning.
                     </motion.div>
                     <motion.div variants={spanText} style={{ originX: 0 }}>
-                        accusamus explicabo aperiam! Officiis esse obcaecati
+                        Providing my viewers with the opportunity to create
+                        meaning,
                     </motion.div>
                     <motion.div variants={spanText} style={{ originX: 0 }}>
-                        iusto, ipsam cupiditate.
+                        their interpretations ultimately paint the picture
+                        through their emotional response.
                     </motion.div>
                 </motion.div>
             </motion.div>
@@ -405,10 +409,7 @@ const Navigation = ({
                                 spaceBetween={!breakpoints.sm}
                                 row={breakpoints.md}
                             >
-                                <Flex
-                                    spaceBetween
-                                    height={"fit-content"}
-                                >
+                                <Flex spaceBetween height={"fit-content"}>
                                     {views.map((el, index) => (
                                         <H2
                                             key={`view_${index}`}
@@ -429,10 +430,7 @@ const Navigation = ({
                                         </H2>
                                     ))}
                                 </Flex>
-                                <Flex
-                                    spaceBetween
-                                    gap={30}
-                                >
+                                <Flex spaceBetween gap={30}>
                                     <FooterContent
                                         ref={phoneref}
                                         onMouseLeave={onCursor}

@@ -127,6 +127,7 @@ export const ImagesContainer = styled(motion.div)`
     }
     &:last-child {
         .projectImageWrapper .image {
+            
             padding-bottom: 20vh;
         }
     }

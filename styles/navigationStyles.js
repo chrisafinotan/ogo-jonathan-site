@@ -134,7 +134,10 @@ export const NavList = styled.div`
                 overflow: hidden;
                 width: fit-content;
                 .link {
-                    color: ${(props) => props.theme.background};
+                    color: ${(props) => props.theme.background};\
+                    span {
+                        color: ${(props) => props.theme.inv_text};
+                    }
                     position: relative;
                     display: flex;
                     gap: 0.4rem;

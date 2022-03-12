@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import Layout from "../../components/layout";
 import { useBreakpoint } from "../../context/breakpointContext";
@@ -97,10 +97,8 @@ export default function work({
     const [linkIndex, setLinkIndex] = useState(1);
     const [play, setplay] = useState(false);
     const [pics, setpics] = useState(projectPictures);
-    const [display, setDisplay] = useState("loading");
     const router = useRouter();
     // console.log(projectData, pics, projectID);
-    const currentRoute = useRef(null);
 
     const getProjectIndex = () => {
         let index = projects.findIndex((el) => el.id === projectID);
@@ -115,9 +113,16 @@ export default function work({
         setLinkIndex(index);
     };
 
-    const forceRefresh = () => {
-        router.reload(window.location.pathname);
-    };
+    useEffect(() => {
+        const handleRouteChange = () => {
+            window.scrollTo(0, 0);
+            if (swiperRef && swiperRef.current && swiperRef.current.swiper) {
+                swiperRef.current.swiper.slideTo(0);
+            }
+        };
+        router.events.on("routeChangeComplete", () => handleRouteChange());
+        setLoading(false);
+    }, []);
 
     useEffect(() => {
         getProjectIndex();
@@ -129,17 +134,6 @@ export default function work({
         });
         setplay(false);
     }, [projectID]);
-
-    useEffect(() => {
-        const handleRouteChange = () => {
-            window.scrollTo(0, 0);
-            if (swiperRef && swiperRef.current && swiperRef.current.swiper) {
-                swiperRef.current.swiper.slideTo(0);
-            }
-        };
-        router.events.on("routeChangeComplete", () => handleRouteChange());
-        setLoading(false);
-    }, []);
 
     useEffect(() => {
         if (swiperRef && swiperRef.current && swiperRef.current.swiper) {
@@ -347,7 +341,6 @@ export default function work({
                 </Container>
             )}
             <Links
-            // onClick={() => forceRefresh()}
             >
                 {prevProj && (
                     <Link href={`/project/${projects[linkIndex - 1].id}`}>

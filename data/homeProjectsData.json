@@ -1,15 +1,141 @@
 {
-    "homeproject1": {
-        "File": "lojay/lojaycover.JPG",
-        "Link": "lojay",
-        "Name": "LOJAY",
+    "home__youngWildFree2": {
+        "File": "youngWildFree2/A_Projectcover.JPG",
+        "Link": "youngWildFree2",
+        "Name": "Young Wild Free 2",
+        "Size": "small",
+        "Type": "image"
+    },
+    "home__youngWildFree": {
+        "File": "youngWildFree/A_Projectcover.JPG",
+        "Link": "youngWildFree",
+        "Name": "Young Wild Free",
+        "Size": "small",
+        "Type": "image"
+    },
+    "home__yasmine": {
+        "File": "yasmine/A_Projectcover.JPG",
+        "Link": "yasmine",
+        "Name": "Yasmine",
+        "Size": "small",
+        "Type": "image"
+    },
+    "home__yas_maima": {
+        "File": "yas_maima/A_Projectcover.JPG",
+        "Link": "yasmine",
+        "Name": "Yas and Maima",
         "Size": "medium",
         "Type": "image"
     },
-    "homeproject_naijboys": {
-        "File": "naijboys/naijboyscover.JPG",
-        "Link": "naijboys",
-        "Name": "Naija Boys",
+    "home__tobi": {
+        "File": "tobi/A_Projectcover.jpg",
+        "Link": "tobi",
+        "Name": "Paradise",
+        "Size": "medium",
+        "Type": "image"
+    },
+    "home__tasia": {
+        "File": "tasia/A_Projectcover.JPG",
+        "Link": "tasia",
+        "Name": "Tasia",
+        "Size": "medium",
+        "Type": "image"
+    },
+    "home__servereNature": {
+        "File": "severeNature/A_Projectcover.JPG",
+        "Link": "severeNature",
+        "Name": "Jungle of Africa",
+        "Size": "large",
+        "Type": "image"
+    },
+    "home__akin": {
+        "File": "portfolioWorkAkin/A_Projectcover.JPG",
+        "Link": "portfolioWorkAkin",
+        "Name": "Akin",
+        "Size": "large",
+        "Type": "image"
+    },
+    "home__onlyFanBTS": {
+        "File": "onlyFanBTS/A_Projectcover.JPG",
+        "Link": "onlyFanBTS",
+        "Name": "Only Fan (BTS)",
+        "Size": "large",
+        "Type": "image"
+    },
+    "home__omar": {
+        "File": "omar/A_Projectcover.JPG",
+        "Link": "omar",
+        "Name": "Omar",
+        "Size": "small",
+        "Type": "image"
+    },
+    "home__oddminds": {
+        "File": "oddminds/A_Projectcover.JPG",
+        "Link": "oddminds",
+        "Name": "OddMinds",
+        "Size": "medium",
+        "Type": "image"
+    },
+    "home__lojay": {
+        "File": "lojay/A_Projectcover.JPG",
+        "Link": "lojay",
+        "Name": "Lojay",
+        "Size": "small",
+        "Type": "image"
+    },
+    "home__jin": {
+        "File": "jin/A_Projectcover.JPG",
+        "Link": "jin",
+        "Name": "Jin",
+        "Size": "large",
+        "Type": "image"
+    },
+    "home__jakeMarcelo": {
+        "File": "jakeMarcelo/A_Projectcover.JPG",
+        "Link": "jakeMarcelo",
+        "Name": "Jake Marcelo",
+        "Size": "large",
+        "Type": "image"
+    },
+    "home__imen": {
+        "File": "imen/A_Projectcover.JPG",
+        "Link": "imen",
+        "Name": "Imen",
+        "Size": "large",
+        "Type": "image"
+    },
+    "home__gen2care": {
+        "File": "gen2care/A_Projectcover.JPG",
+        "Link": "gen2care",
+        "Name": "Gen2Care",
+        "Size": "large",
+        "Type": "image"
+    },
+    "home__essy_comfort": {
+        "File": "essy_comfort/A_Projectcover.JPG",
+        "Link": "essy_comfort",
+        "Name": "Essy & Comfort",
+        "Size": "large",
+        "Type": "image"
+    },
+    "home__dija": {
+        "File": "dija/A_Projectcover.JPG",
+        "Link": "dija",
+        "Name": "Dija",
+        "Size": "large",
+        "Type": "image"
+    },
+    "home__anthony": {
+        "File": "anthony/A_Projectcover.JPG",
+        "Link": "anthony",
+        "Name": "Dija",
+        "Size": "small",
+        "Type": "image"
+    },
+    "home__alaa": {
+        "File": "alaa/A_Projectcover.JPG",
+        "Link": "alaa",
+        "Name": "Alaa",
         "Size": "large",
         "Type": "image"
     }

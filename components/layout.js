@@ -83,11 +83,13 @@ export default function Layout({ children, projects }) {
 
     const ferhatTheme = {
         background: "#825f45",
-        text: "#797d62",
+        // text: "#797d62",
+        text: "#c8691c",
         main: "#c8691c",
         inv_background: "#797d62",
         inv_text: "#e4ceaf",
-        inv_main: "#825f45",
+        // inv_main: "#825f45",
+        inv_main: "#e4ceaf",
         left: `${hamburgerPosition.x}px`,
         top: `${hamburgerPosition.y}px`,
         width: `${hamburgerPosition.width}px`,

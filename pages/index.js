@@ -48,7 +48,7 @@ let big = { left: 10, top: 10, height: 80, width: 80 };
 const RandomizeParams = (index, size) => {
     let width = size ? sizes[`${size}`][0] : GetRandomInt(minW, maxW);
     let height = size ? sizes[`${size}`][1] : GetRandomInt(minH, maxH);
-    width = 45;
+    width = 25;
     // return { left: 15, top: 15, height: 70, width: 70 };
 
     if (index % 3 === 1) {
@@ -83,12 +83,12 @@ const RandomizeParams = (index, size) => {
 
 const minW = 20,
     maxW = 40,
-    minH = 30,
+    minH = 18,
     maxH = 40;
 
 const sizes = {
     small: [minW, minH, 4],
-    medium: [30, 35, 3],
+    medium: [30, 30, 3],
     large: [maxW, maxH, 2],
 };
 
@@ -121,7 +121,7 @@ const item2 = {
 };
 
 export default function Home({ projects, projects2, setLoading }) {
-    const transitionTime = 6;
+    const transitionTime = 3;
     const mainRef = useRef(null);
     const router = useRouter();
     const { cursorStyles } = useGlobalStateContext();

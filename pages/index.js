@@ -18,9 +18,6 @@ import { useRouter } from "next/router";
 export async function getStaticProps() {
     let projects = await getAllHomeProjects();
     let projects2 = await getAllProjects();
-    console.log('results', projects2)
-    // let projects3 = getAllProjects2();
-    // console.log("bye", projects3);
     return {
         props: { projects, projects2 },
     };

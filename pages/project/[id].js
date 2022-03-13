@@ -22,6 +22,7 @@ import {
     StyledSwiperPagination,
     StyledSwiperNavBtn,
     StyledSwiperWrapper,
+    StyledImgWrapper,
 } from "../../styles/projectStyles";
 import {
     projectsContainer__motion,
@@ -102,7 +103,6 @@ export default function work({
     const [ready, setReady] = useState(false);
 
     const router = useRouter();
-    // console.log(projectData, pics, projectID);
 
     const getProjectIndex = () => {
         let index = projects.findIndex((el) => el.id === projectID);
@@ -121,8 +121,7 @@ export default function work({
         const handleRouteChange = () => {
             window.scrollTo(0, 0);
             setLoadStatus(0);
-            setReady(false)
-            // console.log('route change')
+            setReady(false);
             if (swiperRef && swiperRef.current && swiperRef.current.swiper) {
                 swiperRef.current.swiper.update();
                 swiperRef.current.swiper.slideTo(0);
@@ -144,9 +143,6 @@ export default function work({
     }, [projectID]);
 
     useEffect(() => {
-        if (swiperRef && swiperRef.current && swiperRef.current.swiper) {
-            // swiperRef.current.swiper.slideTo(0);
-        }
         setpics((prev) => [...projectPictures]);
     }, [projectPictures]);
 
@@ -161,7 +157,6 @@ export default function work({
     const handlePlayPause = () => {
         setplay(!play);
         if (swiperRef && swiperRef.current) {
-            // console.log(swiperRef.current.swiper.autoplay);
             play
                 ? swiperRef.current.swiper.autoplay.stop()
                 : swiperRef.current.swiper.autoplay.start();
@@ -300,7 +295,6 @@ export default function work({
                                                 `${projectID}_pic`
                                             }
                                             key={`${index}_project_projectPlrg`}
-                                            // src={el.pic}
                                             variants={
                                                 !el.background &&
                                                 project__motion
@@ -310,21 +304,16 @@ export default function work({
                                             <Image
                                                 src={`${el.pic}`}
                                                 onLoadingComplete={() => {
-                                                    // console.log(
-                                                    //     "loaded",
-                                                    //     index,
-                                                    //     el.name
-                                                    // );
-                                                    setLoadStatus(prev => prev+1);
+                                                    setLoadStatus(
+                                                        (prev) => prev + 1
+                                                    );
                                                 }}
                                                 alt={el.name}
                                                 width={el.width}
                                                 height={el.height}
-                                                // loading="eager"
                                                 placeholder="empty"
                                                 priority={true}
                                                 layout="responsive"
-                                                // layout="fill"
                                             ></Image>
                                         </StyledSwiperImg>
                                     </SwiperSlide>
@@ -369,10 +358,30 @@ export default function work({
                                         className="projectImageWrapper"
                                         variants={project__motion}
                                     >
-                                        <img
-                                            src={el.pic}
-                                            className="image"
-                                        ></img>
+                                        <StyledImgWrapper
+                                            layoutId={
+                                                el.background &&
+                                                `${projectID}_pic`
+                                            }
+                                            key={`${index}_project_projectP__sml`}
+                                            variants={project__motion}
+                                            AR={el.width / el.height}
+                                        >
+                                            <Image
+                                                src={`${el.pic}`}
+                                                onLoadingComplete={() => {
+                                                    setLoadStatus(
+                                                        (prev) => prev + 1
+                                                    );
+                                                }}
+                                                alt={el.name}
+                                                width={el.width}
+                                                height={el.height}
+                                                placeholder="empty"
+                                                priority={true}
+                                                layout="responsive"
+                                            ></Image>
+                                        </StyledImgWrapper>
                                     </motion.div>
                                 );
                             })}
@@ -384,11 +393,6 @@ export default function work({
                 {prevProj && (
                     <Link href={`/project/${projects[linkIndex - 1].id}`}>
                         <PrevLink
-                            // onClick={() =>
-                            //     router.push(
-                            //         `/project/${projects[linkIndex - 1].id}`
-                            //     )
-                            // }
                             onMouseEnter={() => onCursor("pointertheme")}
                             onMouseLeave={onCursor}
                         >
@@ -402,11 +406,6 @@ export default function work({
                 {nextProj && (
                     <Link href={`/project/${projects[linkIndex + 1].id}`}>
                         <NextLink
-                            // onClick={() =>
-                            //     router.push(
-                            //         `/project/${projects[linkIndex + 1].id}`
-                            //     )
-                            // }
                             onMouseEnter={() => onCursor("pointertheme")}
                             onMouseLeave={onCursor}
                         >

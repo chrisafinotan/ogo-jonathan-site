@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 
 export const StyledSwiperImg = styled(motion.div)`
     display: block;
-    // width: 40vw;
     /* aspect-ratio: 16/9; */
     height: 100%;
     z-index: 9;
@@ -15,6 +14,17 @@ export const StyledSwiperImg = styled(motion.div)`
     img {
         width: 100% !important;
         // object-fit: contain;
+    }
+`;
+
+export const StyledImgWrapper = styled(motion.div)`
+    display: block;
+    // height: 100%;
+    width: 100%;
+    z-index: 9;
+    position: relative;
+    aspect-ratio:  ${(props) => props.AR};
+    img {
     }
 `;
 

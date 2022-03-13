@@ -406,7 +406,7 @@ export const NavAbout = styled.div`
     }
     .aboutDesc {
         width: 100%;
-        height: 3rem;
+        height: 5rem;
         font-size: 3em;
         position: relative;
         display: flex;
@@ -415,7 +415,8 @@ export const NavAbout = styled.div`
     }
     .aboutText {
         width: 100%;
-        height: 10em;
+        height: 100%;
+        min-height: 15em;
         position: relative;
         display: flex;
         justify-content: center;

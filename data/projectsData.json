@@ -85,7 +85,9 @@
         "Date": "07/14/2019",
         "Description": "Work for OddMinds",
         "Files": "oddminds",
-        "Name": "OddMinds"
+        "Name": "OddMinds",
+        "Category": "Branded",
+        "Tag": "oddminds"
     },
     "lojay": {
         "Cover": "lojay/A_Projectcover.JPG",
@@ -125,7 +127,9 @@
         "Date": "05/25/2021",
         "Description": "Gen2Care \n Promotional content for Gen2Care ",
         "Files": "gen2care",
-        "Name": "Gen2Care"
+        "Name": "Gen2Care",
+        "Category": "Branded",
+        "Tag": "company name"
     },
     "essy_comfort": {
         "Cover": "essy_comfort/A_Projectcover.JPG",

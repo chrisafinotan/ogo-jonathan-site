@@ -73,6 +73,20 @@ export const NavList = styled.div`
     * {
         box-sizing: border-box;
     }
+    .categories {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 30%;
+        font-size: 1rem;
+        text-transform: uppercase;
+        font-weight: 900;
+        .active {
+            text-decoration: underline ${(props) => props.theme.inv_main};
+            text-decoration-thickness: 0.3em;
+        }
+    }
     .list {
         height: 100%;
         position: relative;
@@ -134,8 +148,8 @@ export const NavList = styled.div`
                 overflow: hidden;
                 width: fit-content;
                 .link {
-                    color: ${(props) => props.theme.background};\
-                    span {
+                    color: ${(props) => props.theme.background};
+                    \ span {
                         color: ${(props) => props.theme.inv_text};
                     }
                     position: relative;
@@ -146,6 +160,11 @@ export const NavList = styled.div`
                         font-size: 0.4em;
                         opacity: 0.3;
                         align-self: start;
+                    }
+                    .tag {
+                        font-size: 0.4em;
+                        opacity: 0.3;
+                        align-self: end;
                     }
                     &:hover {
                         z-index: 6;
@@ -392,8 +411,8 @@ export const H2 = styled.span`
     margin: 0.5em 1em;
     font-size: 1.5em;
     &.activeView {
-        // text-decoration-color: ${(props) => props.theme.inv_main};
         text-decoration: underline ${(props) => props.theme.inv_main};
+        text-decoration-thickness: 0.3em;
     }
 `;
 

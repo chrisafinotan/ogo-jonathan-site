@@ -5,10 +5,7 @@ import {
     useGlobalDispatchContext,
     useGlobalStateContext,
 } from "../context/globalContext";
-import {
-    getAllHomeProjects,
-    getAllProjects,
-} from "../lib/projectsLib";
+import { getAllHomeProjects, getAllProjects } from "../lib/projectsLib";
 import { ContentBox, IndexWrapper, TitleBanner } from "../styles/indexStyles";
 import { Container } from "../styles/globalStyles";
 import { motion, useAnimation, AnimatePresence } from "framer-motion";
@@ -17,9 +14,10 @@ import { useRouter } from "next/router";
 
 export async function getStaticProps() {
     let projects = await getAllHomeProjects();
-    let projects2 = await getAllProjects();
+    let navProjects = await getAllProjects();
+    console.log("server", projects);
     return {
-        props: { projects, projects2 },
+        props: { projects, navProjects },
     };
 }
 
@@ -120,7 +118,7 @@ const item2 = {
     exit: { opacity: 0, x: 1000 },
 };
 
-export default function Home({ projects, projects2, setLoading }) {
+export default function Home({ projects, navProjects, setLoading }) {
     const transitionTime = 3;
     const mainRef = useRef(null);
     const router = useRouter();
@@ -149,12 +147,34 @@ export default function Home({ projects, projects2, setLoading }) {
         return newArr;
     };
 
+    const MapImages = (list) => {
+        return list.map((el, index) => {
+            return el.type.includes("im") ? (
+                <img
+                    src={el.content}
+                    onLoad={() => {
+                        // console.log("i am loaded image", el.content, index);
+                        // let newloadstatus = loadStatus;
+                        // newloadstatus[index] = true;
+                        // setLoadStatus([...newloadstatus]);
+                        setLoadStatus((prev) => (prev <= 3 ? prev + 1 : prev));
+                    }}
+                ></img>
+            ) : (
+                <video src={el.content} loop autoPlay></video>
+            );
+        });
+    };
+
     const [shuffledProjects, setShuffledProject] = useState(() =>
         Shuffle(projects)
     );
+    const [loadedImages, setloadedImages] = useState([]);
+    const [loadStatus, setLoadStatus] = useState(0);
+    const [ready, setReady] = useState(false);
     const [display, setDisplay] = useState(<div>'hello'</div>);
 
-    const SpawnContent = (el, index, random) => {
+    const SpawnContent = (el, index, random, show) => {
         return (
             <ContentBox
                 key={`${el}_${index}`}
@@ -170,19 +190,14 @@ export default function Home({ projects, projects2, setLoading }) {
                 initial="hidden"
                 animate="visible"
                 exit="exit"
-                style={{ originX: 0.5, originY: 0.5 }}
+                // style={{ originX: 0.5, originY: 0.5, opacity: show===true ? '0.5': '0' }}
+                // show={false}
             >
                 <Link href={`/project/${el.link}`}>
-                    <a>
-                        {el.type.includes("im") ? (
-                            <img src={el.content}></img>
-                        ) : (
-                            <video src={el.content} loop autoPlay></video>
-                        )}
-                    </a>
+                    <a>{loadedImages[index]}</a>
                 </Link>
                 <div className="text">
-                    <span>{el.name}</span>
+                    <span>{el.name.toUpperCase()}</span>
                 </div>
             </ContentBox>
         );
@@ -190,12 +205,15 @@ export default function Home({ projects, projects2, setLoading }) {
 
     const SpawnAll = (arrToSpawn, positions) => {
         let arr = arrToSpawn.map((el, index) => {
-            if (el === true)
+            if (el === true) {
+                // console.log("spawn", el);
                 return SpawnContent(
                     shuffledProjects[index],
                     index,
-                    positions[index]
+                    positions[index],
+                    el
                 );
+            }
         });
         setDisplay(
             <IndexWrapper
@@ -239,7 +257,8 @@ export default function Home({ projects, projects2, setLoading }) {
     };
 
     useEffect(() => {
-        setLoading(false);
+        setloadedImages(MapImages(shuffledProjects));
+        // console.log("loaded", loadedImages);
         // console.log("done loading");
         // RefListenAdd(mainRef, ChangeContent, "click");
         return () => {
@@ -248,13 +267,17 @@ export default function Home({ projects, projects2, setLoading }) {
     }, []);
 
     useEffect(() => {
+        (ready === true) && setLoading(false);
+    }, [ready]);
+
+    useEffect(() => {
         let initSpawnState = [],
             random = [];
         if (!breakpoints.md !== undefined) {
             initSpawnState = getArr();
             random = initrandom(!breakpoints.md);
+            getNew(initSpawnState, random);
         }
-        getNew(initSpawnState, random);
         // setup new interval
         let spawnInterval = setInterval(
             getNew,
@@ -268,13 +291,18 @@ export default function Home({ projects, projects2, setLoading }) {
         };
     }, [breakpoints]);
 
+    useEffect(() => {
+        // console.log("load status", loadStatus);
+        if (loadStatus >= 3) setReady(true);
+    }, [loadStatus]);
+
     const onCursor = (cursorType) => {
         cursorType = (cursorStyles.includes(cursorType) && cursorType) || false;
         dispatch({ type: "CURSOR_TYPE", cursorType: cursorType });
     };
 
     return (
-        <Layout projects={projects2}>
+        <Layout projects={navProjects}>
             <Container fluid ref={mainRef}>
                 <AnimatePresence>{display}</AnimatePresence>
                 <TitleBanner>

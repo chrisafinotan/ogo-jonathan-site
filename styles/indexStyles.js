@@ -30,8 +30,9 @@ export const ContentBox = styled(motion.div)`
     aspect-ratio: 9/16;
     top: 10vh;
     left: 0;
-    transform-origin: center;
+    // transform-origin: center;
     // transform: translate(-50%, -50%);
+    // opacity: 0 !important;
     ${(props) =>
         props.hide &&
         css`

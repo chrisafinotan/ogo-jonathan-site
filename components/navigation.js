@@ -38,6 +38,7 @@ const Navigation = ({
     onCursor,
     setHamburgerPosition,
 }) => {
+    // console.log(projects);
     const instagramref = useRef(null);
     const facebookref = useRef(null);
     const phoneref = useRef(null);
@@ -51,6 +52,8 @@ const Navigation = ({
         video: "featured-video.mp4",
         key: "0",
     });
+    const [category, setCategory] = useState("All");
+    const categories = ["All", "Branded", "Photoshoot"];
 
     const breakpoints = useBreakpoint();
 
@@ -58,6 +61,19 @@ const Navigation = ({
         return projects ? (
             !breakpoints.md ? (
                 <NavList>
+                    <div className="categories">
+                        {categories.map((el) => (
+                            <div
+                                key={`category${el}`}
+                                onMouseEnter={() => onCursor("pointer")}
+                                onMouseLeave={onCursor}
+                                onClick={() => setCategory(el)}
+                                className={el === category ? "active" : ""}
+                            >
+                                {el}
+                            </div>
+                        ))}
+                    </div>
                     <div className="list">
                         <div className="scroll">
                             <span
@@ -91,57 +107,67 @@ const Navigation = ({
                         </div>
                         <ul ref={navListScroll2ref}>
                             {/* {projects.map((route, index) => ( */}
-                            {projects.map((route, index) => (
-                                <motion.li
-                                    key={`large_${route.id}_${index}`}
-                                    onMouseEnter={() => onCursor("pointer")}
-                                    onMouseLeave={onCursor}
-                                    onHoverStart={() =>
-                                        setRevealContent({
-                                            show: true,
-                                            content: route.content,
-                                            key: `route_${index}`,
-                                            type: route.type,
-                                        })
-                                    }
-                                    onHoverEnd={() =>
-                                        setRevealContent({
-                                            show: false,
-                                            content: route.content,
-                                            key: `route_${index}`,
-                                            type: route.type,
-                                        })
-                                    }
-                                    onClick={() => {
-                                        setToggleMenu(false);
-                                    }}
-                                >
-                                    <Link href={`/project/${route.id}`}>
-                                        <motion.div
-                                            className="link"
-                                            whileHover={{
-                                                x: 0,
-                                                transition: {
-                                                    duration: 0.4,
-                                                    ease: [
-                                                        0.6, 0.05, -0.01, 0.9,
-                                                    ],
-                                                },
-                                            }}
-                                        >
-                                            {/* <span className="arrow">
+                            {projects
+                                .filter((el) => {
+                                    return category !== "All"
+                                        ? el.category === category
+                                        : el;
+                                })
+                                .map((route, index) => (
+                                    <motion.li
+                                        key={`large_${route.id}_${index}`}
+                                        onMouseEnter={() => onCursor("pointer")}
+                                        onMouseLeave={onCursor}
+                                        onHoverStart={() =>
+                                            setRevealContent({
+                                                show: true,
+                                                content: route.content,
+                                                key: `route_${index}`,
+                                                type: route.type,
+                                            })
+                                        }
+                                        onHoverEnd={() =>
+                                            setRevealContent({
+                                                show: false,
+                                                content: route.content,
+                                                key: `route_${index}`,
+                                                type: route.type,
+                                            })
+                                        }
+                                        onClick={() => {
+                                            setToggleMenu(false);
+                                        }}
+                                    >
+                                        <Link href={`/project/${route.id}`}>
+                                            <motion.div
+                                                className="link"
+                                                whileHover={{
+                                                    x: 0,
+                                                    transition: {
+                                                        duration: 0.4,
+                                                        ease: [
+                                                            0.6, 0.05, -0.01,
+                                                            0.9,
+                                                        ],
+                                                    },
+                                                }}
+                                            >
+                                                {/* <span className="arrow">
                                                 <FontAwesomeIcon
                                                     icon={faCamera}
                                                 />
                                             </span> */}
-                                            <span className="index">{`${
-                                                index + 1
-                                            }`}</span>
-                                            <span>{route.name}</span>
-                                        </motion.div>
-                                    </Link>
-                                </motion.li>
-                            ))}
+                                                <span className="index">{`${
+                                                    index + 1
+                                                }`}</span>
+                                                <span>{route.name}</span>
+                                                <span className="tag">
+                                                    {route.tag}
+                                                </span>
+                                            </motion.div>
+                                        </Link>
+                                    </motion.li>
+                                ))}
                         </ul>
                     </div>
                 </NavList>
@@ -300,14 +326,17 @@ const Navigation = ({
     };
 
     const scrollChecker = (element) => {
-        console.log(
-            "scrollchecker",
-            element.current.offsetHeight,
-            element.current.scrollTop,
-            element.current.scrollHeight,
-            atBottom
-        );
-        if (element.current.offsetHeight === element.current.scrollHeight) {
+        // console.log(
+        //     "scrollchecker",
+        //     element.current.offsetHeight,
+        //     element.current.scrollTop,
+        //     element.current.scrollHeight,
+        //     atBottom
+        // );
+        if (
+            element.current.offsetHeight >= element.current.scrollHeight - 4 &&
+            element.current.offsetHeight <= element.current.scrollHeight + 4
+        ) {
             setatBottom("null");
         } else if (
             element.current.offsetHeight + element.current.scrollTop >=
@@ -347,7 +376,7 @@ const Navigation = ({
     useEffect(() => {
         views[0].view;
         setMenuView(views[0]);
-    }, [breakpoints.md, atBottom]);
+    }, [breakpoints.md, atBottom, category]);
 
     useEffect(() => {
         navListScrollref.current && scrollChecker(navListScrollref);
@@ -378,6 +407,7 @@ const Navigation = ({
         navListScrollref,
         navListScroll2ref,
         menuView,
+        category,
     ]);
 
     return (

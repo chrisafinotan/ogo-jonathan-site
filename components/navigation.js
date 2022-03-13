@@ -53,7 +53,7 @@ const Navigation = ({
         key: "0",
     });
     const [category, setCategory] = useState("All");
-    const categories = ["All", "Branded", "Photoshoot"];
+    const categories = ["All", "Branded"];
 
     const breakpoints = useBreakpoint();
 
@@ -162,7 +162,9 @@ const Navigation = ({
                                                 }`}</span>
                                                 <span>{route.name}</span>
                                                 <span className="tag">
-                                                    {route.tag}
+                                                    {route.category !==
+                                                        "Photoshoot" &&
+                                                        route.category}
                                                 </span>
                                             </motion.div>
                                         </Link>
@@ -173,6 +175,19 @@ const Navigation = ({
                 </NavList>
             ) : (
                 <NavListSmall arrow={arrow}>
+                    <div className="categories">
+                        {categories.map((el) => (
+                            <div
+                                key={`category${el}`}
+                                onMouseEnter={() => onCursor("pointer")}
+                                onMouseLeave={onCursor}
+                                onClick={() => setCategory(el)}
+                                className={el === category ? "active" : ""}
+                            >
+                                {el}
+                            </div>
+                        ))}
+                    </div>
                     <div className="list">
                         <div className="scroll">
                             <span
@@ -207,22 +222,32 @@ const Navigation = ({
                             </span>
                         </div>
                         <ul ref={navListScrollref}>
-                            {projects.map((route, index) => (
-                                <motion.li
-                                    key={`small_${route.id}_${index}`}
-                                    onClick={() => {
-                                        setToggleMenu(false);
-                                    }}
-                                >
-                                    <Link href={`/project/${route.id}`}>
-                                        <motion.div className="link">
-                                            <span className="index">{`${index}`}</span>
-
-                                            <span>{route.name}</span>
-                                        </motion.div>
-                                    </Link>
-                                </motion.li>
-                            ))}
+                            {projects
+                                .filter((el) => {
+                                    return category !== "All"
+                                        ? el.category === category
+                                        : el;
+                                })
+                                .map((route, index) => (
+                                    <motion.li
+                                        key={`small_${route.id}_${index}`}
+                                        onClick={() => {
+                                            setToggleMenu(false);
+                                        }}
+                                    >
+                                        <Link href={`/project/${route.id}`}>
+                                            <motion.div className="link">
+                                                <span className="index">{`${index}`}</span>
+                                                <span>{route.name}</span>
+                                                <span className="tag">
+                                                    {route.category !==
+                                                        "Photoshoot" &&
+                                                        route.category}
+                                                </span>
+                                            </motion.div>
+                                        </Link>
+                                    </motion.li>
+                                ))}
                         </ul>
                     </div>
                 </NavListSmall>

@@ -47,7 +47,7 @@
         "Files": "tasia",
         "Name": "Tasia"
     },
-    "servereNature": {
+    "severeNature": {
         "Cover": "severeNature/A_Projectcover.JPG",
         "Covertype": "image",
         "Date": "12/30/2021",
@@ -111,7 +111,9 @@
         "Date": "11/16/2021",
         "Description": "Jake Marcelo for Severe Nature \n London 2021",
         "Files": "jakeMarcelo",
-        "Name": "Jake Marcelo"
+        "Name": "Jake Marcelo",
+        "Category": "Branded",
+        "Tag": "Severe Nature"
     },
     "imen": {
         "Cover": "imen/A_Projectcover.JPG",

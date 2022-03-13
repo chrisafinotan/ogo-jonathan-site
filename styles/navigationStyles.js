@@ -78,7 +78,7 @@ export const NavList = styled.div`
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        width: 30%;
+        width: 12%;
         font-size: 1rem;
         text-transform: uppercase;
         font-weight: 900;
@@ -213,6 +213,22 @@ export const NavListSmall = styled.div`
     * {
         box-sizing: border-box;
     }
+    .categories {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-self: end;
+        justify-content: center;
+        width: 100%;
+        gap: 1em;
+        font-size: 1rem;
+        text-transform: uppercase;
+        font-weight: 900;
+        .active {
+            text-decoration: underline ${(props) => props.theme.inv_main};
+            text-decoration-thickness: 0.3em;
+        }
+    }
     .list {
         height: 100%;
         display: flex;
@@ -278,6 +294,11 @@ export const NavListSmall = styled.div`
                     .index {
                         font-size: 0.4em;
                         opacity: 0.3;
+                    }
+                    .tag {
+                        font-size: 0.4em;
+                        opacity: 0.3;
+                        align-self: end;
                     }
                     &:after {
                         display: none;

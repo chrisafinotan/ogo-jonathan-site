@@ -15,7 +15,6 @@ import { useRouter } from "next/router";
 export async function getStaticProps() {
     let projects = await getAllHomeProjects();
     let navProjects = await getAllProjects();
-    console.log("server", projects);
     return {
         props: { projects, navProjects },
     };
@@ -40,7 +39,7 @@ const GetRandomInt = (min, max) => {
     return Math.floor(Math.random() * (max - min) + min);
 };
 
-let reg = { left: 25, top: 25, height: 50, width: 50 };
+let reg = { left: 27.5, top: 25, height: 50, width: 45 };
 let big = { left: 10, top: 10, height: 80, width: 80 };
 
 const RandomizeParams = (index, size) => {
@@ -113,13 +112,14 @@ const item = {
 };
 
 const item2 = {
-    hidden: { opacity: 0, x: -1000 },
-    visible: { opacity: 1, x: 0 },
-    exit: { opacity: 0, x: 1000 },
+    hidden: { opacity: 0, y: 1000 },
+    visible: { opacity: 1, y: 0 },
+    visible2: { opacity: 0, y: 1000 },
+    exit: { opacity: 0, y: -1000 },
 };
 
 export default function Home({ projects, navProjects, setLoading }) {
-    const transitionTime = 3;
+    const transitionTime = 4.5;
     const mainRef = useRef(null);
     const router = useRouter();
     const { cursorStyles } = useGlobalStateContext();
@@ -153,11 +153,7 @@ export default function Home({ projects, navProjects, setLoading }) {
                 <img
                     src={el.content}
                     onLoad={() => {
-                        // console.log("i am loaded image", el.content, index);
-                        // let newloadstatus = loadStatus;
-                        // newloadstatus[index] = true;
-                        // setLoadStatus([...newloadstatus]);
-                        setLoadStatus((prev) => (prev <= 3 ? prev + 1 : prev));
+                        setLoadStatus(index);
                     }}
                 ></img>
             ) : (
@@ -165,11 +161,12 @@ export default function Home({ projects, navProjects, setLoading }) {
             );
         });
     };
-
+    // let initshuffle = Shuffle(projects);
+    // console.log('init',initshuffle);
     const [shuffledProjects, setShuffledProject] = useState(() =>
         Shuffle(projects)
     );
-    const [loadedImages, setloadedImages] = useState([]);
+    const [loadedImages, setloadedImages] = useState(() => MapImages(projects));
     const [loadStatus, setLoadStatus] = useState(0);
     const [ready, setReady] = useState(false);
     const [display, setDisplay] = useState(<div>'hello'</div>);
@@ -188,9 +185,9 @@ export default function Home({ projects, navProjects, setLoading }) {
                 custom={index}
                 variants={item2}
                 initial="hidden"
-                animate="visible"
+                animate={show ? "visible" : "visible2"}
                 exit="exit"
-                // style={{ originX: 0.5, originY: 0.5, opacity: show===true ? '0.5': '0' }}
+                style={{ originX: 0.5, originY: 0.5 }}
                 // show={false}
             >
                 <Link href={`/project/${el.link}`}>
@@ -205,15 +202,15 @@ export default function Home({ projects, navProjects, setLoading }) {
 
     const SpawnAll = (arrToSpawn, positions) => {
         let arr = arrToSpawn.map((el, index) => {
-            if (el === true) {
-                // console.log("spawn", el);
-                return SpawnContent(
-                    shuffledProjects[index],
-                    index,
-                    positions[index],
-                    el
-                );
-            }
+            // if (el === true) {
+            // console.log("spawn", el);
+            return SpawnContent(
+                shuffledProjects[index],
+                index,
+                positions[index],
+                el
+            );
+            // }
         });
         setDisplay(
             <IndexWrapper
@@ -233,6 +230,7 @@ export default function Home({ projects, navProjects, setLoading }) {
         let newSpawnState = arr;
         let end = newSpawnState.pop();
         newSpawnState.unshift(end);
+        console.log("getnew", newSpawnState);
         SpawnAll(newSpawnState, random);
     };
 
@@ -257,17 +255,18 @@ export default function Home({ projects, navProjects, setLoading }) {
     };
 
     useEffect(() => {
-        setloadedImages(MapImages(shuffledProjects));
-        // console.log("loaded", loadedImages);
+        // setloadedImages(() => MapImages(shuffledProjects));
+        // setLoading(false);
         // console.log("done loading");
         // RefListenAdd(mainRef, ChangeContent, "click");
         return () => {
             // RefListenRemove(mainRef, ChangeContent, "click");
+            setDisplay(<div>'hello'</div>);
         };
     }, []);
 
     useEffect(() => {
-        (ready === true) && setLoading(false);
+        ready === true && setLoading(false);
     }, [ready]);
 
     useEffect(() => {
@@ -276,8 +275,8 @@ export default function Home({ projects, navProjects, setLoading }) {
         if (!breakpoints.md !== undefined) {
             initSpawnState = getArr();
             random = initrandom(!breakpoints.md);
-            getNew(initSpawnState, random);
         }
+        getNew(initSpawnState, random);
         // setup new interval
         let spawnInterval = setInterval(
             getNew,
@@ -292,8 +291,8 @@ export default function Home({ projects, navProjects, setLoading }) {
     }, [breakpoints]);
 
     useEffect(() => {
-        // console.log("load status", loadStatus);
-        if (loadStatus >= 3) setReady(true);
+        //show screen when half of pictures have loaded
+        if (loadStatus >= shuffledProjects.length / 2) setReady(true);
     }, [loadStatus]);
 
     const onCursor = (cursorType) => {

@@ -151,10 +151,10 @@ export default function Home({ projects, navProjects, setLoading }) {
         return list.map((el, index) => {
             return el.type.includes("im") ? (
                 <img
-                    src={el.content}
                     onLoad={() => {
                         setLoadStatus(index);
                     }}
+                    src={el.content}
                 ></img>
             ) : (
                 <video src={el.content} loop autoPlay></video>

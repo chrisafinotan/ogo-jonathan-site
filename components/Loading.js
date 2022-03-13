@@ -18,7 +18,7 @@ const Loading = ({ loading }) => {
     return (
         <LoadingBanner loading={loading ? "loading" : ""} color={color}>
             <div className="row">
-                <div className="text">OgoJonathan</div>
+                <div className="text">LOADING...</div>
             </div>
         </LoadingBanner>
     );

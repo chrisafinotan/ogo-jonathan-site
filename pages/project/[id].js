@@ -120,13 +120,16 @@ export default function work({
     useEffect(() => {
         const handleRouteChange = () => {
             window.scrollTo(0, 0);
+            setLoadStatus(0);
+            setReady(false)
+            // console.log('route change')
             if (swiperRef && swiperRef.current && swiperRef.current.swiper) {
                 swiperRef.current.swiper.update();
                 swiperRef.current.swiper.slideTo(0);
             }
         };
         router.events.on("routeChangeComplete", () => handleRouteChange());
-        setLoading(false);
+        // setLoading(false);
     }, []);
 
     useEffect(() => {
@@ -147,13 +150,13 @@ export default function work({
         setpics((prev) => [...projectPictures]);
     }, [projectPictures]);
 
-    // useEffect(() => {
-    //     if (loadStatus >= pics.length - 2) setReady(true);
-    // }, [loadStatus]);
+    useEffect(() => {
+        if (loadStatus >= pics.length - 1) setReady(true);
+    }, [loadStatus]);
 
-    // useEffect(() => {
-    //     ready === true && setLoading(false);
-    // }, [ready]);
+    useEffect(() => {
+        ready === true && setLoading(false);
+    }, [ready]);
 
     const handlePlayPause = () => {
         setplay(!play);
@@ -306,22 +309,21 @@ export default function work({
                                         >
                                             <Image
                                                 src={`${el.pic}`}
-                                                onLoad={() => {
-                                                    console.log(
-                                                        "loaded",
-                                                        index,
-                                                        el.name
-                                                    );
-                                                    setLoadStatus(index);
+                                                onLoadingComplete={() => {
+                                                    // console.log(
+                                                    //     "loaded",
+                                                    //     index,
+                                                    //     el.name
+                                                    // );
+                                                    setLoadStatus(prev => prev+1);
                                                 }}
                                                 alt={el.name}
                                                 width={el.width}
                                                 height={el.height}
-                                                loading="eager"
+                                                // loading="eager"
                                                 placeholder="empty"
                                                 priority={true}
-
-                                                // layout="responsive"
+                                                layout="responsive"
                                                 // layout="fill"
                                             ></Image>
                                         </StyledSwiperImg>

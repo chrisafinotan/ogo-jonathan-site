@@ -24,6 +24,7 @@ export const StyledImgWrapper = styled(motion.div)`
     z-index: 9;
     position: relative;
     aspect-ratio:  ${(props) => props.AR};
+
     img {
     }
 `;
@@ -105,10 +106,10 @@ export const ImagesWrapper = styled(motion.div)`
 
 export const ImagesWrapperSmall = styled(motion.div)`
     position: relative;
-    height: 100vh;
+    height: 100%;
     padding: 1em;
     overflow-y: scroll;
-    scroll-snap-type: y proximity;
+    // scroll-snap-type: y proximity;
     color: ${(props) => props.theme.text};
     .info {
         font-size: 2em;
@@ -146,6 +147,10 @@ export const ImagesContainer = styled(motion.div)`
         .projectImageWrapper .image {
             padding-bottom: 20vh;
         }
+    }
+    .endDiv {
+        display: block;
+        min-height: 150px;
     }
 `;
 

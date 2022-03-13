@@ -94,6 +94,7 @@ export default function work({
     const breakpoints = useBreakpoint();
     const elRef = useRef();
     const swiperRef = useRef(null);
+    const containerRef = useRef(null);
     const [nextProj, showNext] = useState(false);
     const [prevProj, showPrev] = useState(false);
     const [linkIndex, setLinkIndex] = useState(1);
@@ -134,16 +135,11 @@ export default function work({
     useEffect(() => {
         getProjectIndex();
         onCursor();
-        window.scrollTo({
-            top: 0,
-            left: 0,
-            behavior: "smooth",
-        });
         setplay(false);
     }, [projectID]);
 
     useEffect(() => {
-        setpics((prev) => [...projectPictures]);
+        setpics((prev) => [...projectPictures, null]);
     }, [projectPictures]);
 
     useEffect(() => {
@@ -151,7 +147,12 @@ export default function work({
     }, [loadStatus]);
 
     useEffect(() => {
-        ready === true && setLoading(false);
+        if (ready === true) {
+            setLoading(false);
+            if (containerRef && containerRef.current) {
+                containerRef.current.scrollIntoView();
+            }
+        }
     }, [ready]);
 
     const handlePlayPause = () => {
@@ -336,7 +337,7 @@ export default function work({
                         animate="show"
                         exit="exit"
                     >
-                        <Info>
+                        <Info ref={containerRef}>
                             <motion.div
                                 className="name"
                                 variants={project__motion}
@@ -352,7 +353,7 @@ export default function work({
                         </Info>
                         <ImagesContainer>
                             {pics.map((el, index) => {
-                                return (
+                                return el !== null ? (
                                     <motion.div
                                         key={`id_${projectData.id}_${index}_img_div_sml`}
                                         className="projectImageWrapper"
@@ -383,6 +384,11 @@ export default function work({
                                             ></Image>
                                         </StyledImgWrapper>
                                     </motion.div>
+                                ) : (
+                                    <motion.div
+                                        key={`id_${projectData.id}_${index}_null_div_sml`}
+                                        className="endDiv"
+                                    ></motion.div>
                                 );
                             })}
                         </ImagesContainer>

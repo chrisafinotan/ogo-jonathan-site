@@ -291,8 +291,7 @@ export default function Home({ projects, navProjects, setLoading }) {
     }, [breakpoints]);
 
     useEffect(() => {
-        //show screen when half of pictures have loaded
-        if (loadStatus >= shuffledProjects.length / 2) setReady(true);
+        if (loadStatus >= shuffledProjects.length - 2) setReady(true);
     }, [loadStatus]);
 
     const onCursor = (cursorType) => {

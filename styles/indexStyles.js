@@ -72,7 +72,6 @@ export const ContentBox = styled(motion.div)`
         position: absolute;
         width: 100%;
         height: 100%;
-
         img {
             // z-index: 9;
             width: 100%;

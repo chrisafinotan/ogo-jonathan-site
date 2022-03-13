@@ -1,14 +1,21 @@
 import styled, { css } from "styled-components";
 import { motion } from "framer-motion";
 
-export const StyledSwiperImg = styled(motion.img)`
+export const StyledSwiperImg = styled(motion.div)`
     display: block;
-    // width: 100%;
+    // width: 40vw;
     /* aspect-ratio: 16/9; */
     height: 100%;
-    object-fit: contain;
-    // margin: 1em;
     z-index: 9;
+    position: relative;
+    aspect-ratio:  ${(props) => props.AR};
+
+    //     props.AR &&
+    //         aspect-ratio: props.AR;
+    img {
+        width: 100% !important;
+        // object-fit: contain;
+    }
 `;
 
 export const StyledSwiperWrapper = styled.div`
@@ -127,7 +134,6 @@ export const ImagesContainer = styled(motion.div)`
     }
     &:last-child {
         .projectImageWrapper .image {
-            
             padding-bottom: 20vh;
         }
     }

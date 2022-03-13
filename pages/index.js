@@ -11,6 +11,7 @@ import { Container } from "../styles/globalStyles";
 import { motion, useAnimation, AnimatePresence } from "framer-motion";
 import { useBreakpoint } from "../context/breakpointContext";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 export async function getStaticProps() {
     let projects = await getAllHomeProjects();
@@ -150,12 +151,20 @@ export default function Home({ projects, navProjects, setLoading }) {
     const MapImages = (list) => {
         return list.map((el, index) => {
             return el.type.includes("im") ? (
-                <img
+                <Image
                     onLoad={() => {
                         setLoadStatus(index);
                     }}
-                    src={el.content}
-                ></img>
+                    src={`/${el.content}`}
+                    alt={el.name}
+                    width={600}
+                    height={450}
+                    // loading="eager"
+                    // layout="responsive"
+                    layout="fill"
+                    // placeholder="blur"
+                    // className="home__image"
+                />
             ) : (
                 <video src={el.content} loop autoPlay></video>
             );
@@ -226,11 +235,9 @@ export default function Home({ projects, navProjects, setLoading }) {
     };
 
     const getNew = (arr, random) => {
-        // console.log("interval", arr);
         let newSpawnState = arr;
         let end = newSpawnState.pop();
         newSpawnState.unshift(end);
-        console.log("getnew", newSpawnState);
         SpawnAll(newSpawnState, random);
     };
 

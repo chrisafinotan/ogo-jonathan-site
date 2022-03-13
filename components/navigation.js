@@ -259,14 +259,13 @@ const Navigation = ({
 
     const AboutView = (
         <NavAbout>
-            <motion.div
+            {/* <motion.div
                 variants={imageWrapper}
                 initial="init"
                 animate="anim"
                 // whileHover="color"
                 className="aboutImageWrapper"
             >
-                {/* <Image */}
                 <img
                     src={profilePicture.src}
                     alt="Profile Picture of Ogo Jonathan"
@@ -276,17 +275,8 @@ const Navigation = ({
                     className="aboutImage"
                     style={{ position: "relative" }}
                 />
-                {/* <Image
-                    src={profilePicture}
-                    alt="Picture of the author"
-                    width="1048px"
-                    height="1048px"
-                    // className="aboutImage"
-                    layout="fill"
-                    style={{ position: "relative" }}
-
-                /> */}
-            </motion.div>
+            </motion.div> */}
+            <motion.div className="aboutDesc">ABOUT ME!</motion.div>
             <motion.div className="aboutText">
                 <motion.div
                     variants={spanContainer}
@@ -490,19 +480,16 @@ const Navigation = ({
                                         ref={phoneref}
                                         onMouseLeave={onCursor}
                                     >
-                                        <Mailto
-                                            email="ogojonathanp@gmail.com"
-                                            subject="Hello & Welcome"
-                                            body="Hello world!"
-                                        >
-                                            ogojonathanp@gmail.com
+                                        <Mailto email="ogojonathanp@gmail.com">
+                                            Email me!
                                         </Mailto>
                                     </FooterContent>
                                     <FooterSocial>
                                         <a
                                             ref={instagramref}
                                             onMouseLeave={onCursor}
-                                            href="https://www.instagram.com/___chr1ss/"
+                                            href="
+                                            https://www.instagram.com/ogojonathan/"
                                             target="_blank"
                                         >
                                             <Instagram />

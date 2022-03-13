@@ -386,10 +386,11 @@ export const NavAbout = styled.div`
     height: 70vh;
     width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 1em;
     align-items: center;
     justify-content: center;
+    font-weight: 800;
     .aboutImageWrapper {
         overflow: hidden;
         .aboutImage {
@@ -403,8 +404,18 @@ export const NavAbout = styled.div`
             max-width: none;
         }
     }
+    .aboutDesc {
+        width: 100%;
+        height: 3rem;
+        font-size: 3em;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
     .aboutText {
         width: 100%;
+        height: 10em;
         position: relative;
         display: flex;
         justify-content: center;

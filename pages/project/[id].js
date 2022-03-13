@@ -47,6 +47,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faStop } from "@fortawesome/free-solid-svg-icons";
+import Image from "next/image";
 
 SwiperCore.use([Navigation, Pagination, Mousewheel, Autoplay, FreeMode]);
 
@@ -97,6 +98,9 @@ export default function work({
     const [linkIndex, setLinkIndex] = useState(1);
     const [play, setplay] = useState(false);
     const [pics, setpics] = useState(projectPictures);
+    const [loadStatus, setLoadStatus] = useState(0);
+    const [ready, setReady] = useState(false);
+
     const router = useRouter();
     // console.log(projectData, pics, projectID);
 
@@ -117,6 +121,7 @@ export default function work({
         const handleRouteChange = () => {
             window.scrollTo(0, 0);
             if (swiperRef && swiperRef.current && swiperRef.current.swiper) {
+                swiperRef.current.swiper.update();
                 swiperRef.current.swiper.slideTo(0);
             }
         };
@@ -141,6 +146,14 @@ export default function work({
         }
         setpics((prev) => [...projectPictures]);
     }, [projectPictures]);
+
+    // useEffect(() => {
+    //     if (loadStatus >= pics.length - 2) setReady(true);
+    // }, [loadStatus]);
+
+    // useEffect(() => {
+    //     ready === true && setLoading(false);
+    // }, [ready]);
 
     const handlePlayPause = () => {
         setplay(!play);
@@ -211,7 +224,10 @@ export default function work({
                         <Swiper
                             className="mySwiperID"
                             observer={true}
-                            // observerParents={true}
+                            observeParents={true}
+                            observeSlideChildren={true}
+                            preloadImages={true}
+                            updateOnImagesReady={true}
                             modules={[
                                 Navigation,
                                 Pagination,
@@ -281,12 +297,34 @@ export default function work({
                                                 `${projectID}_pic`
                                             }
                                             key={`${index}_project_projectPlrg`}
-                                            src={el.pic}
+                                            // src={el.pic}
                                             variants={
                                                 !el.background &&
                                                 project__motion
                                             }
-                                        ></StyledSwiperImg>
+                                            AR={el.width / el.height}
+                                        >
+                                            <Image
+                                                src={`${el.pic}`}
+                                                onLoad={() => {
+                                                    console.log(
+                                                        "loaded",
+                                                        index,
+                                                        el.name
+                                                    );
+                                                    setLoadStatus(index);
+                                                }}
+                                                alt={el.name}
+                                                width={el.width}
+                                                height={el.height}
+                                                loading="eager"
+                                                placeholder="empty"
+                                                priority={true}
+
+                                                // layout="responsive"
+                                                // layout="fill"
+                                            ></Image>
+                                        </StyledSwiperImg>
                                     </SwiperSlide>
                                 );
                             })}
@@ -340,8 +378,7 @@ export default function work({
                     </ImagesWrapperSmall>
                 </Container>
             )}
-            <Links
-            >
+            <Links>
                 {prevProj && (
                     <Link href={`/project/${projects[linkIndex - 1].id}`}>
                         <PrevLink

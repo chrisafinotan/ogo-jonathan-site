@@ -138,5 +138,12 @@
         "Name": "Alaa",
         "Size": "large",
         "Type": "image"
+    },
+    "home__akin2": {
+        "File": "portfolioWorkAkin/B2a_IMG_2591.JPG",
+        "Link": "portfolioWorkAkin",
+        "Name": "Akin",
+        "Size": "large",
+        "Type": "image"
     }
 }

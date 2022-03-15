@@ -276,6 +276,16 @@ export default function work({
                                     >
                                         {projectData.name}
                                     </motion.div>
+                                    {projectData.category !== "Photoshoot" && (
+                                        <motion.div
+                                            className="category"
+                                            variants={project__motion}
+                                        >
+                                            {projectData.category}
+                                            {/* {projectData.tag &&
+                                                ` for ${projectData.tag}`} */}
+                                        </motion.div>
+                                    )}
                                     <motion.div
                                         className="desc"
                                         variants={project__motion}
@@ -344,6 +354,14 @@ export default function work({
                             >
                                 {projectData.name}
                             </motion.div>
+                            {projectData.category !== "Photoshoot" && (
+                                <motion.div
+                                    className="name"
+                                    variants={project__motion}
+                                >
+                                    {projectData.category}
+                                </motion.div>
+                            )}
                             <motion.div
                                 className="desc"
                                 variants={project__motion}

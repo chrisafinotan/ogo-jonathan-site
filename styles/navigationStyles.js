@@ -77,8 +77,9 @@ export const NavList = styled.div`
         display: flex;
         flex-direction: row;
         align-items: center;
-        justify-content: space-between;
-        width: 12%;
+        // justify-content: space-between;
+        // width: 12%;
+        gap: 1em;
         font-size: 1rem;
         text-transform: uppercase;
         font-weight: 900;

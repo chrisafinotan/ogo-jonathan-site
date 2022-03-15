@@ -7,7 +7,7 @@ export const StyledSwiperImg = styled(motion.div)`
     height: 100%;
     z-index: 9;
     position: relative;
-    aspect-ratio:  ${(props) => props.AR};
+    aspect-ratio: ${(props) => props.AR};
 
     //     props.AR &&
     //         aspect-ratio: props.AR;
@@ -23,7 +23,7 @@ export const StyledImgWrapper = styled(motion.div)`
     width: 100%;
     z-index: 9;
     position: relative;
-    aspect-ratio:  ${(props) => props.AR};
+    aspect-ratio: ${(props) => props.AR};
 
     img {
     }
@@ -162,8 +162,14 @@ export const Info = styled(motion.div)`
     text-align: center;
     // border: 2px solid yellow;
     .name {
+        font-weight: 900;
+    }
+    .category {
+        opacity: 0.5;
+        font-size: 0.75rem;
     }
     .desc {
+        margin-top: 1rem;
         width: 100%;
         // border: 2px solid yellow;
     }

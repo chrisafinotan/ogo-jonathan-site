@@ -237,7 +237,7 @@ const Navigation = ({
                                     >
                                         <Link href={`/project/${route.id}`}>
                                             <motion.div className="link">
-                                                <span className="index">{`${index}`}</span>
+                                                <span className="index">{`${index + 1}`}</span>
                                                 <span>{route.name}</span>
                                                 <span className="tag">
                                                     {route.category !==
@@ -471,7 +471,7 @@ const Navigation = ({
                                             }
                                             onMouseLeave={onCursor}
                                         >
-                                            {el.name}
+                                            {el.name.toUpperCase()}
                                         </H2>
                                     ))}
                                 </Flex>

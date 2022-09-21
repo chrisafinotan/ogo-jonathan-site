@@ -17,47 +17,33 @@ const blink = keyframes`
 `;
 
 export const IndexWrapper = styled(motion.div)`
-    position: relative;
-    width: 100%;
-    height: 100%;
+    // position: relative;
+    width: 100vw;
+    height: 100vh;
     box-sizing: border-box;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    grid-auto-rows: minmax(100px, auto);
 `;
 
 export const ContentBox = styled(motion.div)`
-    display: block;
-    position: fixed;
+    // display: block;
+    // position: fixed;
     width: 15vw;
     aspect-ratio: 9/16;
-    top: 10vh;
-    left: 0;
+    // top: 10vh;
+    // left: 0;
     // transform-origin: center;
     // transform: translate(-50%, -50%);
     // opacity: 0 !important;
+    border: 2px solid red;
     ${(props) =>
         props.hide &&
         css`
             display: none;
         `};
-    ${(props) =>
-        props.width &&
-        css`
-            width: ${(props) => props.width}%;
-        `};
-    ${(props) =>
-        props.height &&
-        css`
-            height: ${(props) => props.height}%;
-        `};
-    ${(props) =>
-        props.top &&
-        css`
-            top: ${(props) => props.top}%;
-        `};
-    ${(props) =>
-        props.left &&
-        css`
-            left: ${(props) => props.left}%;
-        `};
+   
     ${(props) =>
         props.ar &&
         css`

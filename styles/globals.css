@@ -1,134 +1,143 @@
 :root {
-    --main-bg-red: #ea281e;
-    --main-bg-blue: #1e76ea;
-    --main-bg-green: #30a52a;
-    --main-bg-orange: #c8691c;
-    --main-bg-black: #000;
-    --main-bg-white: #fff;
-    --main-bg-yellow: #cbd660;
-    --main-bg-brown: #825f45;
-    --app-height: 100%;
+   --main-bg-red: #ea281e;
+   --main-bg-blue: #1e76ea;
+   --main-bg-green: #30a52a;
+   --main-bg-orange: #c8691c;
+   --main-bg-black: #000;
+   --main-bg-white: #fff;
+   --main-bg-yellow: #cbd660;
+   --main-bg-brown: #825f45;
+   --app-height: 100%;
 }
 
 html {
-    color: white;
-    box-sizing: border-box;
-    -webkit-font-smoothing: antialiased;
-    font-size: 16px;
+   color: white;
+   box-sizing: border-box;
+   -webkit-font-smoothing: antialiased;
+   font-size: 16px;
 }
 
 html,
 body,
 #__next {
-    padding: 0;
-    margin: 0;
-    overflow: hidden;
-    width: 100%;
-    height: var(--app-height);
+   padding: 0;
+   margin: 0;
+   overflow: hidden;
+   width: 100%;
+   height: var(--app-height);
 }
 
 body {
-    font-family: CircularStd-Book, -apple-system, BlinkMacSystemFont, Segoe UI,
-        Roboto, Helvetica Neue, Arial, sans-serif, "Shizuru", cursive;
-    background: #000000;
-    overscroll-behavior: none;
-    overflow-x: hidden;
+   font-family: CircularStd-Book, -apple-system, BlinkMacSystemFont, Segoe UI,
+      Roboto, Helvetica Neue, Arial, sans-serif, "Shizuru", cursive;
+   background: #000000;
+   overscroll-behavior: none;
+   overflow-x: hidden;
 }
 
 a {
-    color: inherit;
-    text-decoration: none;
+   color: inherit;
+   text-decoration: none;
 }
 
 * {
-    text-decoration: none;
+   text-decoration: none;
 }
 
 *::-webkit-media-controls-start-playback-button {
-    display: none !important;
-    -webkit-appearance: none;
+   display: none !important;
+   -webkit-appearance: none;
 }
 
 .siteContent {
-    width: 100%;
-    /* height: 100vh; */
-    height: var(--app-height);
-    position: fixed;
-    box-sizing: border-box;
-    overflow: scroll;
+   width: 100%;
+   /* height: 100vh; */
+   height: var(--app-height);
+   position: fixed;
+   box-sizing: border-box;
+   overflow: scroll;
 }
 
 #menuBtn {
-    padding: 0;
-    cursor: pointer;
-    position: relative;
-    display: flex;
-    justify-content: right;
-    align-items: center;
+   padding: 0;
+   cursor: pointer;
+   position: relative;
+   display: flex;
+   justify-content: right;
+   align-items: center;
 }
 
 #homeBtn {
-    padding: 0;
-    cursor: pointer;
-    position: relative;
-    display: flex;
-    justify-content: left;
-    align-items: center;
+   padding: 0;
+   cursor: pointer;
+   position: relative;
+   display: flex;
+   justify-content: left;
+   align-items: center;
 }
 
 .mySwiperHome {
-    width: 100%;
-    height: 100vh;
-    padding: 0;
+   width: 100%;
+   height: 100vh;
+   padding: 0;
 }
-/* 
-.mySwiperHome .swiper-wrapper {
-} 
-*/
 
 .mySwiperHome .swiper-slide {
-    width: 100%;
-    max-height: 40vh;
-    display: flex;
-    scroll-snap-align: none;
-    border: 2px solid blue;
+   width: 100%;
+   max-height: 40vh;
+   display: flex;
+   scroll-snap-align: none;
+   border: 2px solid blue;
 }
 
 .mySwiperID {
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    padding-right: 10em;
+   width: 100%;
+   height: 100%;
+   padding: 0;
+   padding-right: 10em;
+   justify-content: center;
+   display: flex;
 }
 
-.mySwiperID .mySwiperSlide {
-    min-width: fit-content;
-    width: 50%;
-    display: flex;
+.mySwiperSlide img {
+   object-fit: cover;
+   /* height: 100%;
+   width: auto; */
+   
 }
 
+@media (max-width: 840px) {
+   /* .mySwiperSlide img { */
+   /* object-fit: contain; */
+   /* } */
 .mySwiperID .swiper-slide {
-    height: 95%;
-    width: fit-content;
-    margin: 0.5em;
-    padding: 0.5em 0;
-    max-width: 70vw;
-    width: auto;
+    max-width: none !important;
+
+}
+}
+
+.mySwiperID .mySwiperSlide,
+.mySwiperID .swiper-slide {
+   display: flex;
+   width: fit-content;
+   max-width: 70vw;
+   align-items: flex-end;
+   justify-content: center;
 }
 
 .mySwiperID .mySwiperSlide__info {
-    max-width: 35vw;
-    min-width: 20vw;
-    width: auto;
+   max-width: 35vw;
+   min-width: 20vw;
+   width: auto;
 }
 
 .mySwiperID .mySwiperSlide__end {
-    width: 15vw;
-    display: flex;
+   width: 15vw;
+   display: flex;
 }
 
 .activeLink span {
-    color: blue;
-    text-decoration: overline;
-    font-style: italic;
+   color: blue;
+   text-decoration: overline;
+   font-style: italic;
 }

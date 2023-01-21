@@ -29,6 +29,7 @@ export default {
         if (typeof photos === 'undefined') {
           return false // don't allow undefined values
         }
+        return true;
       }),
       of: [customImage()],
       options: {

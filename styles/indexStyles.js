@@ -68,7 +68,7 @@ export const ContentBox = styled(motion.div)`
    }
 
    .text {
-    //   border: 2px solid green;
+      //   border: 2px solid green;
       width: 100%;
       height: 100%;
       position: absolute;
@@ -77,7 +77,7 @@ export const ContentBox = styled(motion.div)`
       align-items: center;
       align-content: center;
       span {
-        //  border: 2px solid yellow;
+         //  border: 2px solid yellow;
          display: none;
          align-self: center;
          font-size: 1.7em;
@@ -156,5 +156,23 @@ export const TitleBanner = styled(motion.div)`
       border-radius: 100%;
       position: relative;
       animation: ${blink} 3s linear infinite;
+   }
+`;
+
+export const ContentContainer = styled(motion.div)`
+   display: flex;
+   max-width: 1200px;
+   width: 100%;
+   flex-wrap: wrap;
+   justify-content: center;
+   gap: 8px;
+   a {
+      flex-grow: 0.5;
+      width: 100%;
+      display: flex;
+      img {
+         width: 100%;
+         height: auto;
+      }
    }
 `;

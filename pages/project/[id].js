@@ -245,12 +245,6 @@ export default function work({
                                     alt={el?.name}
                                     width={breakpoints.md ? 400 : 1080}
                                     height={breakpoints.md ? 620 : 1280}
-                                    // fill
-                                    // placeholder="empty"
-                                    // priority={true}
-                                    // sizes="(max-width: 768px) 100vw,
-                                    //   (max-width: 1200px) 50vw,
-                                    //   33vw"
                                  ></Image>
                               </SwiperSlide>
                            );

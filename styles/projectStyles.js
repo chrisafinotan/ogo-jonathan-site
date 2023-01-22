@@ -99,6 +99,9 @@ export const Info = styled(motion.div)`
       @media (max-width: 840px) {
          font-size: 2em;
       }
+      @media (max-width: 1540px) {
+        font-size: 3em;
+     }
    }
    .category {
       opacity: 0.5;

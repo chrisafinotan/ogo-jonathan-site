@@ -161,18 +161,39 @@ export const TitleBanner = styled(motion.div)`
 
 export const ContentContainer = styled(motion.div)`
    display: flex;
-   max-width: 1200px;
+   max-width: 2200px;
    width: 100%;
    flex-wrap: wrap;
+   flex-direction: row;
    justify-content: center;
-   gap: 8px;
    a {
-      flex-grow: 0.5;
-      width: 100%;
+      width: 19%;
+      margin: 12px;
       display: flex;
+      flex-grow: 1;
       img {
          width: 100%;
          height: auto;
+      }
+   }
+   @media (max-width: 1240px) {
+      a {
+         width: 25%;
+      }
+   }
+   @media (max-width: 1240px) {
+      a {
+         width: 30%;
+      }
+   }
+   @media (max-width: 1050px) {
+      a {
+         width: 44%;
+      }
+   }
+   @media (max-width: 840px) {
+      a {
+         width: 100%;
       }
    }
 `;

@@ -69,17 +69,17 @@ export default function Home({ projects, navProjects, setLoading }) {
 
    return (
       <Layout projects={navProjects}>
-         <Container ref={mainRef}>
+         <Container center ref={mainRef}>
             <div
                style={{
                   display: "flex",
                   position: "relative",
                   gap: "16px",
                   margin: "150px 0",
-                  flexDirection: "column",
+                  flexDirection: "row",
                }}
             >
-               <div
+               {/* <div
                   style={{
                      // position: "absolute",
                      display: 'inline-flex',
@@ -94,9 +94,9 @@ export default function Home({ projects, navProjects, setLoading }) {
                      gap: '10px',
                   }}
                >
-                  {/* {[...tags, ...tags, ...tags].map(tag => <span>{tag}</span>)} */}
-               </div>
-               <ContentContainer>
+                  {[...tags, ...tags, ...tags].map(tag => <span>{tag}</span>)}
+               </div> */}
+               <ContentContainer small={breakpoints.md ? "Yes" : "No"}>
                   <AnimatePresence>{loadedImages}</AnimatePresence>
                </ContentContainer>
             </div>

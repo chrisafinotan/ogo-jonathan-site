@@ -171,6 +171,7 @@ export const ContentContainer = styled(motion.div)`
       margin: 12px;
       display: flex;
       flex-grow: 1;
+      max-width: 540px !important;
       img {
          width: 100%;
          height: auto;

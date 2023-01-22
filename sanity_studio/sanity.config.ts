@@ -8,8 +8,8 @@ export default defineConfig({
   name: 'default',
   title: 'ogo_jonathan_site',
 
-  projectId: 'xfosk6or',
-  dataset: 'production',
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '',
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || '',
 
   plugins: [deskTool(), media(), visionTool()],
 

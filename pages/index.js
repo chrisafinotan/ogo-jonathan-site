@@ -16,21 +16,20 @@ import { motion, useAnimation, AnimatePresence } from "framer-motion";
 import { useBreakpoint } from "../context/breakpointContext";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { getClient, overlayDrafts } from "../lib/sanity.server";
-import { indexQuery } from "../lib/queries";
-import { usePreviewSubscription } from "../lib/sanity";
+// import { getClient, overlayDrafts } from "../lib/sanity.server";
+// import { indexQuery } from "../lib/queries";
+// import { usePreviewSubscription } from "../lib/sanity";
 
 export async function getStaticProps({ preview = false }) {
    let projects = await getAllHomeProjects();
    let navProjects = await getAllProjects();
-   const allPosts = overlayDrafts(await getClient(preview).fetch(indexQuery));
+   // const allPosts = overlayDrafts(await getClient(preview).fetch(indexQuery));
    return {
-      props: { projects, navProjects, allPosts },
+      props: { projects, navProjects },
    };
 }
 
-export default function Home({ projects, navProjects, setLoading, allPosts }) {
-   console.log("allposts", allPosts);
+export default function Home({ projects, navProjects, setLoading }) {
    const mainRef = useRef(null);
    const breakpoints = useBreakpoint();
 

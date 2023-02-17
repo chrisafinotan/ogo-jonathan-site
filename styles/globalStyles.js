@@ -75,6 +75,15 @@ export const Container = styled.div`
             // background: ${(props) => props.theme.background};
             max-width: 100% !important;
         `}
+        ${(props) =>
+            props.center &&
+            css`
+                padding: 0;
+                margin: 0;
+                max-width: 100% !important;
+                display: flex;
+                justify-content: center;
+            `}   
     ${(props) =>
         props.padding &&
         css`

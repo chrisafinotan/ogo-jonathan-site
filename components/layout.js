@@ -9,8 +9,8 @@ import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { normalize } from "styled-normalize";
 
 import {
-    useGlobalStateContext,
-    useGlobalDispatchContext,
+   useGlobalStateContext,
+   useGlobalDispatchContext,
 } from "../context/globalContext";
 
 import { useBreakpoint } from "../context/breakpointContext";
@@ -41,111 +41,114 @@ const GlobalStyle = createGlobalStyle`
   `;
 
 export default function Layout({ children, projects }) {
-    const breakpoints = useBreakpoint();
-    const dispatch = useGlobalDispatchContext();
-    const { cursorStyles, currentTheme } = useGlobalStateContext();
-    const [hamburgerPosition, setHamburgerPosition] = useState({
-        x: 0,
-        y: 0,
-        width: 0,
-        height: 0,
-    });
+   const breakpoints = useBreakpoint();
+   const dispatch = useGlobalDispatchContext();
+   const { cursorStyles, currentTheme } = useGlobalStateContext();
+   const [hamburgerPosition, setHamburgerPosition] = useState({
+      x: 0,
+      y: 0,
+      width: 0,
+      height: 0,
+   });
 
-    const [toggleMenu, setToggleMenu] = useState(false);
+   const [toggleMenu, setToggleMenu] = useState(false);
 
-    const darkTheme = {
-        background: "#000",
-        text: "#fff",
-        main: "#ea281e",
-        inv_background: "#fff",
-        inv_text: "#000",
-        inv_main: "#1e76ea",
-        left: `${hamburgerPosition.x}px`,
-        top: `${hamburgerPosition.y}px`,
-        width: `${hamburgerPosition.width}px`,
-        height: `${hamburgerPosition.height}px`,
-        cursor: "none",
-    };
+   const darkTheme = {
+      background: "#000",
+      text: "#fff",
+      main: "#ea281e",
+      inv_background: "#fff",
+      inv_text: "#000",
+      inv_main: "#1e76ea",
+      left: `${hamburgerPosition.x}px`,
+      top: `${hamburgerPosition.y}px`,
+      width: `${hamburgerPosition.width}px`,
+      height: `${hamburgerPosition.height}px`,
+      cursor: "none",
+   };
 
-    const lightTheme = {
-        background: "#fff",
-        text: "#000",
-        main: "#1e76ea",
-        inv_background: "#000",
-        inv_text: "#fff",
-        inv_main: "#ea281e",
-        left: `${hamburgerPosition.x}px`,
-        top: `${hamburgerPosition.y}px`,
-        width: `${hamburgerPosition.width}px`,
-        height: `${hamburgerPosition.height}px`,
-        cursor: "none",
-    };
+   const lightTheme = {
+      background: "#fff",
+      text: "#000",
+      main: "#1e76ea",
+      inv_background: "#000",
+      inv_text: "#fff",
+      inv_main: "#ea281e",
+      left: `${hamburgerPosition.x}px`,
+      top: `${hamburgerPosition.y}px`,
+      width: `${hamburgerPosition.width}px`,
+      height: `${hamburgerPosition.height}px`,
+      cursor: "none",
+   };
 
-    const ferhatTheme = {
-        background: "#825f45",
-        // text: "#797d62",
-        text: "#c8691c",
-        main: "#c8691c",
-        inv_background: "#797d62",
-        inv_text: "#e4ceaf",
-        // inv_main: "#825f45",
-        inv_main: "#e4ceaf",
-        left: `${hamburgerPosition.x}px`,
-        top: `${hamburgerPosition.y}px`,
-        width: `${hamburgerPosition.width}px`,
-        height: `${hamburgerPosition.height}px`,
-        cursor: "none",
-    };
+   const ferhatTheme = {
+      background: "#825f45",
+    //   text: "#797d62",
+      text: "#c8691c",
+      main: "#c8691c",
+      inv_background: "#797d62",
+      inv_text: "#e4ceaf",
+      // inv_main: "#825f45",
+      inv_main: "#e4ceaf",
+      left: `${hamburgerPosition.x}px`,
+      top: `${hamburgerPosition.y}px`,
+      width: `${hamburgerPosition.width}px`,
+      height: `${hamburgerPosition.height}px`,
+      cursor: "none",
+   };
 
-    const themes = [darkTheme, lightTheme, ferhatTheme];
-    const themeName = ["dark", "light", "ferhat"];
+   const themes = [darkTheme, lightTheme, ferhatTheme];
+   const themeName = ["dark", "light", "ferhat"];
 
-    const onCursor = (cursorType) => {
-        cursorType = (cursorStyles.includes(cursorType) && cursorType) || false;
-        dispatch({ type: "CURSOR_TYPE", cursorType: cursorType });
-    };
+   const onCursor = (cursorType) => {
+      cursorType = (cursorStyles.includes(cursorType) && cursorType) || false;
+      dispatch({ type: "CURSOR_TYPE", cursorType: cursorType });
+   };
 
-    useEffect(() => {
-        let thisCurrentTheme =
-            window &&
-            (window.localStorage.getItem("theme") == null
-                ? "dark"
-                : window.localStorage.getItem("theme"));
-        if (thisCurrentTheme !== currentTheme) {
-            dispatch({ type: "TOGGLE_THEME", theme: `${thisCurrentTheme}` });
-        }
-    }, []);
+   useEffect(() => {
+      let thisCurrentTheme =
+         window &&
+         (window.localStorage.getItem("theme") == null
+            ? "dark"
+            : window.localStorage.getItem("theme"));
+      if (thisCurrentTheme !== currentTheme) {
+         dispatch({ type: "TOGGLE_THEME", theme: `${thisCurrentTheme}` });
+      }
+   }, []);
 
-    return (
-        <ThemeProvider
-            theme={() => {
-                let index = themeName.findIndex((el) => el === currentTheme);
-                let ret = themes[index];
-                ret.cursor = breakpoints.md ? "auto" : "none";
-                return ret;
-            }}
-        >
-            <GlobalStyle />
-            <Head>
-                <title>Ogo Jonathan</title>
-            </Head>
+   return (
+      <ThemeProvider
+         theme={() => {
+            let index = themeName.findIndex((el) => el === currentTheme);
+            let ret = themes[index];
+            ret.cursor = breakpoints.md ? "auto" : "none";
+            return ret;
+         }}
+      >
+         <GlobalStyle />
+         <Head>
+            <title>Ogo Jonathan</title>
+         </Head>
+         {!breakpoints.md && <CCursor toggleMenu={toggleMenu} />}
+
+         <Header
+            onCursor={onCursor}
+            toggleMenu={toggleMenu}
+            setToggleMenu={setToggleMenu}
+            hamburgerPosition={hamburgerPosition}
+            setHamburgerPosition={setHamburgerPosition}
+         />
+         <Navigation
+            toggleMenu={toggleMenu}
+            setToggleMenu={setToggleMenu}
+            onCursor={onCursor}
+            setHamburgerPosition={setHamburgerPosition}
+            projects={projects}
+         />
+         <div className="siteContent">
             {!breakpoints.md && <CCursor toggleMenu={toggleMenu} />}
-
-            <Header
-                onCursor={onCursor}
-                toggleMenu={toggleMenu}
-                setToggleMenu={setToggleMenu}
-                hamburgerPosition={hamburgerPosition}
-                setHamburgerPosition={setHamburgerPosition}
-            />
-            <Navigation
-                toggleMenu={toggleMenu}
-                setToggleMenu={setToggleMenu}
-                onCursor={onCursor}
-                setHamburgerPosition={setHamburgerPosition}
-                projects={projects}
-            />
-            <div className="siteContent">{children}</div>
-        </ThemeProvider>
-    );
+            {children}
+         </div>
+      </ThemeProvider>
+   );
 }

@@ -1,32 +1,26 @@
-import { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/router";
-import Link from "next/link";
-import Layout from "../../components/layout";
-import { useBreakpoint } from "../../context/breakpointContext";
+import { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import Layout from '../../components/layout';
+import { useBreakpoint } from '../../context/breakpointContext';
 import {
    getAllProjectIds,
    getAllProjects,
    getProjectData,
    getAssets,
-} from "../../lib/projectsLib";
-import { Container, Flex } from "../../styles/globalStyles";
-import {
-   ImagesWrapper,
-   LinkWrapper,
-   Info,
-   StyledSwiperWrapper,
-   StyledSwiperNavBtn,
-} from "../../styles/projectStyles";
+} from '../../lib/projectsLib';
+import { Container } from '../../styles/globalStyles';
+import { ImagesWrapper, LinkWrapper, Info } from '../../styles/projectStyles';
 import {
    projectsContainer__motion,
    project__motion,
-} from "../../framer/variants";
+} from '../../framer/variants';
 import {
    useGlobalDispatchContext,
    useGlobalStateContext,
-} from "../../context/globalContext";
-import { motion } from "framer-motion";
-import { Swiper, SwiperSlide } from "swiper/react";
+} from '../../context/globalContext';
+import { motion } from 'framer-motion';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, {
    Navigation,
    Pagination,
@@ -35,17 +29,13 @@ import SwiperCore, {
    Keyboard,
    Mousewheel,
    FreeMode,
-} from "swiper";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-   faPlay,
-   faStop,
-   faArrowRight,
-} from "@fortawesome/free-solid-svg-icons";
-import Image from "next/image";
+} from 'swiper';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import Image from 'next/image';
 
 SwiperCore.use([Navigation, Pagination, Mousewheel, Autoplay, FreeMode]);
 
@@ -125,7 +115,7 @@ export default function work({
             swiperRef.current.swiper.slideTo(0);
          }
       };
-      router.events.on("routeChangeComplete", () => handleRouteChange());
+      router.events.on('routeChangeComplete', () => handleRouteChange());
       // setLoading(false);
    }, []);
 
@@ -136,7 +126,6 @@ export default function work({
    }, [projectID]);
 
    useEffect(() => {
-      console.log(projectPictures);
       setpics((prev) => [...projectPictures, null]);
    }, [projectPictures]);
 
@@ -160,31 +149,30 @@ export default function work({
 
    const onCursor = (cursorType) => {
       cursorType = (cursorStyles.includes(cursorType) && cursorType) || false;
-      dispatch({ type: "CURSOR_TYPE", cursorType: cursorType });
+      dispatch({ type: 'CURSOR_TYPE', cursorType: cursorType });
    };
    setLoading(false);
-   console.log(breakpoints);
 
    return (
       <Layout projects={projects}>
          <Container fluid>
             <div
                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  height: "100%",
-                  width: "100vw",
+                  display: 'flex',
+                  flexDirection: 'column',
+                  height: '100%',
+                  width: '100vw',
                }}
             >
                <ImagesWrapper
                   ref={elRef}
                   variants={projectsContainer__motion}
-                  initial="hidden"
-                  animate="show"
-                  exit="exit"
+                  initial='hidden'
+                  animate='show'
+                  exit='exit'
                >
                   <Swiper
-                     className="mySwiperID"
+                     className='mySwiperID'
                      observer={true}
                      observeParents={true}
                      observeSlideChildren={true}
@@ -200,14 +188,14 @@ export default function work({
                         Autoplay,
                      ]}
                      navigation={{
-                        nextEl: ".nextBtn",
-                        prevEl: ".prevBtn",
+                        nextEl: '.nextBtn',
+                        prevEl: '.prevBtn',
                      }}
                      pagination={{
-                        el: ".swiper-mypagination",
+                        el: '.swiper-mypagination',
                         clickable: true,
-                        type: "progressbar",
-                        background: "#fff",
+                        type: 'progressbar',
+                        background: '#fff',
                      }}
                      scrollbar={{ draggable: true }}
                      keyboard={{
@@ -217,7 +205,7 @@ export default function work({
                      mousewheel={{
                         releaseOnEdges: true,
                      }}
-                     slidesPerView={"auto"}
+                     slidesPerView={'auto'}
                      ref={swiperRef}
                      loop={true}
                      autoplay={
@@ -234,13 +222,10 @@ export default function work({
                            return (
                               <SwiperSlide
                                  key={`${index}_slide_lrg`}
-                                 className="mySwiperSlide"
+                                 className='mySwiperSlide'
                               >
                                  <Image
                                     src={`${el?.pic}`}
-                                    //  onLoadingComplete={() => {
-                                    //     setLoadStatus((prev) => prev + 1);
-                                    //  }}
                                     key={`${index}_project_projectPlrg`}
                                     alt={el?.name}
                                     width={breakpoints.md ? 400 : 1080}
@@ -256,11 +241,11 @@ export default function work({
                      }`}
                   >
                      <LinkWrapper
-                        small={breakpoints.md ? "Yes" : "No"}
-                        onMouseEnter={() => onCursor("pointertheme")}
+                        small={breakpoints.md ? 'Yes' : 'No'}
+                        onMouseEnter={() => onCursor('pointertheme')}
                         onMouseLeave={onCursor}
                      >
-                        <div className="name">
+                        <div className='name'>
                            {projects[
                               (linkIndex + 1) % projects.length
                            ].name.toUpperCase()}
@@ -270,20 +255,20 @@ export default function work({
                   </Link>
                </ImagesWrapper>
 
-               <Info small={breakpoints.md ? "Yes" : "No"}>
-                  <motion.div className="name" variants={project__motion}>
+               <Info small={breakpoints.md ? 'Yes' : 'No'}>
+                  <motion.div className='name' variants={project__motion}>
                      {projectData.name.toUpperCase()}
                   </motion.div>
-                  <motion.div className="more">
-                     {projectData.category !== "Photoshoot" && (
+                  <motion.div className='more'>
+                     {projectData.category !== 'Photoshoot' && (
                         <motion.div
-                           className="category"
+                           className='category'
                            variants={project__motion}
                         >
                            {projectData.category.toUpperCase()}
                         </motion.div>
                      )}
-                     <motion.div className="desc" variants={project__motion}>
+                     <motion.div className='desc' variants={project__motion}>
                         {projectData.desc.toUpperCase()}
                      </motion.div>
                   </motion.div>
@@ -294,66 +279,7 @@ export default function work({
    );
 }
 
-// <Container fluid>
-//    <ImagesWrapperSmall
-//       variants={projectsContainer__motion}
-//       initial="hidden"
-//       animate="show"
-//       exit="exit"
-//    >
-//       <Info ref={containerRef}>
-//          <motion.div className="name" variants={project__motion}>
-//             {projectData.name}
-//          </motion.div>
-//          {projectData.category !== "Photoshoot" && (
-//             <motion.div className="name" variants={project__motion}>
-//                {projectData.category}
-//             </motion.div>
-//          )}
-//          <motion.div className="desc" variants={project__motion}>
-//             {projectData.desc}
-//          </motion.div>
-//       </Info>
-//       <ImagesContainer>
-//          {pics.map((el, index) => {
-//             return el !== null ? (
-//                <motion.div
-//                   key={`id_${projectData.id}_${index}_img_div_sml`}
-//                   className="projectImageWrapper"
-//                   variants={project__motion}
-//                >
-//                   <StyledImgWrapper
-//                      layoutId={el.background && `${projectID}_pic`}
-//                      key={`${index}_project_projectP__sml`}
-//                      variants={project__motion}
-//                      AR={el.width / el.height}
-//                   >
-//                      <Image
-//                         src={`${el.pic}`}
-//                         onLoadingComplete={() => {
-//                            setLoadStatus((prev) => prev + 1);
-//                         }}
-//                         alt={el.name}
-//                         width={el.width}
-//                         height={el.height}
-//                         placeholder="empty"
-//                         priority={true}
-//                         layout="responsive"
-//                      ></Image>
-//                   </StyledImgWrapper>
-//                </motion.div>
-//             ) : (
-//                <motion.div
-//                   key={`id_${projectData.id}_${index}_null_div_sml`}
-//                   className="endDiv"
-//                ></motion.div>
-//             );
-//          })}
-//       </ImagesContainer>
-//    </ImagesWrapperSmall>
-// </Container>
-{
-   /* {prevProj && (
+/* {prevProj && (
                <Link href={`/project/${projects[linkIndex - 1].id}`}>
                   <PrevLink
                      onMouseEnter={() => onCursor("pointertheme")}
@@ -363,10 +289,10 @@ export default function work({
                      <div className="name">{projects[linkIndex - 1].name}</div>
                   </PrevLink>
                </Link>
-            )} */
-}
-{
-   /* <StyledSwiperWrapper>
+            )}
+ }
+ {
+   <StyledSwiperWrapper>
                         <Flex>
                            {!play ? (
                               <FontAwesomeIcon
@@ -401,5 +327,6 @@ export default function work({
                               onMouseLeave={onCursor}
                            ></StyledSwiperNavBtn>
                         </Flex>
-                     </StyledSwiperWrapper> */
-}
+                     </StyledSwiperWrapper> 
+                  }
+*/

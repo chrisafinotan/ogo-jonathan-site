@@ -30,7 +30,7 @@ export const Logo = styled.div`
     display: flex;
     align-items: center;
     // border: 2px solid yellow;
-    a {
+    .title {
         height: fit-content;
         width: fit-content;
         display: inline-block;

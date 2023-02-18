@@ -30,6 +30,7 @@
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "sanity": "^3.2.4",
+        "sharp": "^0.31.3",
         "styled-components": "^5.3.3",
         "styled-normalize": "^8.0.7",
         "swiper": "^7.0.8"

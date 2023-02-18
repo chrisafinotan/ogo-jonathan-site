@@ -48,6 +48,5 @@ yarn-error.log*
 *.cache
 
 /public/video
-pages/index.js
 nextjs/build-manifest.json
 nextjs/server/pages-manifest.json

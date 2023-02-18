@@ -53,12 +53,6 @@ export async function getStaticProps(context) {
    const projects = await getAllProjects();
    const projectData = await getProjectData(projectID, projects);
    const projectPictures = await getAssets(projectData.files);
-   projectPictures.map((el) => {
-      if (el.pic === projectData.coverPic) {
-         el.background = true;
-      }
-   });
-
    return {
       props: {
          projectID,
@@ -69,12 +63,11 @@ export async function getStaticProps(context) {
    };
 }
 
-export default function work({
+export default function Project({
    projectID,
    projects,
    projectData,
    projectPictures,
-   setLoading,
 }) {
    const dispatch = useGlobalDispatchContext();
    const { cursorStyles } = useGlobalStateContext();
@@ -82,41 +75,29 @@ export default function work({
    const elRef = useRef();
    const swiperRef = useRef(null);
    const containerRef = useRef(null);
-   const [nextProj, showNext] = useState(false);
-   const [prevProj, showPrev] = useState(false);
    const [linkIndex, setLinkIndex] = useState(1);
    const [play, setplay] = useState(false);
-   const [pics, setpics] = useState(null);
-   const [loadStatus, setLoadStatus] = useState(0);
-   const [ready, setReady] = useState(false);
 
    const router = useRouter();
 
    const getProjectIndex = () => {
       let index = projects.findIndex((el) => el.id === projectID);
-      showNext(true);
-      showPrev(true);
-      if (index === 0) {
-         showPrev(false);
-      }
-      if (index === projects.length - 1) {
-         showNext(false);
-      }
       setLinkIndex(index);
    };
 
    useEffect(() => {
       const handleRouteChange = () => {
          window.scrollTo(0, 0);
-         setLoadStatus(0);
-         //  setReady(false);
          if (swiperRef && swiperRef.current && swiperRef.current.swiper) {
             swiperRef.current.swiper.update();
             swiperRef.current.swiper.slideTo(0);
          }
       };
       router.events.on('routeChangeComplete', () => handleRouteChange());
-      // setLoading(false);
+
+      if (containerRef && containerRef.current) {
+         containerRef.current.scrollIntoView();
+      }
    }, []);
 
    useEffect(() => {
@@ -124,19 +105,6 @@ export default function work({
       onCursor();
       setplay(false);
    }, [projectID]);
-
-   useEffect(() => {
-      setpics((prev) => [...projectPictures, null]);
-   }, [projectPictures]);
-
-   useEffect(() => {
-      if (ready === true) {
-         setLoading(false);
-         if (containerRef && containerRef.current) {
-            containerRef.current.scrollIntoView();
-         }
-      }
-   }, [ready]);
 
    const handlePlayPause = () => {
       setplay(!play);
@@ -151,7 +119,6 @@ export default function work({
       cursorType = (cursorStyles.includes(cursorType) && cursorType) || false;
       dispatch({ type: 'CURSOR_TYPE', cursorType: cursorType });
    };
-   setLoading(false);
 
    return (
       <Layout projects={projects}>

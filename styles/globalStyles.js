@@ -205,7 +205,6 @@ export const Cursor = styled.div`
    height: 16px;
    background: ${(props) => props.theme.main};
    border-radius: 100%;
-   border: 1px solid red;
    transform: translate(-50%, -50%);
    transition: all 0.1s ease-out;
    transition-property: width, height, border;

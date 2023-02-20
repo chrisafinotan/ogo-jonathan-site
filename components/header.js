@@ -1,13 +1,13 @@
-import React, { useEffect, useRef } from "react";
-import Link from "next/link";
-import { Container, Flex } from "../styles/globalStyles";
-import { HeaderNav, Logo, Menu } from "../styles/headerStyles";
-import { Squeeze as Hamburger } from "hamburger-react";
+import React, { useEffect, useRef } from 'react';
+import Link from 'next/link';
+import { Container, Flex } from '../styles/globalStyles';
+import { HeaderNav, Logo, Menu } from '../styles/headerStyles';
+import { Squeeze as Hamburger } from 'hamburger-react';
 import {
    useGlobalDispatchContext,
    useGlobalStateContext,
-} from "../context/globalContext";
-import useElementPosition from "../hooks/useElementPosition";
+} from '../context/globalContext';
+import useElementPosition from '../hooks/useElementPosition';
 
 const Header = ({
    onCursor,
@@ -19,38 +19,38 @@ const Header = ({
    const { currentTheme } = useGlobalStateContext();
    const hamburger = useRef(null);
 
-   const themeName = ["dark", "light", "ferhat"];
+   const themeName = ['dark', 'light', 'ferhat'];
    const toggleTheme = () => {
       let index = themeName.findIndex((el) => el === currentTheme);
       let newindex = 1;
       if (index > 0 && index < themeName.length) {
          newindex = (index + 1) % themeName.length;
       }
-      dispatch({ type: "TOGGLE_THEME", theme: themeName[newindex] });
+      dispatch({ type: 'TOGGLE_THEME', theme: themeName[newindex] });
    };
 
    const menuHover = (element) => {
-      onCursor("locked");
+      onCursor('locked');
       let eventposition = useElementPosition(element);
       setHamburgerPosition(eventposition);
    };
 
    useEffect(() => {
       window &&
-         window.localStorage.getItem("theme") == null &&
-         window.localStorage.setItem("theme", currentTheme);
+         window.localStorage.getItem('theme') == null &&
+         window.localStorage.setItem('theme', currentTheme);
    }, [currentTheme]);
 
    useEffect(() => {
       if (hamburger && hamburger.current) {
-         hamburger.current.addEventListener("mouseenter", () =>
+         hamburger.current.addEventListener('mouseenter', () =>
             menuHover(hamburger)
          );
       }
 
       return () => {
          if (hamburger && hamburger.current) {
-            hamburger.current.removeEventListener("mouseenter", () =>
+            hamburger.current.removeEventListener('mouseenter', () =>
                menuHover(hamburger)
             );
          }
@@ -66,22 +66,26 @@ const Header = ({
             ease: [0.6, 0.05, -0.01, 0.9],
          }}
       >
-         <Container fluid padding={"0 2em"}>
+         <Container fluid padding={'0 2em'}>
             <Flex spaceBetween noHeight>
                <Logo
-                  onMouseEnter={() => onCursor("hovered")}
+                  onMouseEnter={() => onCursor('hovered')}
                   onMouseLeave={onCursor}
                   invert={toggleMenu && true}
                >
-                  <Link href="/">
-                     <h1 className="title" onClick={() => setToggleMenu(false)}>
-                        OJ
+                  <Link href='/'>
+                     <h1
+                        className='title'
+                        // style={{ fontFamily: 'Telma-Variable' }}
+                        onClick={() => setToggleMenu(false)}
+                     >
+                        OGO JONATHAN
                      </h1>
                   </Link>
                   <span
                      onClick={toggleTheme}
-                     onMouseEnter={() => onCursor("pointerinv")}
-                     onMouseLeave={() => onCursor("hovered")}
+                     onMouseEnter={() => onCursor('pointerinv')}
+                     onMouseLeave={() => onCursor('hovered')}
                   ></span>
                </Logo>
                <Menu

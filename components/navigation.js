@@ -38,7 +38,6 @@ const Navigation = ({
     onCursor,
     setHamburgerPosition,
 }) => {
-    // console.log(projects);
     const instagramref = useRef(null);
     const facebookref = useRef(null);
     const phoneref = useRef(null);
@@ -341,13 +340,6 @@ const Navigation = ({
     };
 
     const scrollChecker = (element) => {
-        // console.log(
-        //     "scrollchecker",
-        //     element.current.offsetHeight,
-        //     element.current.scrollTop,
-        //     element.current.scrollHeight,
-        //     atBottom
-        // );
         if (
             element.current.offsetHeight >= element.current.scrollHeight - 4 &&
             element.current.offsetHeight <= element.current.scrollHeight + 4

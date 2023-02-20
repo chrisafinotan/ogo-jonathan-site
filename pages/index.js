@@ -1,3 +1,4 @@
+import { useState, useEffect, Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { AnimatePresence } from 'framer-motion';
@@ -19,13 +20,18 @@ export async function getStaticProps() {
    };
 }
 
-export default function Home({ projects, navProjects }) {
+export default function Home({
+   projects,
+   navProjects,
+   setLoading,
+}) {
+   // const [loading, setLoading] = useState(true);
    const breakpoints = useBreakpoint();
    const { cursorStyles } = useGlobalStateContext();
    const dispatch = useGlobalDispatchContext();
-   const onCursor = (cursorType) => {
+   const onCursor = (cursorType, cursorText) => {
       cursorType = (cursorStyles.includes(cursorType) && cursorType) || false;
-      dispatch({ type: 'CURSOR_TYPE', cursorType: cursorType });
+      dispatch({ type: 'CURSOR_TYPE', cursorType, cursorText, });
    };
 
    return (
@@ -48,25 +54,27 @@ export default function Home({ projects, navProjects }) {
                               href={`/project/${el.link}`}
                               key={`${index}_homepage_link`}
                            >
-                              {el.type.includes('im') ? (
-                                 <Image
-                                    src={el.content}
-                                    alt={el.name}
-                                    width={breakpoints.md ? 400 : 1080}
-                                    height={breakpoints.md ? 620 : 1280}
-                                    style={{ objectFit: 'cover' }}
-                                    onMouseEnter={() => onCursor('hovered')}
-                                    onMouseLeave={onCursor}
-                                    key={`${index}_homepage_image`}
-                                 />
-                              ) : (
-                                 <video src={el.content} loop autoPlay></video>
-                              )}
+                              <Image
+                                 src={el.content}
+                                 alt={el.name}
+                                 width={breakpoints.md ? 400 : 1080}
+                                 height={breakpoints.md ? 620 : 1280}
+                                 style={{ objectFit: 'cover' }}
+                                 onMouseEnter={() => onCursor('hovered', 'view')}
+                                 onMouseLeave={onCursor}
+                                 key={`${index}_homepage_image`}
+                                 loading={'eager'}
+                                 onLoadingComplete={() => {
+                                    if (index === projects.length - 1)
+                                       setLoading(false);
+                                 }}
+                              />
                            </Link>
                         );
                      })}
                   </AnimatePresence>
                </ContentContainer>
+               {/* </Suspense> */}
             </div>
          </Container>
       </Layout>

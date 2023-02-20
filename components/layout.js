@@ -1,20 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
+import Navigation from './navigation';
+import Header from './header';
+import CCursor from './CCursor';
+import Head from 'next/head';
 
-import Navigation from "./navigation";
-import Header from "./header";
-import CCursor from "./CCursor";
-import Head from "next/head";
-
-import { createGlobalStyle, ThemeProvider } from "styled-components";
-import { normalize } from "styled-normalize";
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import { normalize } from 'styled-normalize';
 
 import {
    useGlobalStateContext,
    useGlobalDispatchContext,
-} from "../context/globalContext";
+} from '../context/globalContext';
 
-import { useBreakpoint } from "../context/breakpointContext";
-
+import { useBreakpoint } from '../context/breakpointContext';
 const GlobalStyle = createGlobalStyle`
   ${normalize}
   :root {
@@ -22,7 +20,6 @@ const GlobalStyle = createGlobalStyle`
   }
   * {
     text-decoration: none;
-    cursor: ${(props) => props.theme.cursor};
   }
 
   html {
@@ -54,65 +51,63 @@ export default function Layout({ children, projects }) {
    const [toggleMenu, setToggleMenu] = useState(false);
 
    const darkTheme = {
-      background: "#000",
-      text: "#fff",
-      main: "#ea281e",
-      inv_background: "#fff",
-      inv_text: "#000",
-      inv_main: "#1e76ea",
+      background: '#000',
+      text: '#fff',
+      main: '#ea281e',
+      inv_background: '#fff',
+      inv_text: '#000',
+      inv_main: '#1e76ea',
       left: `${hamburgerPosition.x}px`,
       top: `${hamburgerPosition.y}px`,
       width: `${hamburgerPosition.width}px`,
       height: `${hamburgerPosition.height}px`,
-      cursor: "none",
+      // cursor: 'none',
    };
 
    const lightTheme = {
-      background: "#fff",
-      text: "#000",
-      main: "#1e76ea",
-      inv_background: "#000",
-      inv_text: "#fff",
-      inv_main: "#ea281e",
+      background: '#fff',
+      text: '#000',
+      main: '#1e76ea',
+      inv_background: '#000',
+      inv_text: '#fff',
+      inv_main: '#ea281e',
       left: `${hamburgerPosition.x}px`,
       top: `${hamburgerPosition.y}px`,
       width: `${hamburgerPosition.width}px`,
       height: `${hamburgerPosition.height}px`,
-      cursor: "none",
    };
 
    const ferhatTheme = {
-      background: "#825f45",
-    //   text: "#797d62",
-      text: "#c8691c",
-      main: "#c8691c",
-      inv_background: "#797d62",
-      inv_text: "#e4ceaf",
+      background: '#825f45',
+      //   text: "#797d62",
+      text: '#c8691c',
+      main: '#c8691c',
+      inv_background: '#797d62',
+      inv_text: '#e4ceaf',
       // inv_main: "#825f45",
-      inv_main: "#e4ceaf",
+      inv_main: '#e4ceaf',
       left: `${hamburgerPosition.x}px`,
       top: `${hamburgerPosition.y}px`,
       width: `${hamburgerPosition.width}px`,
       height: `${hamburgerPosition.height}px`,
-      cursor: "none",
    };
 
    const themes = [darkTheme, lightTheme, ferhatTheme];
-   const themeName = ["dark", "light", "ferhat"];
+   const themeName = ['dark', 'light', 'ferhat'];
 
    const onCursor = (cursorType) => {
       cursorType = (cursorStyles.includes(cursorType) && cursorType) || false;
-      dispatch({ type: "CURSOR_TYPE", cursorType: cursorType });
+      dispatch({ type: 'CURSOR_TYPE', cursorType: cursorType });
    };
 
    useEffect(() => {
       let thisCurrentTheme =
          window &&
-         (window.localStorage.getItem("theme") == null
-            ? "dark"
-            : window.localStorage.getItem("theme"));
+         (window.localStorage.getItem('theme') == null
+            ? 'dark'
+            : window.localStorage.getItem('theme'));
       if (thisCurrentTheme !== currentTheme) {
-         dispatch({ type: "TOGGLE_THEME", theme: `${thisCurrentTheme}` });
+         dispatch({ type: 'TOGGLE_THEME', theme: `${thisCurrentTheme}` });
       }
    }, []);
 
@@ -121,13 +116,13 @@ export default function Layout({ children, projects }) {
          theme={() => {
             let index = themeName.findIndex((el) => el === currentTheme);
             let ret = themes[index];
-            ret.cursor = breakpoints.md ? "auto" : "none";
+            ret.cursor = breakpoints.md ? 'auto' : 'none';
             return ret;
          }}
       >
          <GlobalStyle />
          <Head>
-            <title>Ogo Jonathan</title>
+            <title>OGO JONATHAN</title>
          </Head>
          {!breakpoints.md && <CCursor toggleMenu={toggleMenu} />}
 
@@ -145,7 +140,7 @@ export default function Layout({ children, projects }) {
             setHamburgerPosition={setHamburgerPosition}
             projects={projects}
          />
-         <div className="siteContent">
+         <div className='siteContent'>
             {!breakpoints.md && <CCursor toggleMenu={toggleMenu} />}
             {children}
          </div>

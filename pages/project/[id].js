@@ -1,8 +1,7 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, Suspense } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Layout from '../../components/layout';
-import { useBreakpoint } from '../../context/breakpointContext';
 import {
    getAllProjectIds,
    getAllProjects,
@@ -15,6 +14,7 @@ import {
    projectsContainer__motion,
    project__motion,
 } from '../../framer/variants';
+import { useBreakpoint } from '../../context/breakpointContext';
 import {
    useGlobalDispatchContext,
    useGlobalStateContext,
@@ -36,6 +36,8 @@ import 'swiper/css/pagination';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
+import ImageViewer from '../../components/image-viewer';
+import Modal from 'react-modal';
 
 SwiperCore.use([Navigation, Pagination, Mousewheel, Autoplay, FreeMode]);
 
@@ -68,15 +70,14 @@ export default function Project({
    projects,
    projectData,
    projectPictures,
+   setLoading,
 }) {
-   const dispatch = useGlobalDispatchContext();
-   const { cursorStyles } = useGlobalStateContext();
-   const breakpoints = useBreakpoint();
    const elRef = useRef();
    const swiperRef = useRef(null);
    const containerRef = useRef(null);
    const [linkIndex, setLinkIndex] = useState(1);
-   const [play, setplay] = useState(false);
+   const [viewerShowing, showViewer] = useState(false);
+   const [currentImage, setCurrent] = useState(0);
 
    const router = useRouter();
 
@@ -103,21 +104,53 @@ export default function Project({
    useEffect(() => {
       getProjectIndex();
       onCursor();
-      setplay(false);
    }, [projectID]);
 
-   const handlePlayPause = () => {
-      setplay(!play);
-      if (swiperRef && swiperRef.current) {
-         play
-            ? swiperRef.current.swiper.autoplay.stop()
-            : swiperRef.current.swiper.autoplay.start();
-      }
+   const breakpoints = useBreakpoint();
+   const dispatch = useGlobalDispatchContext();
+   const { cursorStyles } = useGlobalStateContext();
+   const onCursor = (cursorType, cursorText) => {
+      cursorType = (cursorStyles.includes(cursorType) && cursorType) || false;
+      dispatch({
+         type: 'CURSOR_TYPE',
+         cursorType,
+         cursorText,
+      });
    };
 
-   const onCursor = (cursorType) => {
-      cursorType = (cursorStyles.includes(cursorType) && cursorType) || false;
-      dispatch({ type: 'CURSOR_TYPE', cursorType: cursorType });
+   const projectImages = projectPictures
+      ? projectPictures.map((el, index) => {
+           return (
+              <Image
+                 src={`${el?.pic}`}
+                 key={`${index}_project`}
+                 alt={el?.name}
+                 width={breakpoints.md ? 400 : 1080}
+                 height={breakpoints.md ? 620 : 1280}
+                 loading={'eager'}
+                 onLoadingComplete={() => {
+                    if (index === projectPictures.length - 1) setLoading(false);
+                 }}
+              ></Image>
+           );
+        })
+      : [];
+
+   const toggleViewer = (currentImage = 0) => {
+      setCurrent(currentImage);
+      showViewer(true);
+   };
+
+   const customStyles = {
+      content: {
+         top: '50%',
+         left: '50%',
+         right: 'auto',
+         bottom: 'auto',
+         marginRight: '-50%',
+         transform: 'translate(-50%, -50%)',
+         padding: '5px',
+      },
    };
 
    return (
@@ -130,6 +163,7 @@ export default function Project({
                   height: '100%',
                   width: '100vw',
                }}
+               onClick={() => showViewer(false)}
             >
                <ImagesWrapper
                   ref={elRef}
@@ -150,24 +184,9 @@ export default function Project({
                         Pagination,
                         Controller,
                         Mousewheel,
-                        Keyboard,
                         FreeMode,
                         Autoplay,
                      ]}
-                     navigation={{
-                        nextEl: '.nextBtn',
-                        prevEl: '.prevBtn',
-                     }}
-                     pagination={{
-                        el: '.swiper-mypagination',
-                        clickable: true,
-                        type: 'progressbar',
-                        background: '#fff',
-                     }}
-                     scrollbar={{ draggable: true }}
-                     keyboard={{
-                        enabled: true,
-                     }}
                      freeMode={true}
                      mousewheel={{
                         releaseOnEdges: true,
@@ -175,32 +194,25 @@ export default function Project({
                      slidesPerView={'auto'}
                      ref={swiperRef}
                      loop={true}
-                     autoplay={
-                        play === true
-                           ? {
-                                delay: 2000,
-                                disableOnInteraction: false,
-                             }
-                           : false
-                     }
                   >
-                     {projectPictures &&
-                        projectPictures.map((el, index) => {
-                           return (
-                              <SwiperSlide
-                                 key={`${index}_slide_lrg`}
-                                 className='mySwiperSlide'
-                              >
-                                 <Image
-                                    src={`${el?.pic}`}
-                                    key={`${index}_project_projectPlrg`}
-                                    alt={el?.name}
-                                    width={breakpoints.md ? 400 : 1080}
-                                    height={breakpoints.md ? 620 : 1280}
-                                 ></Image>
-                              </SwiperSlide>
-                           );
-                        })}
+                     {projectPictures.map((_, index) => {
+                        return (
+                           <SwiperSlide
+                              key={`swiperSlide_${index}`}
+                              className='mySwiperSlide'
+                              onClick={(e) => {
+                                 e.stopPropagation();
+                                 toggleViewer(index);
+                              }}
+                              onMouseEnter={() =>
+                                 onCursor('pointertheme', 'expand')
+                              }
+                              onMouseLeave={onCursor}
+                           >
+                              {projectImages[index]}
+                           </SwiperSlide>
+                        );
+                     })}
                   </Swiper>
                   <Link
                      href={`/project/${
@@ -242,58 +254,22 @@ export default function Project({
                </Info>
             </div>
          </Container>
+
+         {!breakpoints.md && (
+            <Modal
+               isOpen={viewerShowing}
+               //   onAfterOpen={afterOpenModal}
+               onRequestClose={() => showViewer(false)}
+               style={customStyles}
+               contentLabel='Example Modal'
+            >
+               <ImageViewer
+                  images={projectImages}
+                  currentImage={currentImage}
+                  showViewer={showViewer}
+               />
+            </Modal>
+         )}
       </Layout>
    );
 }
-
-/* {prevProj && (
-               <Link href={`/project/${projects[linkIndex - 1].id}`}>
-                  <PrevLink
-                     onMouseEnter={() => onCursor("pointertheme")}
-                     onMouseLeave={onCursor}
-                  >
-                     <div>PREV</div>
-                     <div className="name">{projects[linkIndex - 1].name}</div>
-                  </PrevLink>
-               </Link>
-            )}
- }
- {
-   <StyledSwiperWrapper>
-                        <Flex>
-                           {!play ? (
-                              <FontAwesomeIcon
-                                 icon={faPlay}
-                                 onMouseEnter={() => onCursor("pointertheme")}
-                                 onMouseLeave={onCursor}
-                                 onClick={() => handlePlayPause()}
-                              />
-                           ) : (
-                              <FontAwesomeIcon
-                                 icon={faStop}
-                                 onMouseEnter={() => onCursor("pointertheme")}
-                                 onMouseLeave={onCursor}
-                                 onClick={() => handlePlayPause()}
-                              />
-                           )}
-                        </Flex>
-                        <Flex grow height={"100%"}>
-                           <StyledSwiperPagination className="swiper-mypagination"></StyledSwiperPagination>
-                        </Flex>
-                        <Flex width={"20%"} flexCenter>
-                           <StyledSwiperNavBtn
-                              left
-                              className="prevBtn"
-                              onMouseEnter={() => onCursor("pointertheme")}
-                              onMouseLeave={onCursor}
-                           ></StyledSwiperNavBtn>
-                           <StyledSwiperNavBtn
-                              right
-                              className="nextBtn"
-                              onMouseEnter={() => onCursor("pointertheme")}
-                              onMouseLeave={onCursor}
-                           ></StyledSwiperNavBtn>
-                        </Flex>
-                     </StyledSwiperWrapper> 
-                  }
-*/

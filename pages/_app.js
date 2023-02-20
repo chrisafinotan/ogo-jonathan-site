@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { BreakpointProvider } from '../context/breakpointContext';
 import { GlobalProvider } from '../context/globalContext';
 import '../styles/globals.css';
@@ -6,6 +6,7 @@ import '../fonts/telma/Fonts/WEB/css/telma.css';
 import { AnimatePresence, AnimateSharedLayout } from 'framer-motion';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
+import Loading from '../components/loading';
 
 config.autoAddCss = false;
 
@@ -19,7 +20,7 @@ const queries = {
 };
 
 function MyApp({ Component, pageProps }) {
-
+   const [loading, setLoading] = useState(true);
    useEffect(() => {
       const appHeight = () => {
          const doc = document.documentElement;
@@ -38,7 +39,8 @@ function MyApp({ Component, pageProps }) {
          <AnimateSharedLayout>
             <GlobalProvider>
                <BreakpointProvider queries={queries}>
-                  <Component {...pageProps} />
+                  <Loading loading={loading} />
+                  <Component {...pageProps} setLoading={setLoading} />
                </BreakpointProvider>
             </GlobalProvider>
          </AnimateSharedLayout>

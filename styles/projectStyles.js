@@ -1,65 +1,48 @@
-import styled, { css } from "styled-components";
-import { motion } from "framer-motion";
+import styled, { css } from 'styled-components';
+import { motion } from 'framer-motion';
 
 export const StyledSwiperWrapper = styled.div`
    display: flex;
-   align-items: center;
-   justify-content: space-between;
-   //    position: absolute;
-   width: 50%;
-   transform: translate(50%, 50%);
-   //    bottom: 10vh;
-   height: fit-content;
-   z-index: 10;
-   gap: 10px;
+   height: 30px;
    svg {
       width: 50px;
-      height: 50px;
+      height: 100%;
       path {
          fill: ${(props) => props.theme.text};
       }
    }
 `;
 
+export const StyledSwiperPagination = styled.div`
+align-self: center;
+   height: 5px !important;
+   position: relative !important;
+   width: 100%;
+   z-index: 10;
+   svg {
+      width: 50px;
+      height: 50px;
+      path {
+         fill: ${(props) => props.theme.main};
+      }
+   }
+`;
+
 export const StyledSwiperNavBtn = styled.div`
-   top: 50%;
-   width: 25px;
    height: 25px;
    background: transparent;
-   border-top: 6px solid ${(props) => props.theme.text};
-   border-right: 6px solid ${(props) => props.theme.text};
-   box-shadow: 0 0 0 lightgray;
    transition: all 200ms ease;
    &.swiper-button-disabled {
-      // display: none;
       opacity: 0;
       pointer-events: none;
+  }
+   svg {
+      fill: ${(props) => props.theme.main};
    }
-   ${(props) =>
-      props.right &&
-      css`
-         transform: rotate(45deg);
-      `};
-
-   ${(props) =>
-      props.left &&
-      css`
-         transform: rotate(-135deg);
-      `};
-
-   &:hover {
-      border-color: ${(props) => props.theme.main};
-      box-shadow: 3px -3px 0 ${(props) => props.theme.text};
-   }
-
-   &:before {
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-40%, -60%) rotate(45deg);
-      width: 200%;
-      height: 200%;
+   :hover {
+      svg {
+         fill: ${(props) => props.theme.main};
+      }
    }
 `;
 
@@ -100,8 +83,8 @@ export const Info = styled(motion.div)`
          font-size: 2em;
       }
       @media (max-width: 1540px) {
-        font-size: 3em;
-     }
+         font-size: 3em;
+      }
    }
    .category {
       opacity: 0.5;

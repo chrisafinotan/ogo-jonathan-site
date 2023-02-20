@@ -29,12 +29,11 @@ export const Logo = styled.div`
     padding: 0.5em;
     display: flex;
     align-items: center;
-    // border: 2px solid yellow;
     .title {
         height: fit-content;
         width: fit-content;
         display: inline-block;
-        font-size: 2.2rem;
+        font-size: 1.5rem;
         text-decoration: none;
         font-weight: 800;
         color: ${(props) =>

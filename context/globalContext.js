@@ -9,7 +9,6 @@ const globalReducer = (state, action) => {
     switch (action.type) {
         case "TOGGLE_THEME": {
             if (typeof window !== undefined) {
-                // console.log('setting local storage', action.theme)
                 window.localStorage.setItem("theme", action.theme);
             }
             return {
@@ -18,10 +17,10 @@ const globalReducer = (state, action) => {
             };
         }
         case "CURSOR_TYPE": {
-            // console.log("cursor", action.cursorType);
             return {
                 ...state,
                 cursorType: action.cursorType,
+                cursorText: action.cursorText,
             };
         }
         default: {
@@ -32,7 +31,6 @@ const globalReducer = (state, action) => {
 
 //Provider
 export const GlobalProvider = ({ children }) => {
-    // console.log("global provider");
     const [state, dispatch] = useReducer(globalReducer, {
         currentTheme: "dark",
         cursorType: false,

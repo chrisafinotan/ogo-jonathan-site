@@ -29,7 +29,7 @@ body,
 
 body {
    font-family: CircularStd-Book, -apple-system, BlinkMacSystemFont, Segoe UI,
-      Roboto, Helvetica Neue, Arial, sans-serif, "Shizuru", cursive;
+      Roboto, Helvetica Neue, Arial, sans-serif, 'Shizuru', cursive;
    background: #000000;
    overscroll-behavior: none;
    overflow-x: hidden;
@@ -90,7 +90,8 @@ a {
    border: 2px solid blue;
 }
 
-.mySwiperID {
+.mySwiperID,
+.onClickSwiper {
    width: 100%;
    height: 100%;
    padding: 0;
@@ -110,6 +111,14 @@ a {
 
 .mySwiperSlide img {
    object-fit: cover;
+   height: auto;
+}
+
+.onClickSwiper .swiperSlideModal img {
+   width: 100%;
+   height: 78vh;
+   object-fit: contain;
+
 }
 
 @media (max-width: 1540px) {

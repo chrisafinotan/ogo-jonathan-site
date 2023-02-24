@@ -1,4 +1,3 @@
-import { useState, useEffect, Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { AnimatePresence } from 'framer-motion';
@@ -74,7 +73,6 @@ export default function Home({
                      })}
                   </AnimatePresence>
                </ContentContainer>
-               {/* </Suspense> */}
             </div>
          </Container>
       </Layout>

@@ -40,6 +40,7 @@ yarn-error.log*
 #firebase
 /.firebase
 /nextjs
+/firebase-functions
 
 #log files
 *.log

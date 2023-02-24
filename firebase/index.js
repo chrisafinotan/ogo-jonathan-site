@@ -11,5 +11,4 @@ const storage = getStorage(app);
 if (!storage) {
    throw new Error('Firebase storage could not initialized!');
 }
-
 export default storage;

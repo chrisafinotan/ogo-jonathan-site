@@ -66,8 +66,8 @@ const Header = ({
             ease: [0.6, 0.05, -0.01, 0.9],
          }}
       >
-         <Container fluid padding={'0 2em'}>
-            <Flex spaceBetween noHeight>
+         <Container fluid='true'>
+            <Flex spaceBetween className='wrapper'>
                <Logo
                   onMouseEnter={() => onCursor('hovered')}
                   onMouseLeave={onCursor}

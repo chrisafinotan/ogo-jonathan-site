@@ -19,30 +19,24 @@ export async function getStaticProps() {
    };
 }
 
-export default function Home({
-   projects,
-   navProjects,
-   setLoading,
-}) {
+export default function Home({ projects, navProjects, setLoading }) {
    // const [loading, setLoading] = useState(true);
    const breakpoints = useBreakpoint();
    const { cursorStyles } = useGlobalStateContext();
    const dispatch = useGlobalDispatchContext();
    const onCursor = (cursorType, cursorText) => {
       cursorType = (cursorStyles.includes(cursorType) && cursorType) || false;
-      dispatch({ type: 'CURSOR_TYPE', cursorType, cursorText, });
+      dispatch({ type: 'CURSOR_TYPE', cursorType, cursorText });
    };
-
    return (
       <Layout projects={navProjects}>
-         <Container center>
+         <Container center='true'>
             <div
                style={{
                   display: 'flex',
                   position: 'relative',
                   gap: '16px',
-                  margin: '150px 0',
-                  flexDirection: 'row',
+                  marginTop: '48px',
                }}
             >
                <ContentContainer small={breakpoints.md ? 'Yes' : 'No'}>
@@ -59,11 +53,14 @@ export default function Home({
                                  width={breakpoints.md ? 400 : 1080}
                                  height={breakpoints.md ? 620 : 1280}
                                  style={{ objectFit: 'cover' }}
-                                 onMouseEnter={() => onCursor('hovered', 'view')}
+                                 onMouseEnter={() =>
+                                    onCursor('hovered', 'view')
+                                 }
                                  onMouseLeave={onCursor}
                                  key={`${index}_homepage_image`}
                                  loading={'eager'}
                                  onLoadingComplete={() => {
+                                    console.log('loaded', el.content);
                                     if (index === projects.length - 1)
                                        setLoading(false);
                                  }}

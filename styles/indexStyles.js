@@ -166,6 +166,10 @@ export const ContentContainer = styled(motion.div)`
    flex-wrap: wrap;
    flex-direction: row;
    justify-content: center;
+   overflow: scroll;
+   ::-webkit-scrollbar {
+      display: none;
+  }
    a {
       width: 19%;
       margin: 12px;

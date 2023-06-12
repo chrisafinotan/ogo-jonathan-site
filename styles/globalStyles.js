@@ -50,7 +50,7 @@ const textShadow = keyframes`
     }
 `;
 
-export const Container = styled.div`
+export const Container = styled(motion.div)`
    flex-grow: 1;
    margin: 0 auto;
    padding: 0 32px;
@@ -58,6 +58,7 @@ export const Container = styled.div`
    box-sizing: border-box;
    width: auto;
    height: 100%;
+   border: none;
    @media (min-width: 1024px) {
       max-width: 960px;
    }
@@ -75,6 +76,7 @@ export const Container = styled.div`
          margin: 0;
          // background: ${(props) => props.theme.background};
          max-width: 100% !important;
+         max-height: 100vh;
       `}
    ${(props) =>
       props.center &&
@@ -114,6 +116,11 @@ export const Container = styled.div`
       props.test &&
       css`
          border: 2px solid yellow;
+      `}
+   ${(props) =>
+      props.showBorder === 'true' &&
+      css`
+         border: 2px solid ${(props) => props.theme.main};
       `};
 `;
 
@@ -281,7 +288,7 @@ export const Cursor = styled.div`
 export const LoadingBanner = styled(motion.div)`
    // background: #000;
    background: ${(props) => props.color};
-   z-index: 105;
+   z-index: 12;
    position: absolute;
    display: flex;
    align-items: center;
@@ -310,7 +317,7 @@ export const LoadingBanner = styled(motion.div)`
                  font-weight: 700;
                  color: #fff;
                  mix-blend-mode: difference;
-                 z-index: 8;
+                 z-index: 12;
                  overflow: hidden;
                  white-space: nowrap;
                  animation: ${textShadow} 1s ease-in-out infinite;
@@ -332,7 +339,7 @@ export const LoadingBanner = styled(motion.div)`
                  // mix-blend-mode: revert;
                  height: 2em;
                  width: 2em;
-                 // z-index: 8;
+                 z-index: 12;
                  background: ${(props) => props.theme.main};
                  margin: 0.2em;
                  background: yellow;

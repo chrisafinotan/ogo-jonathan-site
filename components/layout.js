@@ -29,8 +29,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    font-size: 16px;
-    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: Nunito-Variable, sans-serif;
     background: ${(props) => props.theme.background};
     overscroll-behavior: none;
     overflow-x: hidden;
@@ -79,8 +78,8 @@ export default function Layout({ children, projects }) {
 
    const ferhatTheme = {
       background: '#825f45',
-      //   text: "#797d62",
-      text: '#c8691c',
+      text: "#e4cea1",
+      // text: '#c8691c',
       main: '#c8691c',
       inv_background: '#797d62',
       inv_text: '#e4ceaf',
@@ -140,7 +139,7 @@ export default function Layout({ children, projects }) {
             setHamburgerPosition={setHamburgerPosition}
             projects={projects}
          />
-         <div className='siteContent'>
+         <div id='siteContent'>
             {!breakpoints.md && <CCursor toggleMenu={toggleMenu} />}
             {children}
          </div>

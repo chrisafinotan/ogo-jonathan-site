@@ -1,7 +1,7 @@
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { motion } from 'framer-motion';
 
-export const StyledSwiperWrapper = styled.div`
+export const StyledSwiperWrapper = styled(motion.div)`
    display: flex;
    height: 30px;
    svg {
@@ -11,17 +11,18 @@ export const StyledSwiperWrapper = styled.div`
          fill: ${(props) => props.theme.text};
       }
    }
+   justify-content: center;
 `;
 
 export const StyledSwiperPagination = styled.div`
-align-self: center;
+   max-width: 600px;
+   align-self: center;
    height: 5px !important;
    position: relative !important;
    width: 100%;
-   z-index: 10;
    svg {
-      width: 50px;
-      height: 50px;
+      width: 3rem;
+      height: 3rem;
       path {
          fill: ${(props) => props.theme.main};
       }
@@ -34,8 +35,7 @@ export const StyledSwiperNavBtn = styled.div`
    transition: all 200ms ease;
    &.swiper-button-disabled {
       opacity: 0;
-      pointer-events: none;
-  }
+   }
    svg {
       fill: ${(props) => props.theme.main};
    }
@@ -47,13 +47,15 @@ export const StyledSwiperNavBtn = styled.div`
 `;
 
 export const ImagesWrapper = styled(motion.div)`
+   color: ${(props) => props.theme.text};
    display: flex;
-   alignself: center;
+   align-self: center;
    overflow-x: auto;
    height: 100%;
+   max-height: 80vh;
+   min-height: 80vh;
+   width: 100%;
    isolation: isolate;
-   color: ${(props) => props.theme.text};
-   z-index: 10;
    flex-basis: fit-content;
    flex-grow: 1;
    position: relative;
@@ -61,37 +63,38 @@ export const ImagesWrapper = styled(motion.div)`
 
 export const Info = styled(motion.div)`
    color: ${(props) => props.theme.text};
-   font-size: 2em;
    scroll-snap-align: start;
-   text-align: center;
    display: grid;
-   grid-template-columns: repeat(2, 1fr);
-   gridautoflow: row;
-   flex-basis: 15%;
+   grid-template-columns: 1fr 1fr;
    max-height: 20vh;
+   min-height: 20vh;
+   margin: 12px;
+   pointer-events: none;
+
    .name {
+      left: 0%;
       width: 100%;
-      font-family: Telma-Variable, sans-serif;
-      font-weight: 900;
-      flex-basis: 50%;
-      font-size: 4em;
-      line-height: 1;
-      font-weight: 300;
-      letter-spacing: -0.025em;
-      text-transform: none;
-      @media (max-width: 840px) {
-         font-size: 2em;
-      }
-      @media (max-width: 1540px) {
-         font-size: 3em;
-      }
+      height: fit-content;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 3rem;
+      // white-space: pre-line;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      display: -webkit-box;
+      text-align: center;
+      color: ${(props) => props.theme.text};
+   }
+   .more {
+      padding: 12px;
+      box-sizing: border-box;
    }
    .category {
       opacity: 0.5;
       font-size: 0.75rem;
    }
    .desc {
-      padding-top: 1rem;
+      padding-top: 16px;
       width: 100%;
    }
    ${(props) =>
@@ -107,28 +110,45 @@ export const Info = styled(motion.div)`
       `};
 `;
 
-export const LinkWrapper = styled(motion.div)`
-   z-index: 20;
-   font-family: Telma-Variable, sans-serif;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   padding: 0 1rem 0 2rem;
-   margin: 2rem;
+export const StyledLink = styled(motion.a)`
+   // border: 1px solid yellow;
+   max-width: 30vw;
+   min-width: 30vw;
+   height: 2rem;
    position: absolute;
-   right: 0;
-   bottom: 0;
-   //    mix-blend-mode: difference;
+   bottom: 16px;
+   right: 16px;
+   display: block;
+   z-index: 10;
+   @media (max-width: 840px) {
+      max-width: 40vw;
+   }
+`;
+
+export const LinkWrapper = styled(motion.div)`
+   display: grid;
+   align-items: center;
+   grid-template-columns: 1fr 32px;
    color: ${(props) => props.theme.text};
    background-color: ${(props) => props.theme.background};
-   font-size: 1.5em;
+   font-size: 1.5rem;
    gap: 8px;
+   @media (max-width: 840px) {
+      font-size: 12px;
+   }
    .svg {
-      font-size: 0.5em;
+      font-size: 0.5rem;
+      right: 0px;
+   }
+   .name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-align: center;
    }
    ${(props) =>
       props.small === 'Yes' &&
       css`
-         font-size: 0.75em;
+         font-size: 0.75rem;
       `};
 `;

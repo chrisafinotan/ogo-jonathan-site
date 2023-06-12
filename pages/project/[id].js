@@ -9,7 +9,12 @@ import {
    getAssets,
 } from '../../lib/projectsLib';
 import { Container } from '../../styles/globalStyles';
-import { ImagesWrapper, LinkWrapper, Info } from '../../styles/projectStyles';
+import {
+   ImagesWrapper,
+   LinkWrapper,
+   Info,
+   StyledLink,
+} from '../../styles/projectStyles';
 import {
    projectsContainer__motion,
    project__motion,
@@ -39,6 +44,7 @@ import Image from 'next/image';
 import ImageViewer from '../../components/image-viewer';
 import Modal from 'react-modal';
 
+Modal.setAppElement('#siteContent');
 SwiperCore.use([Navigation, Pagination, Mousewheel, Autoplay, FreeMode]);
 
 export async function getStaticPaths() {
@@ -85,7 +91,6 @@ export default function Project({
       let index = projects.findIndex((el) => el.id === projectID);
       setLinkIndex(index);
    };
-
    useEffect(() => {
       const handleRouteChange = () => {
          window.scrollTo(0, 0);
@@ -95,10 +100,6 @@ export default function Project({
          }
       };
       router.events.on('routeChangeComplete', () => handleRouteChange());
-
-      if (containerRef && containerRef.current) {
-         containerRef.current.scrollIntoView();
-      }
    }, []);
 
    useEffect(() => {
@@ -117,154 +118,163 @@ export default function Project({
          cursorText,
       });
    };
-
    const projectImages = projectPictures
       ? projectPictures.map((el, index) => {
            return (
               <Image
                  src={`${el?.pic}`}
-                 key={`${index}_project`}
+                 key={`${index}_projectImage`}
                  alt={el?.name}
                  width={breakpoints.md ? 400 : 1080}
                  height={breakpoints.md ? 620 : 1280}
                  loading={'eager'}
                  onLoadingComplete={() => {
-                    if (index === projectPictures.length - 1) setLoading(false);
+                    setLoading(false);
                  }}
-              ></Image>
+              />
            );
         })
       : [];
-
    const toggleViewer = (currentImage = 0) => {
       setCurrent(currentImage);
       showViewer(true);
    };
-
-   const customStyles = {
+   const modalStyle = {
       content: {
          top: '50%',
          left: '50%',
+         width: '80vw',
+         height: '90vh',
          right: 'auto',
          bottom: 'auto',
          marginRight: '-50%',
          transform: 'translate(-50%, -50%)',
-         padding: '5px',
+         padding: 'none',
+         border: 'none',
+         backgroundColor: 'transparent',
+         overflow: 'hidden',
+      },
+      overlay: {
+         position: 'fixed',
+         top: 0,
+         left: 0,
+         right: 0,
+         bottom: 0,
+         backgroundColor: 'transparent',
+         backdropFilter: 'blur(10px)',
+         WebkitBackdropFilter: 'blur(10px)',
       },
    };
-
    return (
       <Layout projects={projects}>
-         <Container fluid>
-            <div
-               style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  height: '100%',
-                  width: '100vw',
-               }}
-               onClick={() => showViewer(false)}
+         <Container
+            fluid='true'
+            className='projectDiv'
+            onClick={() => showViewer(false)}
+         >
+            <ImagesWrapper
+               ref={elRef}
+               variants={projectsContainer__motion}
+               initial='hidden'
+               animate='show'
+               exit='exit'
             >
-               <ImagesWrapper
-                  ref={elRef}
-                  variants={projectsContainer__motion}
-                  initial='hidden'
-                  animate='show'
-                  exit='exit'
+               <Swiper
+                  className='mySwiperID'
+                  observer={true}
+                  observeParents={true}
+                  observeSlideChildren={true}
+                  preloadImages={true}
+                  updateOnImagesReady={true}
+                  modules={[
+                     Navigation,
+                     Pagination,
+                     Controller,
+                     Mousewheel,
+                     FreeMode,
+                     Autoplay,
+                  ]}
+                  freeMode={true}
+                  mousewheel={{
+                     releaseOnEdges: true,
+                  }}
+                  slidesPerView={'auto'}
+                  ref={swiperRef}
                >
-                  <Swiper
-                     className='mySwiperID'
-                     observer={true}
-                     observeParents={true}
-                     observeSlideChildren={true}
-                     preloadImages={true}
-                     updateOnImagesReady={true}
-                     modules={[
-                        Navigation,
-                        Pagination,
-                        Controller,
-                        Mousewheel,
-                        FreeMode,
-                        Autoplay,
-                     ]}
-                     freeMode={true}
-                     mousewheel={{
-                        releaseOnEdges: true,
-                     }}
-                     slidesPerView={'auto'}
-                     ref={swiperRef}
-                     loop={true}
-                  >
-                     {projectPictures.map((_, index) => {
-                        return (
-                           <SwiperSlide
-                              key={`swiperSlide_${index}`}
-                              className='mySwiperSlide'
-                              onClick={(e) => {
-                                 e.stopPropagation();
-                                 toggleViewer(index);
-                              }}
-                              onMouseEnter={() =>
-                                 onCursor('pointertheme', 'expand')
-                              }
-                              onMouseLeave={onCursor}
-                           >
-                              {projectImages[index]}
-                           </SwiperSlide>
-                        );
-                     })}
-                  </Swiper>
-                  <Link
-                     href={`/project/${
-                        projects[(linkIndex + 1) % projects.length].id
-                     }`}
-                  >
-                     <LinkWrapper
-                        small={breakpoints.md ? 'Yes' : 'No'}
-                        onMouseEnter={() => onCursor('pointertheme')}
-                        onMouseLeave={onCursor}
-                     >
-                        <div className='name'>
-                           {projects[
-                              (linkIndex + 1) % projects.length
-                           ].name.toUpperCase()}
-                        </div>
-                        <FontAwesomeIcon icon={faArrowRight} />
-                     </LinkWrapper>
-                  </Link>
-               </ImagesWrapper>
-
-               <Info small={breakpoints.md ? 'Yes' : 'No'}>
-                  <motion.div className='name' variants={project__motion}>
-                     {projectData.name.toUpperCase()}
-                  </motion.div>
-                  <motion.div className='more'>
-                     {projectData.category !== 'Photoshoot' && (
-                        <motion.div
-                           className='category'
-                           variants={project__motion}
+                  {projectPictures.map((_, index) => {
+                     return (
+                        <SwiperSlide
+                           key={`swiperSlide_${index}`}
+                           className='mySwiperSlide'
+                           onClick={(e) => {
+                              e.stopPropagation();
+                              toggleViewer(index);
+                           }}
+                           onMouseEnter={() =>
+                              onCursor('pointertheme', 'expand')
+                           }
+                           onMouseLeave={onCursor}
                         >
-                           {projectData.category.toUpperCase()}
-                        </motion.div>
-                     )}
-                     <motion.div className='desc' variants={project__motion}>
-                        {projectData.desc.toUpperCase()}
+                           {projectImages[index]}
+                        </SwiperSlide>
+                     );
+                  })}
+               </Swiper>
+               <StyledLink
+                  href={`/project/${
+                     projects[(linkIndex + 1) % projects.length].id
+                  }`}
+               >
+                  <LinkWrapper
+                     onMouseEnter={() => onCursor('pointertheme')}
+                     onMouseLeave={onCursor}
+                  >
+                     <span className='name'>
+                        {projects[
+                           (linkIndex + 1) % projects.length
+                        ].name.toUpperCase()}
+                     </span>
+                     <FontAwesomeIcon icon={faArrowRight} />
+                  </LinkWrapper>
+               </StyledLink>
+            </ImagesWrapper>
+
+            <Info
+               small={breakpoints.md ? 'Yes' : 'No'}
+               variants={project__motion}
+               animate='show'
+            >
+               <motion.div className='name' ref={containerRef}>
+                  {projectData.name.toUpperCase()}
+               </motion.div>
+               <motion.div
+                  className='more'
+                  onMouseOver={(e) => e.stopPropagation()}
+               >
+                  {projectData.category !== 'Photoshoot' && (
+                     <motion.div
+                        className='category'
+                        variants={project__motion}
+                     >
+                        {projectData.category.toUpperCase()}
                      </motion.div>
+                  )}
+                  <motion.div className='desc' variants={project__motion}>
+                     {projectData.desc.toUpperCase()}
                   </motion.div>
-               </Info>
-            </div>
+               </motion.div>
+            </Info>
          </Container>
 
          {!breakpoints.md && (
             <Modal
                isOpen={viewerShowing}
-               //   onAfterOpen={afterOpenModal}
                onRequestClose={() => showViewer(false)}
-               style={customStyles}
-               contentLabel='Example Modal'
+               style={modalStyle}
+               contentLabel='Modal'
             >
                <ImageViewer
-                  images={projectImages}
+                  images={projectPictures}
                   currentImage={currentImage}
                   showViewer={showViewer}
                />

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { BreakpointProvider } from '../context/breakpointContext';
 import { GlobalProvider } from '../context/globalContext';
 import '../styles/globals.css';
-import '../fonts/telma/Fonts/WEB/css/telma.css';
+import '../fonts/nunito/Fonts/WEB/css/nunito.css';
 import { AnimatePresence, AnimateSharedLayout } from 'framer-motion';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { config } from '@fortawesome/fontawesome-svg-core';

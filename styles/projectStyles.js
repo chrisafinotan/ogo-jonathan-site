@@ -52,8 +52,8 @@ export const ImagesWrapper = styled(motion.div)`
    align-self: center;
    overflow-x: auto;
    height: 100%;
-   max-height: 80vh;
-   min-height: 80vh;
+   // max-height: 80vh;
+   // min-height: 80vh;
    width: 100%;
    isolation: isolate;
    flex-basis: fit-content;
@@ -66,10 +66,12 @@ export const Info = styled(motion.div)`
    scroll-snap-align: start;
    display: grid;
    grid-template-columns: 1fr 1fr;
-   max-height: 20vh;
-   min-height: 20vh;
+   // max-height: 20vh;
+   // min-height: 20vh;
+   // height: 100%;
    margin: 12px;
    pointer-events: none;
+   box-sizing: content-box;
 
    .name {
       left: 0%;
@@ -112,8 +114,8 @@ export const Info = styled(motion.div)`
 
 export const StyledLink = styled(motion.a)`
    // border: 1px solid yellow;
-   max-width: 30vw;
-   min-width: 30vw;
+   max-width: 480px;
+   // min-width: 320px;
    height: 2rem;
    position: absolute;
    bottom: 16px;
@@ -121,7 +123,7 @@ export const StyledLink = styled(motion.a)`
    display: block;
    z-index: 10;
    @media (max-width: 840px) {
-      max-width: 40vw;
+      max-width: 20vw;
    }
 `;
 
@@ -141,6 +143,7 @@ export const LinkWrapper = styled(motion.div)`
       right: 0px;
    }
    .name {
+      padding: 0 8px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;

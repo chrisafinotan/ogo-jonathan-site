@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { motion } from 'framer-motion';
 
 const blink = keyframes`
@@ -14,18 +14,24 @@ const blink = keyframes`
 `;
 
 export const HeaderNav = styled(motion.div)`
-   height: 8vh;
-   max-height: 8vh;
    width: 100%;
-   position: absolute;
+   position: sticky;
    top: 0;
    right: 0;
    left: 0;
    z-index: 11;
    .wrapper {
-      width: 100%;
       height: 100%;
+      margin: 0 72px;
    }
+   ${(props) =>
+      props.small === 'Yes' &&
+      css`
+         .wrapper {
+            height: 100%;
+            margin: 0;
+         }
+      `};
 `;
 
 export const Logo = styled.div`
@@ -39,14 +45,12 @@ export const Logo = styled.div`
       font-size: 1.5rem;
       text-decoration: none;
       font-weight: 900;
-      color: ${(props) =>
-         props.invert ? props.theme.inv_text : props.theme.text};
+      color: ${(props) => props.theme.text};
    }
    span {
       height: 16px;
       width: 16px;
-      background: ${(props) =>
-         props.invert ? props.theme.inv_main : props.theme.main};
+      background: ${(props) => props.theme.main};
       margin: 0 1rem;
       border-radius: 100%;
       display: inline-block;
@@ -62,17 +66,14 @@ export const Logo = styled.div`
 `;
 
 export const Menu = styled.div`
+   z-index: 11;
+   color: ${(props) => props.theme.text};
    .hamburger-react {
-      color: ${(props) =>
-         props.invert ? props.theme.inv_text : props.theme.text};
-      * {
-         mix-blend-mode: difference;
-         // color: #fff;
-         // background: ${(props) => props.theme.background} !important;
-      }
-      mix-blend-mode: color-dodge;
-      // background: ${(props) => props.theme.background} !important;
+      color: ${(props) => props.theme.text};
       font-weight: 700;
-      // color: #fff;
+      * {
+         transition: unset;
+         transition: translate 0.4s cubic-bezier(0, 0, 0, 1) !important;
+      }
    }
 `;

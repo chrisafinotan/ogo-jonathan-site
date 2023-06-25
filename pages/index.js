@@ -28,49 +28,38 @@ export default function Home({ projects, navProjects, setLoading }) {
       cursorType = (cursorStyles.includes(cursorType) && cursorType) || false;
       dispatch({ type: 'CURSOR_TYPE', cursorType, cursorText });
    };
+
    return (
       <Layout projects={navProjects}>
          <Container center='true'>
-            <div
-               style={{
-                  display: 'flex',
-                  position: 'relative',
-                  gap: '16px',
-                  marginTop: '48px',
-               }}
-            >
-               <ContentContainer small={breakpoints.md ? 'Yes' : 'No'}>
-                  <AnimatePresence>
-                     {projects.map((el, index) => {
-                        return (
-                           <Link
-                              href={`/project/${el.link}`}
-                              key={`${index}_homepage_link`}
-                           >
-                              <Image
-                                 src={el.content}
-                                 alt={el.name}
-                                 width={breakpoints.md ? 400 : 1080}
-                                 height={breakpoints.md ? 620 : 1280}
-                                 style={{ objectFit: 'cover' }}
-                                 onMouseEnter={() =>
-                                    onCursor('hovered', 'view')
-                                 }
-                                 onMouseLeave={onCursor}
-                                 key={`${index}_homepage_image`}
-                                 loading={'eager'}
-                                 onLoadingComplete={() => {
-                                    console.log('loaded', el.content);
-                                    if (index === projects.length - 1)
-                                       setLoading(false);
-                                 }}
-                              />
-                           </Link>
-                        );
-                     })}
-                  </AnimatePresence>
-               </ContentContainer>
-            </div>
+            <ContentContainer small={breakpoints.md ? 'Yes' : 'No'}>
+               <AnimatePresence>
+                  {projects.map((el, index) => {
+                     return (
+                        <Link
+                           href={`/project/${el.link}`}
+                           key={`${index}_homepage_link`}
+                        >
+                           <Image
+                              src={el.content}
+                              alt={el.name}
+                              width={breakpoints.md ? 400 : 1080}
+                              height={breakpoints.md ? 620 : 1280}
+                              style={{ objectFit: 'cover' }}
+                              onMouseEnter={() => onCursor('hovered', 'view')}
+                              onMouseLeave={onCursor}
+                              key={`${index}_homepage_image`}
+                              loading={'eager'}
+                              onLoadingComplete={() => {
+                                 if (index === projects.length - 1)
+                                    setLoading(false);
+                              }}
+                           />
+                        </Link>
+                     );
+                  })}
+               </AnimatePresence>
+            </ContentContainer>
          </Container>
       </Layout>
    );

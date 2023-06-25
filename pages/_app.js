@@ -1,23 +1,14 @@
 import { useEffect, useState } from 'react';
 import { BreakpointProvider } from '../context/breakpointContext';
 import { GlobalProvider } from '../context/globalContext';
-import '../styles/globals.css';
-import '../fonts/nunito/Fonts/WEB/css/nunito.css';
+import Head from 'next/head';
 import { AnimatePresence, AnimateSharedLayout } from 'framer-motion';
+import Loading from '../components/loading';
+import '../styles/globals.css';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
-import Loading from '../components/loading';
 
 config.autoAddCss = false;
-
-const queries = {
-   xs: '(max-width: 320px)',
-   sm: '(max-width: 720px)',
-   // md: "(max-width: 1024px)",
-   md: '(max-width: 840px)',
-   lg: '(min-width: 1200px)',
-   or: '(orientation: portrait)',
-};
 
 function MyApp({ Component, pageProps }) {
    const [loading, setLoading] = useState(true);
@@ -29,6 +20,8 @@ function MyApp({ Component, pageProps }) {
       window.addEventListener('resize', appHeight);
       appHeight();
 
+   
+
       return () => {
          window.removeEventListener('resize', appHeight);
       };
@@ -38,7 +31,13 @@ function MyApp({ Component, pageProps }) {
       <AnimatePresence exitBeforeEnter>
          <AnimateSharedLayout>
             <GlobalProvider>
-               <BreakpointProvider queries={queries}>
+               <BreakpointProvider>
+                  <Head>
+                     <meta
+                        name='viewport'
+                        content='width=device-width, initial-scale=1.0'
+                     />
+                  </Head>
                   <Loading loading={loading} />
                   <Component {...pageProps} setLoading={setLoading} />
                </BreakpointProvider>

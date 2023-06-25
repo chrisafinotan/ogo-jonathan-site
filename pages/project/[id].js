@@ -84,7 +84,6 @@ export default function Project({
    const [linkIndex, setLinkIndex] = useState(1);
    const [viewerShowing, showViewer] = useState(false);
    const [currentImage, setCurrent] = useState(0);
-
    const router = useRouter();
 
    const getProjectIndex = () => {
@@ -123,11 +122,15 @@ export default function Project({
            return (
               <Image
                  src={`${el?.pic}`}
-                 key={`${index}_projectImage`}
+               //   key={`${index}_projectImage`}
                  alt={el?.name}
                  width={breakpoints.md ? 400 : 1080}
                  height={breakpoints.md ? 620 : 1280}
                  loading={'eager'}
+                 onClick={(e) => {
+                    e.stopPropagation();
+                    toggleViewer(index);
+                 }}
                  onLoadingComplete={() => {
                     setLoading(false);
                  }}
@@ -143,8 +146,8 @@ export default function Project({
       content: {
          top: '50%',
          left: '50%',
-         width: '80vw',
-         height: '90vh',
+         width: `${breakpoints.md ? '100vw' : '80vw'}`,
+         height: `${breakpoints.md ? '80vh' : '90vh'}`,
          right: 'auto',
          bottom: 'auto',
          marginRight: '-50%',
@@ -181,6 +184,7 @@ export default function Project({
             >
                <Swiper
                   className='mySwiperID'
+                  initialSlide={currentImage}
                   observer={true}
                   observeParents={true}
                   observeSlideChildren={true}
@@ -198,18 +202,18 @@ export default function Project({
                   mousewheel={{
                      releaseOnEdges: true,
                   }}
-                  slidesPerView={'auto'}
                   ref={swiperRef}
+                  // slidesPerView={'auto'}
+                  // centeredSlides={true}
+                  // centerInsufficientSlides={true}
+                  // centeredSlidesBounds={true}
+                  // loop
                >
                   {projectPictures.map((_, index) => {
                      return (
                         <SwiperSlide
                            key={`swiperSlide_${index}`}
                            className='mySwiperSlide'
-                           onClick={(e) => {
-                              e.stopPropagation();
-                              toggleViewer(index);
-                           }}
                            onMouseEnter={() =>
                               onCursor('pointertheme', 'expand')
                            }
@@ -266,20 +270,18 @@ export default function Project({
             </Info>
          </Container>
 
-         {!breakpoints.md && (
-            <Modal
-               isOpen={viewerShowing}
-               onRequestClose={() => showViewer(false)}
-               style={modalStyle}
-               contentLabel='Modal'
-            >
-               <ImageViewer
-                  images={projectPictures}
-                  currentImage={currentImage}
-                  showViewer={showViewer}
-               />
-            </Modal>
-         )}
+         <Modal
+            isOpen={viewerShowing}
+            onRequestClose={() => showViewer(false)}
+            style={modalStyle}
+            contentLabel='Modal'
+         >
+            <ImageViewer
+               images={projectImages}
+               currentImage={currentImage}
+               showViewer={showViewer}
+            />
+         </Modal>
       </Layout>
    );
 }

@@ -1,5 +1,5 @@
-import styled, { css, keyframes } from "styled-components";
-import { motion } from "framer-motion";
+import styled, { css, keyframes } from 'styled-components';
+import { motion } from 'framer-motion';
 
 const blink = keyframes`
 0% {
@@ -150,8 +150,7 @@ export const TitleBanner = styled(motion.div)`
       mix-blend-mode: revert;
       height: 2em;
       width: 2em;
-      background: ${(props) =>
-         props.invert ? props.theme.inv_main : props.theme.main};
+      background: ${(props) => props.theme.main};
       margin: 0.2em;
       border-radius: 100%;
       position: relative;
@@ -161,44 +160,49 @@ export const TitleBanner = styled(motion.div)`
 
 export const ContentContainer = styled(motion.div)`
    display: flex;
-   max-width: 2200px;
-   width: 100%;
+   position: relative;
+   // max-width: 2200px;
+   // width: 100%;
    flex-wrap: wrap;
-   flex-direction: row;
    justify-content: center;
    overflow: scroll;
-   ::-webkit-scrollbar {
-      display: none;
-  }
+   margin: 16px 0;
+   &::-webkit-scrollbar {
+      background-color: transparent;
+   }
+   ::-webkit-scrollbar-thumb {
+      background-color: ${(props) => props.theme.main};
+   }
    a {
-      width: 19%;
-      margin: 12px;
+      width: 420px;
+      margin: 8px;
       display: flex;
-      flex-grow: 1;
+      // flex-grow: 1;
+      justify-self: end;
       max-width: 540px !important;
       img {
-         width: 100%;
+         width: 420px;
          height: auto;
       }
    }
-   @media (max-width: 1240px) {
-      a {
-         width: 25%;
-      }
-   }
-   @media (max-width: 1240px) {
-      a {
-         width: 30%;
-      }
-   }
-   @media (max-width: 1050px) {
-      a {
-         width: 44%;
-      }
-   }
-   @media (max-width: 840px) {
-      a {
-         width: 100%;
-      }
-   }
+   // @media (max-width: 1240px) {
+   //    a {
+   //       width: 25%;
+   //    }
+   // }
+   // @media (max-width: 1240px) {
+   //    a {
+   //       width: 30%;
+   //    }
+   // }
+   // @media (max-width: 1050px) {
+   //    a {
+   //       width: 44%;
+   //    }
+   // }
+   // @media (max-width: 840px) {
+   //    a {
+   //       width: 100%;
+   //    }
+   // }
 `;

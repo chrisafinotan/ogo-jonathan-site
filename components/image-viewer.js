@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay, Keyboard } from 'swiper';
 import 'swiper/css';
@@ -9,7 +9,6 @@ import {
    StyledSwiperNavBtn,
    StyledSwiperPagination,
 } from '../styles/projectStyles';
-import { useBreakpoint } from '../context/breakpointContext';
 import {
    useGlobalDispatchContext,
    useGlobalStateContext,
@@ -22,8 +21,6 @@ import {
    faArrowLeft,
 } from '@fortawesome/free-solid-svg-icons';
 import { Container, Flex } from '../styles/globalStyles';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
 import { imageViewerControls, imageViewer } from '../framer/variants';
 
 export default function ImageViewer({
@@ -34,7 +31,6 @@ export default function ImageViewer({
    const [play, setplay] = useState(false);
    const modalSwiperRef = useRef(null);
 
-   const breakpoints = useBreakpoint();
    const dispatch = useGlobalDispatchContext();
    const { cursorStyles } = useGlobalStateContext();
    const onCursor = (cursorType) => {
@@ -50,12 +46,6 @@ export default function ImageViewer({
             : modalSwiperRef.current.swiper.autoplay.start();
       }
    };
-
-   useEffect(() => {
-      if (modalSwiperRef && modalSwiperRef.current?.swiper) {
-         modalSwiperRef.current.swiper.slideTo(currentImage);
-      }
-   }, []);
 
    document.body.onkeyup = function (e) {
       if (e.key == ' ' || e.code == 'Space') {
@@ -114,7 +104,6 @@ export default function ImageViewer({
             spaceBetween={12}
             onClick={() => showViewer(false)}
             loop={true}
-            // rewind={true}
          >
             {images.map((el, index) => {
                return (
@@ -122,26 +111,7 @@ export default function ImageViewer({
                      key={`swiperSlideModal_${index}`}
                      className='swiperSlideModal'
                   >
-                     {/* {el} */}
-                     {/* <div */}
-                     {/* // style={{ */}
-                     {/* //    width: 'fit-content' */}
-                     {/* // }} */}
-                     {/* // > */}
-                     <Image
-                        onClick={(e) => e.stopPropagation()}
-                        src={`${el?.pic}`}
-                        key={`${index}_project_modal`}
-                        alt={el?.name}
-                        width={1080}
-                        height={1280}
-                        loading={'eager'}
-                        // onLoadingComplete={() => {
-                        //    if (index === projectPictures.length - 1)
-                        //       setLoading(false);
-                        // }}
-                     ></Image>
-                     {/* // </div> */}
+                     {el}
                   </SwiperSlide>
                );
             })}
@@ -193,6 +163,5 @@ export default function ImageViewer({
             </Flex>
          </StyledSwiperWrapper>
       </Container>
-      // </motion.div>
    );
 }

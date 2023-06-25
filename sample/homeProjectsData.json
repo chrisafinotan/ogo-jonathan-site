@@ -47,5 +47,19 @@
         "Name": "sample Project6",
         "Size": "small",
         "Type": "image"
+    },
+    "home__sample7": {
+        "File": "sampleProject/A_Projectcover.JPG",
+        "Link": "sampleProject6",
+        "Name": "sample Project6",
+        "Size": "small",
+        "Type": "image"
+    },
+    "home__sample8": {
+        "File": "sampleProject/A_Projectcover.JPG",
+        "Link": "sampleProject6",
+        "Name": "sample Project6",
+        "Size": "small",
+        "Type": "image"
     }
 }

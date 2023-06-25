@@ -9,9 +9,12 @@
         "export": "next export"
     },
     "dependencies": {
+        "@emotion/react": "^11.11.1",
+        "@emotion/styled": "^11.11.0",
         "@fortawesome/fontawesome-svg-core": "^6.2.1",
         "@fortawesome/free-solid-svg-icons": "^6.2.1",
         "@fortawesome/react-fontawesome": "^0.2.0",
+        "@mui/material": "^5.13.6",
         "@sanity/client": "^4.0.1",
         "@sanity/image-url": "^1.0.2",
         "@sanity/webhook": "^2.0.0",
@@ -23,7 +26,7 @@
         "fs-extra": "^11.1.0",
         "hamburger-react": "^2.5",
         "image-size": "^1.0.1",
-        "next": "^13.1.4",
+        "next": "^13.4.7",
         "node-fetch": "^3.3.0",
         "normalize-wheel": "^1.0.1",
         "normalize.css": "^8.0.1",
@@ -33,7 +36,7 @@
         "react-modal": "^3.16.1",
         "sanity": "^3.2.4",
         "sharp": "^0.31.3",
-        "styled-components": "^5.3.3",
+        "styled-components": "^5.3.11",
         "styled-normalize": "^8.0.7",
         "swiper": "^7.0.8"
     },

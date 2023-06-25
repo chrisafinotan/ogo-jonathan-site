@@ -128,7 +128,7 @@ export const Flex = styled.div`
    position: relative;
    display: flex;
    align-items: center;
-   color: ${(props) => props.theme.inv_text};
+   color: ${(props) => props.theme.text};
 
    ${(props) =>
       props.test &&
@@ -231,14 +231,14 @@ export const Cursor = styled.div`
    }
    &.nav-open,
    &.pointer {
-      border: 4px solid ${(props) => props.theme.inv_background} !important;
+      // border: 4px solid ${(props) => props.theme.inv_background} !important;
    }
    &.pointertheme {
       border: 4px solid ${(props) => props.theme.main} !important;
    }
-   &.pointerinv {
-      border: 4px solid ${(props) => props.theme.inv_main} !important;
-   }
+   // &.pointerinv {
+   //    border: 4px solid ${(props) => props.theme.inv_main} !important;
+   // }
    &.hovered {
       background: transparent !important;
       width: 56px;
@@ -256,7 +256,7 @@ export const Cursor = styled.div`
       // height: 56px;
       width: ${(props) => props.theme.width} !important;
       height: ${(props) => props.theme.height} !important;
-      border: 4px solid ${(props) => props.theme.text} !important;
+      border: 4px solid ${(props) => props.theme.main} !important;
       top: ${(props) => props.theme.top} !important;
       left: ${(props) => props.theme.left} !important;
       transition: border 0.5s ease-in-out;
@@ -272,15 +272,15 @@ export const Cursor = styled.div`
       left: ${(props) => props.theme.left} !important;
       border-radius: 2em;
    }
-   &.nav-open {
-      background: ${(props) => props.theme.inv_text};
-      border: 4px solid ${(props) => props.theme.inv_text} !important;
-   }
+   // &.nav-open {
+   //    background: ${(props) => props.theme.inv_text};
+   //    border: 4px solid ${(props) => props.theme.inv_text} !important;
+   // }
    &.nav-open {
       &.locked,
       &.wrapped {
          transition: all 0.1s ease-out;
-         border: 4px solid ${(props) => props.theme.inv_text} !important;
+         // border: 4px solid ${(props) => props.theme.inv_text} !important;
       }
    }
 `;

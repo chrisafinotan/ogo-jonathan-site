@@ -1,3 +1,60 @@
+export const navMenu = {
+   init: {
+      opacity: 0,
+      width: 0,
+      height: 0,
+      transition: {
+         staggerChildren: 0.25,
+         when: 'beforeChildren',
+      },
+   },
+   anim: {
+      opacity: 1,
+      width: '85vw',
+      height: 'fit-content',
+      transition: {
+         duration: 0.25,
+         staggerChildren: 0.25,
+         when: 'beforeChildren',
+      },
+   },
+   animSmall: {
+      opacity: 1,
+      width: '100vw',
+      height: '80vh',
+      transition: {
+         duration: 0.25,
+         staggerChildren: 0.25,
+         when: 'beforeChildren',
+      },
+   },
+   exit: {
+      opacity: 0,
+      width: 0,
+      height: 0,
+      transition: {
+         duration: 0.25,
+         when: 'afterChildren',
+         staggerDirection: -1
+      },
+   },
+};
+
+export const navMenuChild = {
+   init: {
+      opacity: 0,
+   },
+   anim: {
+      opacity: 1,
+   },
+   animSmall: {
+      opacity: 1,
+   },
+   exit: {
+      opacity: 0,
+   },
+};
+
 export const imageWrapper = {
    init: {
       opacity: 0,
@@ -95,15 +152,15 @@ export const imageViewer = {
       transition: {
          ease: 'easeIn',
          duration: 0.2,
-        //  when: 'beforeChildren',
+         //  when: 'beforeChildren',
          delayChildren: 2,
       },
    },
    exit: {
       opacity: 0,
-    //   transition: {
-    //      when: 'beforeChildren',
-    //   },
+      //   transition: {
+      //      when: 'beforeChildren',
+      //   },
    },
 };
 

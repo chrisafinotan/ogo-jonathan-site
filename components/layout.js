@@ -1,22 +1,26 @@
 import { useState, useEffect } from 'react';
-import Navigation from './navigation';
 import Header from './header';
 import CCursor from './CCursor';
 import Head from 'next/head';
-
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { normalize } from 'styled-normalize';
-
+import {
+   createTheme,
+   ThemeProvider as MUIThemeProvider,
+} from '@mui/material/styles';
+import themes from '../styles/themes';
 import {
    useGlobalStateContext,
    useGlobalDispatchContext,
 } from '../context/globalContext';
-
 import { useBreakpoint } from '../context/breakpointContext';
+import customFont from '../styles/fonts';
+
 const GlobalStyle = createGlobalStyle`
   ${normalize}
   :root {
     --swiper-theme-color: ${(props) => props.theme.main};
+    --app-font: ${customFont.style.fontFamily};
   }
   * {
     text-decoration: none;
@@ -29,12 +33,18 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    font-family: Nunito-Variable, sans-serif;
+    font-family: var(--app-font), sans-serif;
     background: ${(props) => props.theme.background};
     overscroll-behavior: none;
     overflow-x: hidden;
   }
   `;
+
+const MUITheme = createTheme({
+   typography: {
+      fontFamily: [customFont.style.fontFamily, 'Arial'].join(','),
+   },
+});
 
 export default function Layout({ children, projects }) {
    const breakpoints = useBreakpoint();
@@ -47,52 +57,17 @@ export default function Layout({ children, projects }) {
       height: 0,
    });
 
+   const modifiedThemes = themes.map((theme) => {
+      return {
+         ...theme,
+         left: `${hamburgerPosition.x}px`,
+         top: `${hamburgerPosition.y}px`,
+         width: `${hamburgerPosition.width}px`,
+         height: `${hamburgerPosition.height}px`,
+      };
+   });
+
    const [toggleMenu, setToggleMenu] = useState(false);
-
-   const darkTheme = {
-      background: '#000',
-      text: '#fff',
-      main: '#ea281e',
-      inv_background: '#fff',
-      inv_text: '#000',
-      inv_main: '#1e76ea',
-      left: `${hamburgerPosition.x}px`,
-      top: `${hamburgerPosition.y}px`,
-      width: `${hamburgerPosition.width}px`,
-      height: `${hamburgerPosition.height}px`,
-      // cursor: 'none',
-   };
-
-   const lightTheme = {
-      background: '#fff',
-      text: '#000',
-      main: '#1e76ea',
-      inv_background: '#000',
-      inv_text: '#fff',
-      inv_main: '#ea281e',
-      left: `${hamburgerPosition.x}px`,
-      top: `${hamburgerPosition.y}px`,
-      width: `${hamburgerPosition.width}px`,
-      height: `${hamburgerPosition.height}px`,
-   };
-
-   const ferhatTheme = {
-      background: '#825f45',
-      text: "#e4cea1",
-      // text: '#c8691c',
-      main: '#c8691c',
-      inv_background: '#797d62',
-      inv_text: '#e4ceaf',
-      // inv_main: "#825f45",
-      inv_main: '#e4ceaf',
-      left: `${hamburgerPosition.x}px`,
-      top: `${hamburgerPosition.y}px`,
-      width: `${hamburgerPosition.width}px`,
-      height: `${hamburgerPosition.height}px`,
-   };
-
-   const themes = [darkTheme, lightTheme, ferhatTheme];
-   const themeName = ['dark', 'light', 'ferhat'];
 
    const onCursor = (cursorType) => {
       cursorType = (cursorStyles.includes(cursorType) && cursorType) || false;
@@ -113,36 +88,32 @@ export default function Layout({ children, projects }) {
    return (
       <ThemeProvider
          theme={() => {
-            let index = themeName.findIndex((el) => el === currentTheme);
-            let ret = themes[index];
+            let index = modifiedThemes
+               .map((el) => el.name)
+               .findIndex((el) => el === currentTheme);
+            let ret = modifiedThemes[index];
             ret.cursor = breakpoints.md ? 'auto' : 'none';
             return ret;
          }}
       >
-         <GlobalStyle />
-         <Head>
-            <title>OGO JONATHAN</title>
-         </Head>
-         {!breakpoints.md && <CCursor toggleMenu={toggleMenu} />}
-
-         <Header
-            onCursor={onCursor}
-            toggleMenu={toggleMenu}
-            setToggleMenu={setToggleMenu}
-            hamburgerPosition={hamburgerPosition}
-            setHamburgerPosition={setHamburgerPosition}
-         />
-         <Navigation
-            toggleMenu={toggleMenu}
-            setToggleMenu={setToggleMenu}
-            onCursor={onCursor}
-            setHamburgerPosition={setHamburgerPosition}
-            projects={projects}
-         />
-         <div id='siteContent'>
+         <MUIThemeProvider theme={MUITheme}>
+            <GlobalStyle />
+            <Head>
+               <title>OGO JONATHAN</title>
+            </Head>
             {!breakpoints.md && <CCursor toggleMenu={toggleMenu} />}
-            {children}
-         </div>
+
+            <Header
+               onCursor={onCursor}
+               toggleMenu={toggleMenu}
+               setToggleMenu={setToggleMenu}
+               hamburgerPosition={hamburgerPosition}
+               setHamburgerPosition={setHamburgerPosition}
+               projects={projects}
+            />
+
+            <div id='siteContent'>{children}</div>
+         </MUIThemeProvider>
       </ThemeProvider>
    );
 }

@@ -4,7 +4,11 @@ import { useGlobalStateContext } from '../context/globalContext';
 // Styled Components
 import { Cursor } from '../styles/globalStyles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExpand, faMagnifyingGlassPlus, faEye } from '@fortawesome/free-solid-svg-icons';
+import {
+   faExpand,
+   faMagnifyingGlassPlus,
+   faEye,
+} from '@fortawesome/free-solid-svg-icons';
 
 const CCursor = ({ toggleMenu }) => {
    const { cursorType, cursorText } = useGlobalStateContext();
@@ -33,9 +37,11 @@ const CCursor = ({ toggleMenu }) => {
    return (
       <>
          <Cursor
-            className={`${!!cursorType ? 'hovered' : ''} ${cursorType} ${
-               toggleMenu ? 'nav-open' : ''
-            }`}
+            className={`
+            ${!!cursorType ? 'hovered' : ''} 
+            ${cursorType} 
+            // ${toggleMenu ? 'nav-open' : ''}
+            `}
             ref={cursor}
          >
             {iconMap[cursorText] && (

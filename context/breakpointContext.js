@@ -1,12 +1,12 @@
 import { useState, useEffect, createContext, useContext } from "react";
-
+import { queries } from "./queries";
 const defaultValue = {};
 
 //Define Context
 const BreakpointContext = createContext(defaultValue);
 
 //Provider
-const BreakpointProvider = ({ children, queries }) => {
+const BreakpointProvider = ({ children }) => {
    const [queryMatch, setQueryMatch] = useState({});
 
    useEffect(() => {

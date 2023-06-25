@@ -16,21 +16,22 @@ const bounceDOWN = keyframes`
 `;
 
 export const Nav = styled(motion.div)`
-   position: fixed;
+   position: absolute;
    right: 0;
-   width: 75vw;
-   height: 100%;
-   max-height: 100vh;
+   top: 0;
+   width: 85vw;
    display: grid;
    grid-template-rows: 9fr 72px;
-   background: ${(props) => props.theme.main};
+   background: ${(props) => props.theme.inv_main};
    color: #000;
    z-index: 10;
    text-transform: uppercase;
+   box-shadow: 0 1rem 2rem 1rem rgba(0, 0, 0, 0.2);
    ${(props) =>
       props.small === 'Yes' &&
       css`
-         width: 100%;
+         width: 100vw;
+         height: 80vh;
       `};
 `;
 
@@ -39,17 +40,17 @@ export const NavHeader = styled.div`
    width: 100%;
    position: relative;
    h2 {
-      color: ${(props) => props.theme.background};
+      color: ${(props) => props.theme.text};
       font-weight: 900;
    }
 `;
 
-export const NavList = styled.div`
-   color: ${(props) => props.theme.background};
+export const NavList = styled(motion.div)`
+   color: ${(props) => props.theme.text};
    overflow: hidden;
    max-height: 90vh;
    margin: 16px;
-   margin-top: 64px;
+
    .categories {
       display: flex;
       min-height: 32px;
@@ -59,8 +60,19 @@ export const NavList = styled.div`
       font-size: 1rem;
       font-weight: 900;
       .active {
-         text-decoration: underline ${(props) => props.theme.inv_main};
+         text-decoration: underline ${(props) => props.theme.main};
          text-decoration-thickness: 0.3em;
+      }
+      #categorySelect {
+         color: ${(props) => props.theme.text};
+         border-color: red;
+         & fieldset {
+            border-color: ${(props) => props.theme.text} !important;
+         }
+         & svg {
+            color: ${(props) => props.theme.text};
+            // font-size: 2rem;
+         }
       }
    }
    .list {
@@ -70,39 +82,47 @@ export const NavList = styled.div`
       display: flex;
       flex-direction: row;
       justify-content: start;
-
-      // ::-webkit-scrollbar {
-      //    display: none;
-      // }
+      max-height: 512px;
+      overflow: auto;
+      container-type: inline-size;
+      ::-webkit-scrollbar-thumb {
+         background-color: ${(props) => props.theme.main};
+      }
       ul {
-         max-height: 70vh;
-         overflow: scroll;
+         overflow-x: hidden;
          display: flex;
          flex-direction: column;
          align-self: start;
-         width: fit-content;
-         margin: 0;
+         width: 100%;
+         max-width: 100cqw;
+         margin: 0 8px;
          padding: 0;
+         container-type: inline-size;
+
          ::-webkit-scrollbar {
-            display: none;
+            // display: none;
+            border: 2px solid red;
+            height: 8px;
          }
          li {
-            list-style: none;
+            max-width: 100cqw;
+            float: left;
+            list-style: numbered;
             font-size: 2rem;
             font-weight: 900;
-            max-height: 4rem;
+            // max-height: 4rem;
             min-height: 4rem;
             width: fit-content;
-            max-width: 60vw;
+            overflow-x: none;
             ${(props) =>
                props.small === 'Yes' &&
                css`
                   max-width: 80vw;
                `};
             .link {
-               color: ${(props) => props.theme.background};
+               color: ${(props) => props.theme.text};
                \ span {
-                  color: ${(props) => props.theme.inv_text};
+                  color: ${(props) => props.theme.text};
                }
                position: relative;
                display: flex;
@@ -152,7 +172,7 @@ export const NavList = styled.div`
             svg {
                width: 100%;
                path {
-                  fill: ${(props) => props.theme.background};
+                  fill: ${(props) => props.theme.main};
                }
             }
          }
@@ -169,7 +189,7 @@ export const NavList = styled.div`
             align-self: center;
          }
          .mid {
-            border: 1px solid ${(props) => props.theme.background};
+            border: 1px solid ${(props) => props.theme.main};
             white-space: nowrap;
             height: 100%;
             text-align: center;
@@ -190,20 +210,19 @@ export const NavList = styled.div`
    }
 `;
 
-export const NavFooter = styled.div`
-   // border: 2px solid red;
-   width: 100%;
+export const NavFooter = styled(motion.div)`
    z-index: 10;
-   background: ${(props) => props.theme.main};
+   margin: 16px;
+   background: ${(props) => props.theme.inv_main};
    p {
-      color: ${(props) => props.theme.background};
+      color: ${(props) => props.theme.text};
    }
    svg path {
-      fill: ${(props) => props.theme.background};
+      fill: ${(props) => props.theme.text};
    }
 `;
 
-export const NavContent = styled.div`
+export const NavContent = styled(motion.div)`
    position: absolute;
    z-index: -1;
    display: block;
@@ -213,36 +232,19 @@ export const NavContent = styled.div`
    width: 40%;
    background: none;
    border: none;
-
    @media (max-width: 820px) {
       display: none;
    }
-
    .reveal {
+      background: ${(props) => props.theme.inv_main};
       width: 100%;
-      background: ${(props) => props.theme.main};
       position: absolute;
       border: none;
       top: 0;
       bottom: 0;
       left: 0;
    }
-
-   .video {
-      // background: ${(props) => props.theme.main};
-      background: transparent;
-      position: absolute;
-      height: 100%;
-      width: 100%;
-      margin: 0;
-      video {
-         height: 100%;
-         width: 100%;
-      }
-   }
-
    .image {
-      // background: ${(props) => props.theme.main};
       background: transparent;
       height: 100%;
       width: 100%;
@@ -256,7 +258,7 @@ export const NavContent = styled.div`
 `;
 
 export const NavAbout = styled.div`
-   color: ${(props) => props.theme.inv_text};
+   color: ${(props) => props.theme.text};
    position: relative;
    height: 70vh;
    width: 100%;
@@ -302,50 +304,15 @@ export const NavAbout = styled.div`
       font-weight: 500;
       height: 80%;
       overflow-y: scroll;
-      &::-webkit-scrollbar {
-         display: none;
-      }
+      // &::-webkit-scrollbar {
+      //    display: none;
+      // }
       @media (min-height: 1180px) {
          font-size: 2em;
       }
    }
    @media (max-width: 820px) {
       flex-direction: column;
-   }
-`;
-
-export const H2 = styled.span`
-   font-weight: 600;
-   margin: 0.5em 1em;
-   font-size: 1.5em;
-   &.activeView {
-      text-decoration: underline ${(props) => props.theme.inv_main};
-      text-decoration-thickness: 0.3em;
-   }
-`;
-
-export const CloseNav = styled.div`
-   justify-self: center;
-   align-self: center;
-   button {
-      border: none;
-      padding: 20px;
-      background: none;
-      outline: none;
-      span {
-         width: 36px;
-         height: 8px;
-         display: block;
-         background: ${(props) => props.theme.background};
-         // margin: 8px;
-         transform-origin: center center;
-      }
-      .first {
-         transform: translate(-8px, 4px) rotateZ(-45deg);
-      }
-      .second {
-         transform: translate(-8px, -4px) rotateZ(45deg);
-      }
    }
 `;
 

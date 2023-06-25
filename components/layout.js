@@ -100,6 +100,12 @@ export default function Layout({ children, projects }) {
             <GlobalStyle />
             <Head>
                <title>OGO JONATHAN</title>
+               <link
+                  rel='icon'
+                  href='/icon?<generated>&color=red'
+                  type='image/png'
+                  sizes='32x32'
+               />
             </Head>
             {!breakpoints.md && <CCursor toggleMenu={toggleMenu} />}
 

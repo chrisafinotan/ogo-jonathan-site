@@ -19,9 +19,6 @@ function MyApp({ Component, pageProps }) {
       };
       window.addEventListener('resize', appHeight);
       appHeight();
-
-   
-
       return () => {
          window.removeEventListener('resize', appHeight);
       };

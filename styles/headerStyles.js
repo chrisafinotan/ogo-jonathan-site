@@ -23,6 +23,7 @@ export const HeaderNav = styled(motion.div)`
    .wrapper {
       height: 100%;
       margin: 0 72px;
+      max-width: 100vw;
    }
    ${(props) =>
       props.small === 'Yes' &&

@@ -66,6 +66,7 @@ export const NavList = styled(motion.div)`
       #categorySelect {
          color: ${(props) => props.theme.text};
          border-color: red;
+         font-weight: 900;
          & fieldset {
             border-color: ${(props) => props.theme.text} !important;
          }

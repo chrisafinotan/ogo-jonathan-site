@@ -161,7 +161,7 @@ export const TitleBanner = styled(motion.div)`
 export const ContentContainer = styled(motion.div)`
    display: flex;
    position: relative;
-   // max-width: 2200px;
+   max-width: 100%;
    // width: 100%;
    flex-wrap: wrap;
    justify-content: center;
@@ -173,6 +173,13 @@ export const ContentContainer = styled(motion.div)`
    ::-webkit-scrollbar-thumb {
       background-color: ${(props) => props.theme.main};
    }
+   ${(props) =>
+      props.small === 'Yes' &&
+      css`
+         &::-webkit-scrollbar {
+            display: none;
+         }
+      `};
    a {
       width: 420px;
       margin: 8px;
@@ -183,6 +190,7 @@ export const ContentContainer = styled(motion.div)`
       img {
          width: 420px;
          height: auto;
+         max-width: 100%;
       }
    }
    // @media (max-width: 1240px) {

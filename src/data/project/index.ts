@@ -47,4 +47,15 @@ export const getPublishedProjects = async (query = {}) => {
     });
 };
 
-
+export const getProjectById = async (projectId: string) => {
+    return prisma.project.findUnique({
+        where: {
+            id: projectId,
+        },
+        // include: {
+        //     photos: true,
+        //     cover: true,
+        //     tags: true,
+        // },
+    });
+};

@@ -15,6 +15,8 @@ import {
     ChevronLeft,
     ChevronRight,
     Trash2,
+    X,
+    MoveRight
 } from 'lucide-react';
 
 export const Icons = {
@@ -36,4 +38,6 @@ export const Icons = {
     chevronLeft: ChevronLeft,
     chevronRight: ChevronRight,
     delete: Trash2,
+    cancel: X,
+    arrow: MoveRight,
 };

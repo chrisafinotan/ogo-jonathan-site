@@ -88,7 +88,7 @@ export const PhotoPreviewContainer = ({
                     onClick={() => deleteItem && deleteItem(index)}
                     className='col-start-2'
                 >
-                    <Icons.delete />
+                    <Icons.cancel />
                 </Button>
                 <Button
                     onClick={() =>

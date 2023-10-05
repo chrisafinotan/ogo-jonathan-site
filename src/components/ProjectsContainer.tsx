@@ -3,7 +3,6 @@ import { getAllProjects } from '@/data/project';
 
 export const ProjectsContainer = async () => {
     const projects = await getAllProjects();
-    console.log(projects);
     return (
         <div>
             {projects.map(({ id, title }) => {

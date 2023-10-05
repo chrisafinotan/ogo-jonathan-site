@@ -1,5 +1,4 @@
 import PageContentContainer from '@/components/PageContentContainer';
-// import { SessionProvider } from 'next-auth/react';
 
 export default function RootLayout({
     children,
@@ -7,8 +6,6 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        // <SessionProvider>
             <PageContentContainer>{children}</PageContentContainer>
-        // </SessionProvider>
     );
 }

@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator zod {
+  provider              = "zod-prisma"
+  output                = "../src/lib/zodPrismaSchemas"
+  relationModel         = true
+  modelCase             = "PascalCase"
+  modelSuffix           = "Model"
+  useDecimalJs          = true
+  imports               = null
+  prismaJsonNullability = true
+}
+
+datasource db {
+  provider = "postgresql"
+  // url      = env("DATABASE_URL")
+  url      = "postgresql://postgres:test@localhost:5434/ogo_jonathan?schema=public"
+}
+
+model Project {
+  id             String   @id @unique @default(cuid())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  title          String   @unique
+  description    String
+  isPublished    Boolean
+  photos         Photo[]  @relation("ProjectPhotos")
+  projectDate    DateTime
+  displayOrder   Int?
+  additionalInfo Json?
+  cover          Cover?   @relation("Cover")
+  tags           Tag[]
+}
+
+model Cover {
+  id        String  @id @unique @default(cuid())
+  project   Project @relation("Cover", fields: [projectId], references: [id])
+  projectId String  @unique
+  photo     Photo   @relation(fields: [photoId], references: [id])
+  photoId   String  @unique
+}
+
+enum TagType {
+  PROJECT
+  PHOTO
+}
+
+model Tag {
+  id          String    @id @unique @default(cuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  text        String    @unique
+  description String
+  type        TagType
+  photo       Photo[]
+  project     Project[]
+}
+
+model Photo {
+  id            String    @id @unique @default(cuid())
+  Project       Project?  @relation("ProjectPhotos", fields: [projectId], references: [id])
+  projectId     String?
+  isCover       Cover?
+  isShowcase    Boolean?
+  url           String
+  extension     String
+  blurData      String
+  title         String?
+  tags          Tag[]
+  locationName  String?
+  priorityOrder Int?
+  hidden        Boolean?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  takenAt       DateTime?
+  // PhotoExif     PhotoExif? @relation("PhotoRecord")
+}
+
+model PhotoExif {
+  id                      String  @id @unique @default(cuid())
+  aspectRatio             Float
+  make                    String?
+  model                   String?
+  focalLength             Float?
+  focalLengthIn35MmFormat Float?
+  fNumber                 Float?
+  iso                     Float?
+  exposureTime            Float?
+  exposureCompensation    Float?
+  latitude                Float?
+  longitude               Float?
+  filmSimulation          String?
+  takenAt                 String
+  takenAtNaive            String
+  // photo                   Photo   @relation("PhotoRecord", fields: [photoId], references: [id])
+  photoId                 String  @unique
+}

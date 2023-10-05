@@ -9,7 +9,13 @@ import {
     MoonIcon,
     SunIcon,
 } from '@radix-ui/react-icons';
-import { Loader, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
+import {
+    Loader,
+    Calendar,
+    ChevronLeft,
+    ChevronRight,
+    Trash2,
+} from 'lucide-react';
 
 export const Icons = {
     userImage: ({ width, height, src }) => (
@@ -29,4 +35,5 @@ export const Icons = {
     calendar: Calendar,
     chevronLeft: ChevronLeft,
     chevronRight: ChevronRight,
+    delete: Trash2,
 };

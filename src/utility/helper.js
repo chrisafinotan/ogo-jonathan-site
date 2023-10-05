@@ -27,3 +27,5 @@ export const dateFormat = (date) => {
 export function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
+
+export const clamp = (num, min, max) => Math.min(Math.max(num, min), max)

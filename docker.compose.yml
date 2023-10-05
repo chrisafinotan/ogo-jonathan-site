@@ -1,0 +1,11 @@
+services:
+   db:
+      image: postgres
+      restart: always
+      ports:
+         - 5434:5432
+      environment:
+         POSTGRES_DB: ogo_jonathan
+         POSTGRES_USER: postgres
+         POSTGRES_PASSWORD: test
+         POSTGRES_HOST_AUTH_METHOD: trust

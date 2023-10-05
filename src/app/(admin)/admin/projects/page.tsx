@@ -1,6 +1,10 @@
+import { ProjectsContainer } from '@/components/ProjectsContainer';
 
-export default function AdminProjectsPage() {
-  return (
-    <div>AdminProjectsPage</div>
-  )
+export default async function AdminProjectsPage() {
+    return (
+        <div>
+            AdminProjectsPage
+            <ProjectsContainer />
+        </div>
+    );
 }

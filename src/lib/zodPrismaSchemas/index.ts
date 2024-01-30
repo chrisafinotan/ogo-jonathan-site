@@ -1,5 +1,4 @@
 export * from "./project"
-export * from "./cover"
 export * from "./tag"
 export * from "./photo"
 export * from "./photoexif"

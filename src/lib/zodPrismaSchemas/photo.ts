@@ -1,6 +1,6 @@
 import * as z from "zod"
 import * as imports from "../../../prisma/null"
-import { CompleteProject, RelatedProjectModel, CompleteCover, RelatedCoverModel, CompleteTag, RelatedTagModel } from "./index"
+import { CompleteProject, RelatedProjectModel, CompleteTag, RelatedTagModel } from "./index"
 
 export const PhotoModel = z.object({
   id: z.string(),
@@ -20,7 +20,7 @@ export const PhotoModel = z.object({
 
 export interface CompletePhoto extends z.infer<typeof PhotoModel> {
   Project?: CompleteProject | null
-  isCover?: CompleteCover | null
+  isCover?: CompleteProject | null
   tags: CompleteTag[]
 }
 
@@ -31,6 +31,6 @@ export interface CompletePhoto extends z.infer<typeof PhotoModel> {
  */
 export const RelatedPhotoModel: z.ZodSchema<CompletePhoto> = z.lazy(() => PhotoModel.extend({
   Project: RelatedProjectModel.nullish(),
-  isCover: RelatedCoverModel.nullish(),
+  isCover: RelatedProjectModel.nullish(),
   tags: RelatedTagModel.array(),
 }))

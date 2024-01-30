@@ -23,12 +23,25 @@ const nextConfig = {
                 protocol: 'https',
                 hostname: 'firebasestorage.googleapis.com/**',
             },
+            {
+                protocol: 'http',
+                hostname: '127.0.0.1/**',
+            },
         ],
         minimumCacheTTL: 31536000,
     },
-    experimental: {
-        serverActions: true,
-    },
+    webpack: (config, { isServer }) => {
+		if (!isServer) {
+			config.resolve.fallback.fs = false;
+			config.resolve.fallback.child_process = false;
+			config.resolve.fallback.request = false;
+			config.resolve.fallback.net = false;
+			config.resolve.fallback.worker_threads = false;
+			config.resolve.fallback.tls = false;
+			config.resolve.fallback['text-decoding'] = false;
+		}
+		return config;
+	}
 };
 
 module.exports = withBundleAnalyzer(nextConfig);

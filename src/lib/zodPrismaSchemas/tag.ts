@@ -1,5 +1,4 @@
 import * as z from "zod"
-import * as imports from "../../../prisma/null"
 import { TagType } from "@prisma/client"
 import { CompletePhoto, RelatedPhotoModel, CompleteProject, RelatedProjectModel } from "./index"
 
@@ -9,6 +8,7 @@ export const TagModel = z.object({
   updatedAt: z.date(),
   text: z.string(),
   description: z.string(),
+  color: z.string(),
   type: z.nativeEnum(TagType),
 })
 

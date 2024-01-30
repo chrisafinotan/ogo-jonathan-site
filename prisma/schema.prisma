@@ -27,19 +27,13 @@ model Project {
   description    String
   isPublished    Boolean
   photos         Photo[]  @relation("ProjectPhotos")
+  photosOrder    String[]
   projectDate    DateTime
   displayOrder   Int?
   additionalInfo Json?
-  cover          Cover?   @relation("Cover")
   tags           Tag[]
-}
-
-model Cover {
-  id        String  @id @unique @default(cuid())
-  project   Project @relation("Cover", fields: [projectId], references: [id])
-  projectId String  @unique
-  photo     Photo   @relation(fields: [photoId], references: [id])
-  photoId   String  @unique
+  cover          Photo?   @relation("CoverPhoto", fields: [coverId], references: [id])
+  coverId        String?  @unique
 }
 
 enum TagType {
@@ -52,6 +46,7 @@ model Tag {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   text        String    @unique
+  color       String?   @default("#edede9")
   description String
   type        TagType
   photo       Photo[]
@@ -62,20 +57,20 @@ model Photo {
   id            String    @id @unique @default(cuid())
   Project       Project?  @relation("ProjectPhotos", fields: [projectId], references: [id])
   projectId     String?
-  isCover       Cover?
+  isCover       Project?  @relation("CoverPhoto")
   isShowcase    Boolean?
-  url           String
-  extension     String
-  blurData      String
+  url           String?
+  extension     String?
+  blurData      String?
   title         String?
   tags          Tag[]
   locationName  String?
   priorityOrder Int?
+  showcaseOrder Int?
   hidden        Boolean?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime?  @default(now())
+  updatedAt     DateTime?  @updatedAt
   takenAt       DateTime?
-  // PhotoExif     PhotoExif? @relation("PhotoRecord")
 }
 
 model PhotoExif {
@@ -94,6 +89,5 @@ model PhotoExif {
   filmSimulation          String?
   takenAt                 String
   takenAtNaive            String
-  // photo                   Photo   @relation("PhotoRecord", fields: [photoId], references: [id])
   photoId                 String  @unique
 }

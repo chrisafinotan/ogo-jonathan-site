@@ -13,11 +13,11 @@ import {
     PopoverTrigger,
 } from '@/components/ui/popover';
 
-const FormDatePicker = ({ field, ...props }) => {
+const FormDatePicker = ({ field, readMode, ...props }) => {
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <FormControl>
+                <FormControl disabled={readMode}>
                     <Button
                         variant={'outline'}
                         className={cn(

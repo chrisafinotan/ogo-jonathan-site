@@ -4,6 +4,7 @@ import { tags } from './seed-data/tags.js';
 import { TagType } from '@prisma/client';
 import { getAllImages } from '../src/lib/firebase/storage.js';
 import { createImages } from '../src/lib/firebase/seedHelper.js';
+import { map } from 'lodash';
 
 const tagTypes = Object.values(TagType);
 const prisma = new PrismaClient();
@@ -28,6 +29,7 @@ const getPhotos = async () => {
     const photos = blobs.map((blob, index) => {
         return {
             ...photoDefault,
+            isShowcase: Math.random() > 0.25,
             url: blob,
             blurData: blob,
             createdAt: now,
@@ -40,12 +42,11 @@ const getPhotos = async () => {
 const getRandom = (items) => {
     const itemIndex = Math.floor(Math.random() * items.length);
     const item = items[itemIndex];
-    items = items.filter((x, index) => itemIndex !== index);
     return item;
 };
 
 const createProjects = async (createdPhotos, projectTags) => {
-    const projectsData = projects.map((project) => {
+    const projectsData = map(projects, (project) => {
         let photos = createdPhotos;
         const selectedPhotos = Array(photoCount)
             .fill(null)
@@ -57,13 +58,32 @@ const createProjects = async (createdPhotos, projectTags) => {
             tags: { connect: projectTags },
         };
     });
-    for (const project of projectsData) {
-        await prisma.project.create({
-            data: project,
-        });
-    }
+    const include = { cover: true, photos: true, tags: true };
+    const createdProjects = [];
 
-    const createdProjects = await prisma.project.findMany();
+    for (const project of projectsData) {
+        delete project.cover;
+        delete project.files;
+        delete project.Category;
+        delete project.Tag;
+        let createdProject = await prisma.project.create({
+            data: project,
+            include: include,
+        });
+        const updateData = {
+            cover: {
+                connect: {
+                    id: getRandom(createdProject.photos).id,
+                },
+            },
+        };
+        const updatedProject = await prisma.project.update({
+            where: { id: createdProject.id },
+            data: updateData,
+            include: include,
+        });
+        createdProjects.push(updatedProject);
+    }
     console.log(`Created ${createdProjects.length} projects`);
     return createdProjects;
 };

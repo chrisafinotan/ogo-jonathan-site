@@ -10,7 +10,7 @@
     "generate": "npx prisma generate",
     "migrate": "npx prisma migrate dev",
     "setup": "npm run generate && npm run migrate",
-    "reset": "npx prisma migrate reset",
+    "reset": "dotenv -e .env.local -- npx prisma migrate reset",
     "emulators": "firebase emulators:start"
   },
   "prisma": {
@@ -42,7 +42,7 @@
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
     "date-fns": "^2.30.0",
-    "dotenv": "^16.3.1",
+    "dotenv": "^16.4.1",
     "dotenv-cli": "^7.3.0",
     "embla-carousel-react": "^8.0.0-rc17",
     "firebase": "^10.7.1",

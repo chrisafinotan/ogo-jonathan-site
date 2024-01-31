@@ -5,24 +5,34 @@ import { useRouter } from 'next/navigation';
 import { Card, CardFooter, CardTitle } from '@/components/ui/card';
 import { Icons } from '@/components/icons';
 import { Badge } from '@/components/ui/badge';
-import { projects } from '../../prisma/seed-data/projects';
+import { TagItem } from '@/components/TagItem';
 
 export const ProjectCard = ({ project }) => {
     const router = useRouter();
     return (
-        <Card className='group hover:scale-[1.02]' onClick={() => router.push(`/projects/${project.id}`)}>
+        <Card
+            className='group hover:scale-[1.02]'
+            onClick={() => router.push(`/projects/${project.id}`)}
+        >
             <div className='grid grid-cols-[400px_1fr] w-full max-h-64 justify-self-center gap-2 justify-between p-2 relative'>
                 <CardTitle className='flex flex-col gap-2'>
                     <div className='flex justify-start'>
                         <Icons.arrowNavigate className='group-hover:rotate-45 transition-transform' />
                         {project.title}
                     </div>
-                    <div className=' justify-between'>
+                    <div className='flex flex-wrap gap-2 h-fit text-small'>
                         {project.tags.map((tag) => {
                             return (
-                                <Badge variant='outline' className='w-fit'>
-                                    {tag.text}
-                                </Badge>
+                                // <Badge
+                                //     variant='outline'
+                                //     className='w-fit'
+                                //     key={`${tag.id}_projectTag`}
+                                // >
+                                    <TagItem
+                                        tag={tag}
+                                        key={`${tag.id}_projectTag`}
+                                    />
+                                // </Badge>
                             );
                         })}
                     </div>

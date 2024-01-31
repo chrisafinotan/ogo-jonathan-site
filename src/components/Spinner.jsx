@@ -1,14 +1,6 @@
 const SIZE_DEFAULT = 12;
 
-export type SpinnerColor = 'text' | 'light-gray';
-
-export default function Spinner({
-    size = SIZE_DEFAULT,
-    color = 'light-gray',
-}: {
-    size?: number;
-    color?: SpinnerColor;
-}) {
+export default function Spinner({ size = SIZE_DEFAULT, color = 'light-gray' }) {
     return (
         <span
             {...{

@@ -44,7 +44,7 @@ import {
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { FormDatePicker } from '@/components/ui/formDatePicker';
+import { FormDatePicker } from '@/components/formDatePicker';
 import { useToast } from '@/components/ui/use-toast';
 import { AdditionalInfoContainer } from '@/components/AdditionalInfoContainer';
 import { PhotoPreviewContainer } from '@/components/PhotoPreviewContainer';
@@ -85,7 +85,7 @@ export const ProjectForm = ({ initValues = formDefaultValues, tags = [] }) => {
     createAdditionalInfoFields(initValues);
     const { toast } = useToast();
     const [files, setFiles] = useState([]);
-    const [readMode, setReadMode] = useState(false);
+    const [readMode, setReadMode] = useState(true);
 
     const uploadPhotosDisclosure = useDisclosure();
     const selectCoverDisclosure = useDisclosure();
@@ -114,6 +114,7 @@ export const ProjectForm = ({ initValues = formDefaultValues, tags = [] }) => {
     } = useFieldArray({
         control: form.control,
         name: 'photos',
+        keyName: 'photoFieldId'
     });
 
     const {

@@ -50,7 +50,7 @@ export const ProjectView = ({ projectId }) => {
                     <div className='additionalInfo'>
                         {Object.entries(additionalInfo).map(([key, value]) => {
                             return (
-                                <div>
+                                <div key={`${key}_${value}_additionalInfo`}>
                                     <span>{key}</span>:<span>{value}</span>
                                 </div>
                             );

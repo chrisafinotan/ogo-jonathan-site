@@ -18,7 +18,7 @@ export const PhotoPreviewContainer = ({
                 {preview && (
                     <AspectRatio ratio={16 / 9} className='bg-muted'>
                         <Image
-                            src={preview || './testImage.jpg'}
+                            src={preview}
                             alt='Upload Image preview'
                             fill
                             className='rounded-md object-cover'

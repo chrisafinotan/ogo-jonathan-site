@@ -1,3 +1,4 @@
+// @ts-nocheck 
 'use server';
 
 import _, { differenceBy } from 'lodash';
@@ -38,7 +39,9 @@ const errorResponse = (message: string, e: unknown) => {
 export const createProjectAction = async (formData: ProjectFormShape) => {
     try {
         const data = ProjectFormSchema.parse(formData);
-        const { photos } = data;
+        const { photos, tags } = data;
+        delete data.tags;
+        // delete photos?.tags;
         const prismaData = {
             ...data,
             isPublished: false,
@@ -46,6 +49,7 @@ export const createProjectAction = async (formData: ProjectFormShape) => {
                 create: photos,
             },
         };
+    
         const res = await prisma.project.create({
             data: prismaData,
             include: {
@@ -64,7 +68,7 @@ export const updateProjectAction = async (
     initialProjectData: ModifiedProjectFormShape
 ) => {
     const canPublish = FinalProjectFormSchema.safeParse(formData);
-    console.log(canPublish, canPublish.error);
+    // console.log(canPublish, canPublish.error);
 
     try {
         console.log('update project', {

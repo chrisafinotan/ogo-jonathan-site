@@ -13,7 +13,12 @@ export default async function SearchPage({ searchParams }) {
             {projects.length ? (
                 <div className='grid gap-2 max-w-7xl border-2 m-6'>
                     {projects.map((project) => {
-                        return <ProjectCard project={project} />;
+                        return (
+                            <ProjectCard
+                                key={`${project.id}_searchResult`}
+                                project={project}
+                            />
+                        );
                     })}
                 </div>
             ) : (

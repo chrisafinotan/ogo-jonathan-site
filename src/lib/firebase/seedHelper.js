@@ -6,8 +6,8 @@ import { ref, uploadBytesResumable } from 'firebase/storage';
 import { storage } from './client.js';
 import { getAllImages } from './storage.js';
 
-const upload = async (folderRef, { file, name, ext }) => {
-    const fileref = ref(folderRef, name);
+const upload = async (folderRef, { file, name, ext }, index) => {
+    const fileref = ref(folderRef, `picture_${index}`);
     const blob = await openAsBlob(file);
     const metadata = { contentType: `image/${ext.substring(1)}` };
     const uploadPromise = new Promise((resolve, reject) => {
@@ -22,7 +22,7 @@ const upload = async (folderRef, { file, name, ext }) => {
 };
 
 const putItems = async (folderRef) => {
-    const folderPath = 'public/assets';
+    const folderPath = 'testAssets';
     const __dirname = path.resolve(path.dirname(''));
     const extensions = ['.jpg', '.jpeg', '.png'];
 
@@ -44,7 +44,7 @@ const putItems = async (folderRef) => {
     const files = await Promise.all(filesPromises);
     let uploads = 0;
     for (let index = 0; index < files.length; index++) {
-        await upload(folderRef, files[index]);
+        await upload(folderRef, files[index], index);
         uploads++;
     }
     console.log(`Uploaded ${uploads} photos to firebase storage`);

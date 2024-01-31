@@ -1,5 +1,4 @@
 import * as z from "zod"
-import * as imports from "../../../prisma/null"
 
 export const PhotoExifModel = z.object({
   id: z.string(),

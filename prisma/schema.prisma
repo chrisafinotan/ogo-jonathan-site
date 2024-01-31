@@ -12,11 +12,15 @@ generator client {
 //   imports               = null
 //   prismaJsonNullability = true
 // }
+// datasource db {
+//   provider     = "mysql"
+//   url          = env("DATABASE_URL")
+//   relationMode = "prisma"
+// }
 
 datasource db {
   provider = "postgresql"
-  // url      = env("DATABASE_URL")
-  url      = "postgresql://postgres:test@localhost:5434/ogo_jonathan?schema=public"
+  url      = env("DATABASE_URL")
 }
 
 model Project {
@@ -68,8 +72,8 @@ model Photo {
   priorityOrder Int?
   showcaseOrder Int?
   hidden        Boolean?
-  createdAt     DateTime?  @default(now())
-  updatedAt     DateTime?  @updatedAt
+  createdAt     DateTime? @default(now())
+  updatedAt     DateTime? @updatedAt
   takenAt       DateTime?
 }
 

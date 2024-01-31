@@ -15,10 +15,8 @@ import { ProjectContext } from '@/site/ProjectsProvider';
 import { Icons } from './icons';
 import { addShowcaseData } from './forms/helper';
 
-export const ShowcasePhotosSelector = ({ allProjects, showcasePhotos }) => {
-    const projects = allProjects.length
-        ? allProjects
-        : useContext(ProjectContext);
+export const ShowcasePhotosSelector = ({ showcasePhotos }) => {
+    const projects = useContext(ProjectContext);
     const initShowcasePhotos = _.keyBy(showcasePhotos, 'id');
     const [selectedShowcasePhotos, setSelectedPhotos] = useState({});
     const [selectedProject, setSelectedProject] = useState(projects[0]);

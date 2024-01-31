@@ -1,5 +1,4 @@
 import * as z from "zod"
-import * as imports from "../../../prisma/null"
 import { CompleteProject, RelatedProjectModel, CompleteTag, RelatedTagModel } from "./index"
 
 export const PhotoModel = z.object({

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { storage } from '@/lib/firebase/firebaseClient';
+import { storage } from '@/lib/firebase/client';
 import { getAllImages } from '@/lib/firebase/storage';
 
 export async function GET() {

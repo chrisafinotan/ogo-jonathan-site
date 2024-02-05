@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useContext } from 'react';
+import { useContext } from 'react';
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import {
@@ -19,19 +19,18 @@ export const ProjectView = ({ projectId }) => {
     const breakpoints = useBreakpoint();
     const projects = useContext(ProjectContext);
     const { project } = getProject(projectId, projects);
-    if (!project) return <>CANNOT FIND</>
+    if (!project) return <>CANNOT FIND</>;
     const { photos, description, title, additionalInfo } = project;
 
-    const swiperRef = useRef(null);
-    const progressCircle = useRef(null);
-    const onAutoplayTimeLeft = (s, time, progress) => {
-        if (progressCircle.current) {
-            progressCircle.current.style.setProperty(
-                '--progress',
-                1 - progress
-            );
-        }
-    };
+    // const progressCircle = useRef(null);
+    // const onAutoplayTimeLeft = (s, time, progress) => {
+    //     if (progressCircle.current) {
+    //         progressCircle.current.style.setProperty(
+    //             '--progress',
+    //             1 - progress
+    //         );
+    //     }
+    // };
 
     const SwiperProgressBar = () => {
         return (
@@ -100,7 +99,8 @@ export const ProjectView = ({ projectId }) => {
         );
     };
     if (isEmpty(breakpoints)) return;
-    return !breakpoints.sm ? (
+    if (breakpoints.sm) return <SmallProjectView />;
+    return (
         <div className='fixed grid grid-rows-[70vh_1fr] !max-h-screen h-screen w-screen'>
             <Swiper
                 id='mySwiperID'
@@ -128,11 +128,10 @@ export const ProjectView = ({ projectId }) => {
                 //           }
                 //         : false
                 // }
-                onAutoplayTimeLeft={onAutoplayTimeLeft}
+                // onAutoplayTimeLeft={onAutoplayTimeLeft}
                 spacebetween={0}
                 slidesPerView={'auto'}
                 freeMode={true}
-                ref={swiperRef}
             >
                 <>
                     {photos.map((photo, index) => {
@@ -160,14 +159,15 @@ export const ProjectView = ({ projectId }) => {
                     })}
                 </>
                 <div className='autoplay-progress2' slot='container-end'>
-                    <svg viewBox='0 0 90 90' ref={progressCircle}>
+                    <svg
+                        viewBox='0 0 90 90'
+                        // ref={progressCircle}
+                    >
                         <circle cx='24' cy='24' r='20'></circle>
                     </svg>
                 </div>
             </Swiper>
             <ProjectInfo />
         </div>
-    ) : (
-        <SmallProjectView photos={photos} />
     );
 };

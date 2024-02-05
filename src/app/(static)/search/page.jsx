@@ -15,14 +15,14 @@ export default async function SearchPage({ searchParams }) {
             <SearchBar />
             {query && !projects.length && (
                 <CardHeader>
-                    <CardTitle>No results for "{query}"</CardTitle>
+                    <CardTitle>{`No results for \"{query}\"`}</CardTitle>
                 </CardHeader>
             )}
             {projects.length ? (
                 <>
                     <CardHeader>
                         <CardTitle>
-                            {projects.length} results for "{query}"
+                            {`${projects.length} results for \"{query}\"`}
                         </CardTitle>
                     </CardHeader>
                     <div className='grid gap-2 max-w-7xl m-6'>

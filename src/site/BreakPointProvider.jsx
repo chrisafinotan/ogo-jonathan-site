@@ -61,7 +61,7 @@ export default function BreakpointProviderClient({ children }) {
                 });
             }
         };
-    }, [queries]);
+    }, []);
 
     return (
         <BreakpointContext.Provider value={queryMatch}>

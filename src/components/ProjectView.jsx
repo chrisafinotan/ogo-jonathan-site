@@ -13,10 +13,13 @@ import {
 } from 'swiper/modules';
 import { ProjectContext } from '@/site/ProjectsProvider';
 import { cn, getProject } from '@/lib/utils';
-
+import { useBreakpoint } from '@/site/BreakPointProvider';
+import { isEmpty } from 'lodash';
 export const ProjectView = ({ projectId }) => {
+    const breakpoints = useBreakpoint();
     const projects = useContext(ProjectContext);
     const { project } = getProject(projectId, projects);
+    if (!project) return <>CANNOT FIND</>
     const { photos, description, title, additionalInfo } = project;
 
     const swiperRef = useRef(null);
@@ -61,8 +64,44 @@ export const ProjectView = ({ projectId }) => {
         );
     };
 
-    return (
-        <div className='relative grid grid-rows-[70vh_1fr] !max-h-screen h-screen w-screen'>
+    const SmallProjectView = () => {
+        return (
+            <div className='flex flex-col gap-2'>
+                <div
+                    key={`projectImage_0_${photos[0].url}`}
+                    className='group w-full rounded-md max-h-[80svh] lg:max-h-[100svh] relative aspect-[9/16] overflow-hidden'
+                >
+                    <Image
+                        src={photos[0].url}
+                        alt={`Project photo for ${photos[0].title}`}
+                        fill
+                        className='rounded-md object-cover bg-muted lg:ease-in-out lg:duration-500 lg:scale-[1.2] lg:group-hover:scale-[1]'
+                    />
+                </div>
+                <ProjectInfo />
+                <>
+                    {photos.slice(1).map(({ url, title }, index) => {
+                        return (
+                            <div
+                                key={`projectImage_${index + 1}_${url}`}
+                                className='group w-full rounded-md max-h-[80svh] lg:max-h-[100svh] relative aspect-[9/16] overflow-hidden'
+                            >
+                                <Image
+                                    src={url}
+                                    alt={`Project photo for ${title}`}
+                                    fill
+                                    className='rounded-md object-cover bg-muted lg:ease-in-out lg:duration-500 lg:scale-[1.2] lg:group-hover:scale-[1]'
+                                />
+                            </div>
+                        );
+                    })}
+                </>
+            </div>
+        );
+    };
+    if (isEmpty(breakpoints)) return;
+    return !breakpoints.sm ? (
+        <div className='fixed grid grid-rows-[70vh_1fr] !max-h-screen h-screen w-screen'>
             <Swiper
                 id='mySwiperID'
                 className='w-full h-full max-h-[70vh]'
@@ -81,14 +120,14 @@ export const ProjectView = ({ projectId }) => {
                 //     type: 'progressbar',
                 //     background: '#fff',
                 // }}
-                autoplay={
-                    photos.length > 4
-                        ? {
-                              delay: 2500,
-                              disableOnInteraction: false,
-                          }
-                        : false
-                }
+                // autoplay={
+                //     photos.length > 4
+                //         ? {
+                //               delay: 2500,
+                //               disableOnInteraction: false,
+                //           }
+                //         : false
+                // }
                 onAutoplayTimeLeft={onAutoplayTimeLeft}
                 spacebetween={0}
                 slidesPerView={'auto'}
@@ -106,7 +145,7 @@ export const ProjectView = ({ projectId }) => {
                             >
                                 <Image
                                     src={photo.url}
-                                    alt={`Cover photo for ${photo.title}`}
+                                    alt={`Project photo for ${photo.title}`}
                                     className={cn(
                                         'object-contain w-full h-full'
                                     )}
@@ -128,5 +167,7 @@ export const ProjectView = ({ projectId }) => {
             </Swiper>
             <ProjectInfo />
         </div>
+    ) : (
+        <SmallProjectView photos={photos} />
     );
 };

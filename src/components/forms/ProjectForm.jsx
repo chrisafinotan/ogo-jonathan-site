@@ -55,7 +55,7 @@ import { Icons } from '@/components/icons';
 
 // utils
 import { cn } from '@/lib/utils';
-import { ACCEPTED_PHOTO_FILE_TYPES } from '@/services/blob';
+import { ACCEPTED_PHOTO_FILE_TYPES } from '@/site/config';
 import { ProjectChecklist } from '@/components/ProjectChecklist';
 
 const formDefaultValues = {

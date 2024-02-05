@@ -2,9 +2,9 @@ import Image from 'next/image';
 import {
     CheckIcon,
     GitHubLogoIcon,
-    MoonIcon,
+    // MoonIcon,
     StopIcon,
-    SunIcon,
+    // SunIcon,
 } from '@radix-ui/react-icons';
 import {
     ArrowUpRight,
@@ -19,6 +19,7 @@ import {
     HelpCircle,
     Home,
     Loader,
+    MoonIcon,
     MoveRight,
     MoveLeft,
     Pencil,
@@ -27,9 +28,12 @@ import {
     Save,
     Search,
     Sparkles,
+    SunIcon,
     Trash2,
     UserIcon,
     X,
+    Instagram,
+    Mail,
 } from 'lucide-react';
 
 export const Icons = {
@@ -50,7 +54,9 @@ export const Icons = {
     edit: Pencil,
     github: GitHubLogoIcon,
     home: Home,
+    insta: Instagram,
     lightMode: SunIcon,
+    mail: Mail,
     missingPhoto: ImageOff,
     optional: HelpCircle,
     play: Play,

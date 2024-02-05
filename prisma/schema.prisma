@@ -2,25 +2,9 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// generator zod {
-//   provider              = "zod-prisma"
-//   output                = "../src/lib/zodPrismaSchemas"
-//   relationModel         = true
-//   modelCase             = "PascalCase"
-//   modelSuffix           = "Model"
-//   useDecimalJs          = true
-//   imports               = null
-//   prismaJsonNullability = true
-// }
-// datasource db {
-//   provider     = "mysql"
-//   url          = env("DATABASE_URL")
-//   relationMode = "prisma"
-// }
-
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
 }
 
 model Project {

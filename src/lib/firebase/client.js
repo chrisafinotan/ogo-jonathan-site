@@ -16,30 +16,3 @@ if (process.env.NEXT_PUBLIC_APP_ENV === 'emulator') {
 }
 
 export { auth, storage };
-
-// export async function getAuthenticatedAppForUser() {
-//     if (typeof window !== 'undefined') {
-//         return { app, currentUser: auth.currentUser?.toJSON() };
-//     }
-
-//     const { adminAuth } = customInitApp();
-//     const noAuthReturn = { app: null, currentUser: null };
-//     const authToken = await getAuthToken();
-
-//     if (!authToken) return noAuthReturn;
-//     const user = await adminAuth.verifyIdToken(authToken);
-//     if (!user) return noAuthReturn;
-
-//     return { app, currentUser: user };
-// }
-
-async function getAuthToken() {
-    const { cookies } = await import('next/headers');
-    try {
-        const cookieStore = cookies();
-        console.log('cookies', cookieStore.getAll());
-        return cookieStore.get('firebaseIdToken')?.value;
-    } catch (error) {
-        return undefined;
-    }
-}

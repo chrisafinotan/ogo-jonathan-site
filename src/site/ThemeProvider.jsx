@@ -6,8 +6,7 @@ export default function ThemeProviderClient({ children }) {
     return (
         <ThemeProvider
             attribute='class'
-            defaultTheme='light'
-            enableSystem={false}
+            defaultTheme='system'
         >
             {children}
         </ThemeProvider>

@@ -2,15 +2,19 @@ import { PrismaClient } from '@prisma/client';
 import { projects } from './seed-data/projects.js';
 import { tags } from './seed-data/tags.js';
 import { TagType } from '@prisma/client';
-import { getAllImages } from '../src/lib/firebase/storage.js';
+import {
+    getAllImages,
+    getAllImagesByFolders,
+} from '../src/lib/firebase/storage.js';
 import { createImages } from '../src/lib/firebase/seedHelper.js';
-import { map } from 'lodash';
+import { assign, find, groupBy, map } from 'lodash';
 
 const tagTypes = Object.values(TagType);
 const prisma = new PrismaClient();
 const now = new Date();
 const photoCount = 5;
 
+// dev code
 const getPhotos = async () => {
     let blobs = await getAllImages();
     if (blobs.length < photoCount) blobs = await createImages();
@@ -51,11 +55,13 @@ const createProjects = async (createdPhotos, projectTags) => {
         const selectedPhotos = Array(photoCount)
             .fill(null)
             .map(() => getRandom(photos));
-
+        const selectedTags = Array(2)
+            .fill(null)
+            .map(() => getRandom(projectTags));
         return {
             ...project,
             photos: { create: selectedPhotos },
-            tags: { connect: projectTags },
+            tags: { connect: selectedTags },
         };
     });
     const include = { cover: true, photos: true, tags: true };
@@ -98,11 +104,130 @@ const createTags = async () => {
     return { projectTags, photoTags };
 };
 
+// production code
+const getLivePhotos = async (projects) => {
+    const imagesWithProjectName = await getAllImagesByFolders(projects);
+    if (imagesWithProjectName.length === 0)
+        throw new Error('no folder/images found');
+
+    const photoDefault = {
+        isShowcase: false,
+        extension: 'jpg',
+        hidden: false,
+        takenAt: now,
+        isShowcase: false,
+    };
+
+    const photosWithProjectName = imagesWithProjectName.map((mapping) => {
+        const { imageObjects, folderName } = mapping;
+        let cover = null;
+        const prismaPhotoObjects = imageObjects.map(
+            ({ url, metaData, isCover }, imageIndex) => {
+                const returnObj = {
+                    ...photoDefault,
+                    title: `Photo ${imageIndex + 1} for ${folderName}`,
+                    url,
+                    blurData: url,
+                    createdAt: now,
+                    priorityOrder: imageIndex,
+                };
+                if (isCover) cover = returnObj;
+                return returnObj;
+            }
+        );
+        return { prismaPhotoObjects, cover, ...mapping };
+    });
+    return photosWithProjectName;
+};
+
+const createLiveProjects = async (photosGroupedByProjectName) => {
+    const coversByProjectName = {};
+    const projectsData = map(projects, (project) => {
+        const matchingProject = photosGroupedByProjectName[project.files];
+        if (!matchingProject) {
+            console.log(
+                `cannot find match for project: ${project.title}, File: ${project.files} does not exist`
+            );
+            return;
+        }
+        const projectPhotos = matchingProject[0].prismaPhotoObjects;
+        if (matchingProject[0].cover)
+            coversByProjectName[project.files] = matchingProject[0].cover;
+        if (projectPhotos.length === 0) return project;
+        return {
+            ...project,
+            isPublished: true,
+            photos: { create: projectPhotos },
+        };
+    });
+    const include = { cover: true, photos: true, tags: true };
+    const createdProjects = [];
+
+    function getCoverId(createdProject, projectData) {
+        if (!createdProject.photos) return null;
+        const { files } = projectData;
+        const coverObj = coversByProjectName[files];
+        if (!coverObj) return;
+        const coverPhoto = find(createdProject.photos, { url: coverObj.url });
+        if (coverPhoto) return coverPhoto.id;
+    }
+
+    for (const ogProject of projectsData) {
+        const project = assign({}, ogProject);
+        delete project.cover;
+        delete project.files;
+        delete project.Category;
+        delete project.Tag;
+        let createdProject = await prisma.project.create({
+            data: project,
+            include: include,
+        });
+        const coverId = getCoverId(createdProject, ogProject);
+        if (coverId) {
+            const updateData = {
+                cover: {
+                    connect: {
+                        id: coverId,
+                    },
+                },
+            };
+            const updatedProject = await prisma.project.update({
+                where: { id: createdProject.id },
+                data: updateData,
+                include: include,
+            });
+            createdProjects.push(updatedProject);
+        } else {
+            createdProjects.push(createdProject);
+        }
+    }
+    console.log(`Created ${createdProjects.length} projects`);
+};
+
 async function main() {
-    const { photoTags, projectTags } = await createTags();
-    const createdPhotos = await getPhotos(photoTags);
-    const createdProjects = await createProjects(createdPhotos, projectTags);
-    return createdProjects;
+    const seedMode = process.env.NODE_ENV;
+    console.log('-----', seedMode);
+    if (seedMode === 'production') {
+        const photosWithProjectName = await getLivePhotos(projects);
+        const photosGroupedByProjectName = groupBy(
+            photosWithProjectName,
+            'folderName'
+        );
+        const createdProjects = await createLiveProjects(
+            photosGroupedByProjectName
+        );
+        return createdProjects;
+    }
+    if (seedMode === 'development') {
+        const { photoTags, projectTags } = await createTags();
+        const createdPhotos = await getPhotos(photoTags);
+        const createdProjects = await createProjects(
+            createdPhotos,
+            projectTags
+        );
+        return createdProjects;
+    }
+    throw new Error('unsupported mode', seedMode);
 }
 
 main()

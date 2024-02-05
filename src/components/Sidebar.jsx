@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ADMIN_PATHS } from '../site/paths';
+import { ADMIN_PATHS } from '../site/config';
 import { cn } from '@/lib/utils';
 
 export const Sidebar = () => {

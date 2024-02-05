@@ -33,9 +33,19 @@
         --ring: 222.2 84% 4.9%;
 
         --radius: 0.5rem;
+
+        --main-bg-red: #ea281e;
+        --main-bg-blue: #1e76ea;
+        --main-bg-green: #30a52a;
+        --main-bg-orange: #c8691c;
+        --main-bg-black: #000;
+        --main-bg-white: #fff;
+        --main-bg-yellow: #cbd660;
+        --main-bg-brown: #825f45;
+        --nav-height: 72px;
     }
 
-    .dark2 {
+    .dark {
         --background: 222.2 84% 4.9%;
         --foreground: 210 40% 98%;
 
@@ -163,5 +173,95 @@
 @keyframes loading {
     to {
         transform: rotate(360deg);
+    }
+}
+
+.loadingBanner {
+    z-index: 12;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: red;
+    .row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100vw;
+    }
+    .text {
+        width: fit-content;
+        font-size: 5em;
+        text-transform: uppercase;
+        text-align: center;
+        letter-spacing: 40px;
+        font-weight: 700;
+        color: #fff;
+        mix-blend-mode: difference;
+        z-index: 12;
+        overflow: hidden;
+        white-space: nowrap;
+        animation: textShadow 1s ease-in-out infinite;
+        line-height: 2;
+        @media (max-width: 1050px) {
+            font-size: 3em;
+            letter-spacing: 20px;
+        }
+        @media (max-width: 600px) {
+            font-size: 2em;
+            letter-spacing: 10px;
+        }
+        @media (max-width: 400px) {
+            font-size: 1.5em;
+            letter-spacing: 5px;
+        }
+    }
+    span {
+        height: 2em;
+        width: 2em;
+        z-index: 12;
+        margin: 0.2em;
+        background: blue;
+        border-radius: 100%;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        * {
+            animation: none !important;
+            transition: none !important;
+        }
+    }
+}
+
+@keyframes textShadow {
+    0% {
+        text-shadow: 0 0 0 var(--main-bg-red), 0 0 0 var(--main-bg-blue),
+            0 0 0 var(--main-bg-green), 0 0 0 var(--main-bg-orange);
+    }
+
+    20% {
+        text-shadow: 0 0.125em 0 var(--main-bg-red),
+            0 0.25em 0 var(--main-bg-blue), 0 -0.125em 0 var(--main-bg-green),
+            0 -0.25em 0 var(--main-bg-orange);
+    }
+
+    40% {
+        text-shadow: 0 -0.0625em 0 var(--main-bg-red),
+            0 -0.125em 0 var(--main-bg-blue), 0 0.0625em 0 var(--main-bg-green),
+            0 0.125em 0 var(--main-bg-orange);
+    }
+
+    60% {
+        text-shadow: 0 0.03125em 0 var(--main-bg-red),
+            0 0.0625em 0 var(--main-bg-blue),
+            0 -0.03125em 0 var(--main-bg-green),
+            0 -0.0625em 0 var(--main-bg-orange);
+    }
+
+    80% {
+        text-shadow: 0 0 0 var(--main-bg-red), 0 0 0 var(--main-bg-blue),
+            0 0 0 var(--main-bg-green), 0 0 0 var(--main-bg-orange);
     }
 }

@@ -1,6 +1,6 @@
 import { prisma } from '@/services/prisma';
 import { orderPhotos } from '@/lib/utils';
-const DEFAULT_LIMIT = 20;
+const DEFAULT_LIMIT = 30;
 
 export const getAllProjects = async () => {
     const projects = await prisma.project.findMany({
@@ -17,9 +17,8 @@ export const getPublishedProjects = async (query = {}) => {
         offset,
         offsetId,
     } = query;
-    return prisma.project.findMany({
+    const projects = await prisma.project.findMany({
         take: limit,
-        orderBy: order,
         skip: offsetId && 1,
         cursor: offsetId && {
             id: offsetId,
@@ -27,27 +26,10 @@ export const getPublishedProjects = async (query = {}) => {
         where: {
             isPublished: true,
         },
-        include: {
-            ...INCLUDE_ALL,
-            photos: {
-                select: {
-                    id: true,
-                    title: true,
-                    url: true,
-                    blurData: true,
-                    extension: true,
-                    takenAt: true,
-                    priorityOrder: true,
-                    tags: {
-                        select: {
-                            text: true,
-                            description: true,
-                        },
-                    },
-                },
-            },
-        },
+        include: INCLUDE_ALL,
     });
+    const orderedProjects = projects.map(orderPhotos);
+    return orderedProjects;
 };
 
 export const getProjectById = async (projectId) => {
@@ -118,6 +100,5 @@ export const searchProjects = async (query) => {
         where: { OR: prismaQuery },
         include: INCLUDE_ALL,
     });
-    console.log(results, prismaQuery, prismaQuery[2].tags);
     return results;
 };

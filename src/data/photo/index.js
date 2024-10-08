@@ -5,7 +5,7 @@ const DEFAULT__PHOTOS_LIMIT = 50;
 export const getShowcasePhotos = async (query = {}) => {
     const { limit = DEFAULT__PHOTOS_LIMIT, order = { takenAt: 'desc' } } =
         query;
-    return prisma.photo.findMany({
+    const showcasePhotos = await prisma.photo.findMany({
         take: limit,
         orderBy: order,
         where: {
@@ -15,6 +15,10 @@ export const getShowcasePhotos = async (query = {}) => {
             Project: true,
         },
     });
+    return showcasePhotos.map((photo) => {
+        photo.projectUrl = getProjectUrl(photo.projectId)
+        return photo;
+    })
 };
 
 export const addShowcasePhotos = async (photosIdList) => {

@@ -19,6 +19,7 @@ model Project {
   projectDate    DateTime
   displayOrder   Int?
   additionalInfo Json?
+  additionalInfoString String?
   tags           Tag[]
   cover          Photo?   @relation("CoverPhoto", fields: [coverId], references: [id])
   coverId        String?  @unique

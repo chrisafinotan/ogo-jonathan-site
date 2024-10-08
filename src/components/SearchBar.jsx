@@ -6,15 +6,16 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/icons';
 import { useToast } from '@/components/ui/use-toast';
+import { cn } from '@/lib/utils';
 
-export const SearchBar = () => {
-    const [searchText, setSearchText] = useState(null);
+export const SearchBar = ({ className, query = null, placeholder = 'Search for projects, tags, etc'}) => {
+    const [searchText, setSearchText] = useState(query);
     const router = useRouter();
     const { toast } = useToast();
 
     const onChangeHandler = (e) => {
         e.preventDefault();
-        const text = e.target.value
+        const text = e.target.value;
         text && setSearchText(text.trim());
     };
 
@@ -32,15 +33,19 @@ export const SearchBar = () => {
     };
 
     return (
-        <form onSubmit={(e) => onSearch(e)} className='flex w-full p-4 gap-2'>
+        <form
+            onSubmit={(e) => onSearch(e)}
+            className={cn(className, 'flex justify-center w-full p-4 gap-2')}
+        >
             <Button type='submit'>
                 <Icons.search />
             </Button>
             <Input
-                placeholder={'Search for projects, tags, etc'}
+                placeholder={placeholder}
                 className='flex text-zinc-400'
                 id='searchBarInput'
                 onChange={(e) => onChangeHandler(e)}
+                defaultValue={searchText}
             />
         </form>
     );

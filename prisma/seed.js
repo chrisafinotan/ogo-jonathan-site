@@ -15,7 +15,7 @@ const now = new Date();
 const photoCount = 5;
 
 // dev code
-const getPhotos = async () => {
+async function getPhotos() {
     let blobs = await getAllImages();
     if (blobs.length < photoCount) blobs = await createImages();
     else console.log(`Found ${blobs.length} photos`);
@@ -33,7 +33,7 @@ const getPhotos = async () => {
     const photos = blobs.map((blob, index) => {
         return {
             ...photoDefault,
-            isShowcase: Math.random() > 0.25,
+            isShowcase: index % 3 === 0,
             url: blob,
             blurData: blob,
             createdAt: now,
@@ -41,17 +41,21 @@ const getPhotos = async () => {
         };
     });
     return photos;
-};
+}
 
-const getRandom = (items) => {
+function getRandom(items) {
     const itemIndex = Math.floor(Math.random() * items.length);
     const item = items[itemIndex];
     return item;
-};
+}
 
-const createProjects = async (createdPhotos, projectTags) => {
+async function createProjects(createdPhotos, projectTags) {
     const projectsData = map(projects, (project) => {
         let photos = createdPhotos;
+        let additionalInfoString;
+        if (project.additionalInfo) {
+            additionalInfoString = JSON.stringify(project.additionalInfo)
+        }
         const selectedPhotos = Array(photoCount)
             .fill(null)
             .map(() => getRandom(photos));
@@ -60,6 +64,7 @@ const createProjects = async (createdPhotos, projectTags) => {
             .map(() => getRandom(projectTags));
         return {
             ...project,
+            additionalInfoString,
             photos: { create: selectedPhotos },
             tags: { connect: selectedTags },
         };
@@ -92,9 +97,9 @@ const createProjects = async (createdPhotos, projectTags) => {
     }
     console.log(`Created ${createdProjects.length} projects`);
     return createdProjects;
-};
+}
 
-const createTags = async () => {
+async function createTags() {
     await prisma.tag.createMany({
         data: tags,
     });
@@ -102,10 +107,10 @@ const createTags = async () => {
     const projectTags = createdTags.filter(({ type }) => type === tagTypes[0]);
     const photoTags = createdTags.filter(({ type }) => type === tagTypes[1]);
     return { projectTags, photoTags };
-};
+}
 
 // production code
-const getLivePhotos = async (projects) => {
+async function getLivePhotos(projects) {
     const imagesWithProjectName = await getAllImagesByFolders(projects);
     if (imagesWithProjectName.length === 0)
         throw new Error('no folder/images found');
@@ -115,7 +120,6 @@ const getLivePhotos = async (projects) => {
         extension: 'jpg',
         hidden: false,
         takenAt: now,
-        isShowcase: false,
     };
 
     const photosWithProjectName = imagesWithProjectName.map((mapping) => {
@@ -138,11 +142,15 @@ const getLivePhotos = async (projects) => {
         return { prismaPhotoObjects, cover, ...mapping };
     });
     return photosWithProjectName;
-};
+}
 
-const createLiveProjects = async (photosGroupedByProjectName) => {
+async function createLiveProjects(photosGroupedByProjectName) {
     const coversByProjectName = {};
+    let additionalInfoString;
     const projectsData = map(projects, (project) => {
+        if (project.additionalInfo) {
+            additionalInfoString = JSON.stringify(project.additionalInfo)
+        }
         const matchingProject = photosGroupedByProjectName[project.files];
         if (!matchingProject) {
             console.log(
@@ -157,6 +165,7 @@ const createLiveProjects = async (photosGroupedByProjectName) => {
         return {
             ...project,
             isPublished: true,
+            additionalInfoString,
             photos: { create: projectPhotos },
         };
     });
@@ -202,11 +211,39 @@ const createLiveProjects = async (photosGroupedByProjectName) => {
         }
     }
     console.log(`Created ${createdProjects.length} projects`);
-};
+}
+
+function getFolderPhotos() {
+    const folderPhotos = [
+        '/testImage3.webp',
+        '/testImage4.webp',
+        '/testImageA.webp',
+        '/testImageB.webp',
+        '/testImageC.webp',
+        '/testImageD.webp',
+        '/testImageE.webp',
+    ];
+    return folderPhotos.map((url, index) => {
+        return {
+            isShowcase: (Math.random() > 0.75),
+            title: 'sample photo record',
+            extension: 'jpg',
+            locationName: 'ottawa',
+            hidden: false,
+            takenAt: new Date('07/01/2021'),
+            url,
+            blurData: url,
+            createdAt: new Date('07/01/2021'),
+            priorityOrder: index,
+        };
+    });
+}
 
 async function main() {
     const seedMode = process.env.NODE_ENV;
-    console.log('-----', seedMode);
+    const useStoragePhotos = process.env.STORAGE_PHOTOS === 'true' || false;
+    console.log('----- MODE:', seedMode);
+    console.log('----- USING STORAGE:', useStoragePhotos);
     if (seedMode === 'production') {
         const photosWithProjectName = await getLivePhotos(projects);
         const photosGroupedByProjectName = groupBy(
@@ -220,11 +257,15 @@ async function main() {
     }
     if (seedMode === 'development') {
         const { photoTags, projectTags } = await createTags();
-        const createdPhotos = await getPhotos(photoTags);
+        
+        let createdPhotos = useStoragePhotos
+        ? await getPhotos(photoTags)
+        : getFolderPhotos();
         const createdProjects = await createProjects(
             createdPhotos,
             projectTags
         );
+        console.log({ createdProjects });
         return createdProjects;
     }
     throw new Error('unsupported mode', seedMode);

@@ -2,14 +2,14 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ADMIN_PATHS } from '../site/config';
 import { cn } from '@/lib/utils';
 
-export const Sidebar = () => {
+export const Sidebar = ({ paths }) => {
     const pathname = usePathname();
     return (
         <div className='p-2'>
-            {ADMIN_PATHS.map((component, index) => {
+            {paths.map((component, index) => {
+                if (!component.isAdmin) return;
                 return (
                     <SidebarItem
                         key={`sidebarLink_${index}`}
@@ -23,7 +23,7 @@ export const Sidebar = () => {
     );
 };
 
-const SidebarItem = ({ component, pathname, index }) => {
+const SidebarItem = ({ component, pathname }) => {
     const { description, name: title, path: href } = component;
     return (
         <Link

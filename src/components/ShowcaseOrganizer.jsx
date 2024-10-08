@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm, useFieldArray, useFormContext } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Card, CardFooter, CardHeader } from '@/components/ui/card';
 import { Form, FormItem } from '@/components/ui/form';
@@ -16,6 +16,7 @@ export const ShowcaseOrganizer = ({ showcasePhotos }) => {
     const form = useForm({
         defaultValues: { photos: showcasePhotos },
     });
+    const { formState } = form;
 
     const {
         fields,
@@ -26,14 +27,17 @@ export const ShowcaseOrganizer = ({ showcasePhotos }) => {
         name: 'photos',
     });
     const onSubmit = async (data) => {
+        console.log('submitting', form.formState, formState);
         try {
             await updateShowcaseData({
                 finalShowcase: data.photos,
                 initShowcase: showcasePhotos,
             });
+            console.log('done');
         } catch (error) {
             onError(error);
         }
+        console.log('finshed', form.formState);
     };
 
     const onError = (errors) => {
@@ -43,15 +47,25 @@ export const ShowcaseOrganizer = ({ showcasePhotos }) => {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit, onError)}>
-                <div className='w-full flex justify-end my-2'>
+                <div className='w-full flex justify-end gap-2 my-2'>
                     {editMode ? (
                         <>
-                            <Button type='submit'>
+                            <Button
+                                type='button'
+                                onClick={() => setEditMode(false)}
+                            >
+                                <Icons.check className='scale-[2.5]' />
+                            </Button>
+                            <Button
+                                type='submit'
+                                disabled={formState.isSubmitting}
+                            >
                                 <Icons.save />
                             </Button>
                             <Button
                                 type='button'
                                 variant='destructive'
+                                disabled={formState.isSubmitting}
                                 onClick={() => setEditMode(!editMode)}
                             >
                                 <Icons.cancel />
@@ -70,6 +84,14 @@ export const ShowcaseOrganizer = ({ showcasePhotos }) => {
                     <div className='grid grid-cols-3 gap-2 '>
                         {fields.map((photoInfo, index) => {
                             const photoProjectInfo = photoInfo.Project;
+                            if (!photoProjectInfo) {
+                                console.log({
+                                    index,
+                                    photoInfo,
+                                    photoProjectInfo,
+                                });
+                                return <></>;
+                            }
                             if (!photoProjectInfo.id) return <></>;
                             const max = fields.length;
                             return (

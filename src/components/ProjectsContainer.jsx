@@ -5,7 +5,7 @@ import { ProjectContext } from '@/site/ProjectsProvider';
 import { ProjectCard } from '@/components/ProjectCard';
 import { CardTitle } from '@/components/ui/card';
 
-export const ProjectsContainer = async () => {
+export const ProjectsContainer = () => {
     const projects = useContext(ProjectContext);
 
     return (

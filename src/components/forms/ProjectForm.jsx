@@ -4,7 +4,7 @@
 import { useEffect, useState } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-
+import { useRouter } from 'next/navigation'
 // functions
 import {
     createProjectBlobs,
@@ -83,6 +83,7 @@ const createAdditionalInfoFields = (initValues) => {
 
 export const ProjectForm = ({ initValues = formDefaultValues, tags = [] }) => {
     createAdditionalInfoFields(initValues);
+    const router = useRouter()
     const { toast } = useToast();
     const [files, setFiles] = useState([]);
     const [readMode, setReadMode] = useState(true);
@@ -136,7 +137,7 @@ export const ProjectForm = ({ initValues = formDefaultValues, tags = [] }) => {
             return;
         }
         if (data && data.id && reload) {
-            window.location.reload(true);
+            router.refresh()
             return;
         }
         return data;
@@ -184,12 +185,10 @@ export const ProjectForm = ({ initValues = formDefaultValues, tags = [] }) => {
         e.preventDefault();
         const photosToUpload = _.map(getUploadFiles(), 'file');
         const project = form.getValues();
-        console.log('on pub', project);
         const blobs = await createProjectBlobs(photosToUpload, project.title);
 
         const photoData = await createPhotoData(project, blobs);
         const photos = checkResponse(photoData);
-        console.log({ blobs, photos });
 
         const updatedProject = await linkPhotosToProject(
             photos,
@@ -608,7 +607,7 @@ export const ProjectForm = ({ initValues = formDefaultValues, tags = [] }) => {
                             </CardFooter>
                         </form>
 
-                        <ProjectChecklist readMode={readMode} />
+                        <ProjectChecklist readMode={readMode} onPublish={onPublish} />
                     </CardContent>
                 </Card>
             </Form>

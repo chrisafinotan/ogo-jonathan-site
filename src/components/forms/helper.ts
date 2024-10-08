@@ -1,6 +1,6 @@
 'use client';
 
-import { concat, differenceBy, map } from 'lodash';
+import { concat, differenceBy } from 'lodash';
 import {
     createProjectAction,
     updateProjectAction,
@@ -10,6 +10,7 @@ import {
     updateShowcaseAction,
     addShowcasePhotosAction,
     createManyPhotosAction,
+    loginAction,
 } from '@/data/actions';
 import {
     ProjectFormShape as ClientProjectFormShape,
@@ -120,6 +121,7 @@ const updateProjectData = (
     const uploadData: ProjectFormShape = formatSaveData({
         ...data,
         additionalInfo: additionalInfoObject,
+        additionalInfoString: JSON.stringify(additionalInfoObject),
     });
     const response = updateProjectAction(uploadData, initialData);
     return parseResponse(response);
@@ -201,6 +203,11 @@ const addShowcaseData = (data: ProjectPhotoShape[]) => {
     return parseResponse(response);
 };
 
+const loginUser = async (data) => {
+    return loginAction(data);
+    // console.log({ loginResult });
+}
+
 export {
     createProjectBlobs,
     createProjectData,
@@ -214,4 +221,5 @@ export {
     linkPhotosToProject,
     uploadFilesToStore,
     publishProject,
+    loginUser,
 };

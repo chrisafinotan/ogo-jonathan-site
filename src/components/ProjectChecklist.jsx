@@ -34,7 +34,7 @@ const ProjectChecklistFields = {
     tags: { required: false },
 };
 
-export const ProjectChecklist = ({ readMode }) => {
+export const ProjectChecklist = ({ readMode, onPublish }) => {
     const values = useWatch();
     const [canPublish, setCanPublish] = useState(!readMode);
     const [publishChecklist, setPublishChecklist] = useState({});

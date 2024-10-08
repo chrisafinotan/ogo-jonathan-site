@@ -2,6 +2,8 @@ import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { indexOf, sortBy } from 'lodash';
 
+export const isProjectPage = (pathname) => /projects\//gm.test(pathname);
+
 export function cn(...inputs) {
     return twMerge(clsx(inputs));
 }

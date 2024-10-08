@@ -24,6 +24,7 @@ export const ProjectModel = z.object({
     projectDate: z.date(),
     displayOrder: z.number().int().nullish(),
     additionalInfo: jsonSchema.optional(),
+    additionalInfoString: z.string().optional(),
     coverId: z.string().nullish(),
     photosOrder: z.string().array().optional(),
 });

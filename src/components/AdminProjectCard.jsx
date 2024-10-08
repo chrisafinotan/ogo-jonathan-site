@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 // components
 import { Icons } from '@/components/icons';
 import { ProjectForm } from '@/components/forms/ProjectForm';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
     Modal,
@@ -13,7 +14,6 @@ import {
     ModalBody,
     useDisclosure,
 } from '@/components/ui/modal';
-import { Button } from '@/components/ui/button';
 
 export const AdminProjectCard = ({ project, showAsButton = false }) => {
     const router = useRouter();

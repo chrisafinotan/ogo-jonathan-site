@@ -34,7 +34,6 @@ export const LoginForm = () => {
     });
 
     const onSubmit: SubmitHandler<LoginFormShape> = (data: LoginFormShape) => {
-        console.log({ data });
         const { email, password } = data;
         setIsSigningIn(true);
         signIn('credentials', {

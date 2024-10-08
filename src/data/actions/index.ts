@@ -1,11 +1,10 @@
-// @ts-nocheck 
+// @ts-nocheck
 'use server';
 
 import _, { differenceBy } from 'lodash';
 import { prisma } from '@/services/prisma';
 import { revalidatePath } from 'next/cache';
 import { Prisma } from '@prisma/client';
-
 import {
     ProjectFormSchema,
     ProjectFormShape,
@@ -23,6 +22,7 @@ import {
     ShowcaseAddPhotosArrayShape,
 } from '@/lib/validation';
 import { ProjectFormShape as ModifiedProjectFormShape } from '@/components/forms/helperSchemas';
+import { login } from '@/lib/auth';
 
 const successResponse = (data: any) => {
     return { data };
@@ -36,7 +36,7 @@ const errorResponse = (message: string, e: unknown) => {
     };
 };
 
-export const createProjectAction = async (formData: ProjectFormShape) => {
+export async function createProjectAction(formData: ProjectFormShape) {
     try {
         const data = ProjectFormSchema.parse(formData);
         const { photos, tags } = data;
@@ -49,7 +49,7 @@ export const createProjectAction = async (formData: ProjectFormShape) => {
                 create: photos,
             },
         };
-    
+
         const res = await prisma.project.create({
             data: prismaData,
             include: {
@@ -61,14 +61,13 @@ export const createProjectAction = async (formData: ProjectFormShape) => {
     } catch (e) {
         return errorResponse('failed to create project', e);
     }
-};
+}
 
-export const updateProjectAction = async (
+export async function updateProjectAction(
     formData: ModifiedProjectFormShape,
     initialProjectData: ModifiedProjectFormShape
-) => {
+) {
     const canPublish = FinalProjectFormSchema.safeParse(formData);
-    // console.log(canPublish, canPublish.error);
 
     try {
         console.log('update project', {
@@ -134,9 +133,9 @@ export const updateProjectAction = async (
         console.log('publish ', e);
         return errorResponse('failed to update project', e);
     }
-};
+}
 
-export const publishProjectAction = async (formData: FinalProjectFormShape) => {
+export async function publishProjectAction(formData: FinalProjectFormShape) {
     console.log('trying to publish', formData);
     try {
         const data = FinalProjectFormSchema.parse(formData);
@@ -151,9 +150,9 @@ export const publishProjectAction = async (formData: FinalProjectFormShape) => {
         console.log('publish ', e);
         return errorResponse('failed to publish project', e);
     }
-};
+}
 
-export const createTagAction = async (formData: TagFormShape) => {
+export async function createTagAction(formData: TagFormShape) {
     try {
         const data = TagFormSchema.parse(formData);
         const newTag = await prisma.tag.create({
@@ -164,9 +163,9 @@ export const createTagAction = async (formData: TagFormShape) => {
     } catch (e) {
         return errorResponse('failed to create tag', e);
     }
-};
+}
 
-export const updateTagAction = async (formData: TagFormShape) => {
+export async function updateTagAction(formData: TagFormShape) {
     try {
         const data = TagFormSchema.parse(formData);
         const updatedTag = await prisma.tag.update({
@@ -178,9 +177,9 @@ export const updateTagAction = async (formData: TagFormShape) => {
     } catch (e) {
         return errorResponse('failed to update tag', e);
     }
-};
+}
 
-export const createManyPhotosAction = async (formData: ProjectPhotoShape[]) => {
+export async function createManyPhotosAction(formData: ProjectPhotoShape[]) {
     try {
         const data = formData.map((photo) => ProjectPhotoSchema.parse(photo));
         if (data.length !== formData.length) return;
@@ -194,11 +193,9 @@ export const createManyPhotosAction = async (formData: ProjectPhotoShape[]) => {
     } catch (e) {
         return errorResponse('failed to create many photos', e);
     }
-};
+}
 
-export const updateShowcaseAction = async (
-    formData: ShowcaseUpdateArrayShape
-) => {
+export async function updateShowcaseAction(formData: ShowcaseUpdateArrayShape) {
     try {
         const data = ShowcaseUpdateArraySchema.parse(formData);
         const sqlDataClause = Prisma.join(
@@ -219,11 +216,11 @@ export const updateShowcaseAction = async (
     } catch (e) {
         return errorResponse('failed to update photos', e);
     }
-};
+}
 
-export const addShowcasePhotosAction = async (
+export async function addShowcasePhotosAction(
     formData: ShowcaseAddPhotosArrayShape
-) => {
+) {
     try {
         let data = ShowcaseAddPhotosArraySchema.parse(formData);
         const result = await prisma.photo.updateMany({
@@ -239,4 +236,13 @@ export const addShowcasePhotosAction = async (
     } catch (e) {
         return errorResponse('failed to add photos', e);
     }
-};
+}
+
+export async function loginAction(formData) {
+    try {
+        const result = await login(formData);
+        return successResponse(result);
+    } catch (e) {
+        return errorResponse('Incorrect credentials', e);
+    }
+}

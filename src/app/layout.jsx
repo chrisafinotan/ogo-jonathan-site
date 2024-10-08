@@ -1,12 +1,12 @@
+import { Inter } from 'next/font/google';
 import ThemeProviderClient from '@/site/ThemeProvider';
-import NextUIProviderClient from '@/site/NextUIProvider';
+// import NextUIProviderClient from '@/site/NextUIProvider';
 import ProjectsProviderClient from '@/site/ProjectsProvider';
 import FirebaseAuthProviderClient from '@/site/FirebaseAuthProvider';
 import BreakpointProviderClient from '@/site/BreakPointProvider';
-import { Inter } from 'next/font/google';
-import { Nav } from '@/components/Nav';
-import { getPublishedProjects } from '@/data/project';
+import { getPublishedProjects, getAllProjects } from '@/data/project';
 import { Toaster } from '@/components/ui/toaster';
+import { cn } from '@/lib/utils';
 import '../site/globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -17,29 +17,30 @@ export const metadata = {
 export const dynamic = 'force-dynamic';
 
 export default async function RootLayout({ children }) {
-    const projects = await getPublishedProjects();
-
+    const siteMode = process.env.NODE_ENV;
+    const projects =
+        siteMode === 'production'
+            ? await getPublishedProjects()
+            : await getAllProjects();
     return (
-        <html className>
+        <html>
             <body
-                className={`${inter.className} pb-20`}
+                className={cn(
+                    inter.className,
+                    'fixed overflow-hidden h-full w-full flex flex-col'
+                )}
                 suppressHydrationWarning={true}
             >
-                <NextUIProviderClient>
-                    <ThemeProviderClient>
-                        <BreakpointProviderClient>
-                            <main className>
-                                <FirebaseAuthProviderClient>
-                                    <ProjectsProviderClient value={projects}>
-                                        <Nav />
-                                        {children}
-                                        <Toaster />
-                                    </ProjectsProviderClient>
-                                </FirebaseAuthProviderClient>
-                            </main>
-                        </BreakpointProviderClient>
-                    </ThemeProviderClient>
-                </NextUIProviderClient>
+                <ThemeProviderClient>
+                    <BreakpointProviderClient>
+                        <FirebaseAuthProviderClient>
+                            <ProjectsProviderClient value={projects}>
+                                {children}
+                                <Toaster />
+                            </ProjectsProviderClient>
+                        </FirebaseAuthProviderClient>
+                    </BreakpointProviderClient>
+                </ThemeProviderClient>
             </body>
         </html>
     );

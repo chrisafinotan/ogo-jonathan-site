@@ -42,8 +42,16 @@ export const getProjectById = async (projectId) => {
     return orderPhotos(project);
 };
 
-const projectSearchFields = ['title', 'description'];
-const tagSearchFields = ['description', 'text'];
+const regularMapFn = (el) => {
+    return { fieldName: el, kind: 'regular' };
+};
+const projectSearchFields = [
+    'title',
+    'description',
+    'additionalInfoString',
+].map(regularMapFn);
+
+const tagSearchFields = ['description', 'text'].map(regularMapFn);
 const searchTables = {
     project: { relation: null, fields: projectSearchFields },
     tag: { relation: 'tags', fields: tagSearchFields },
@@ -54,7 +62,8 @@ const INCLUDE_ALL = {
     tags: true,
 };
 
-const buildSearchQuery = (query, fieldName, relation) => {
+const buildSearchQuery = (query, fieldName, relation, kind) => {
+    if (kind !== 'regular') return;
     const contain = {
         contains: query,
         mode: 'insensitive',
@@ -86,8 +95,8 @@ const createSearchQuery = (query) => {
     for (const key in searchTables) {
         const { relation, fields } = searchTables[key];
         let tableQuery = {};
-        fields.forEach((field) => {
-            tableQuery = buildSearchQuery(query, field, relation);
+        fields.forEach(({ fieldName, kind }) => {
+            tableQuery = buildSearchQuery(query, fieldName, relation, kind);
             completeQuery.push(tableQuery);
         });
     }

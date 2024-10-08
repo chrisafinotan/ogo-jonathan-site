@@ -1,8 +1,7 @@
 import { prisma } from '../services/prisma.js';
 
 async function main() {
-    const projects = await prisma.project.findMany();
-    console.log('Project Count: ', projects.length);
+    return prisma.project.findMany();
 }
 
 main()

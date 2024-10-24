@@ -187,6 +187,7 @@ async function createLiveProjects(photosGroupedByProjectName) {
         delete project.files;
         delete project.Category;
         delete project.Tag;
+        delete project.additionalInfo;
         let createdProject = await prisma.project.create({
             data: project,
             include: include,

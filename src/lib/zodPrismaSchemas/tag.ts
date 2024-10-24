@@ -1,5 +1,4 @@
 import * as z from "zod"
-import { TagType } from "@prisma/client"
 import { CompletePhoto, RelatedPhotoModel, CompleteProject, RelatedProjectModel } from "./index"
 
 export const TagModel = z.object({
@@ -9,7 +8,7 @@ export const TagModel = z.object({
   text: z.string(),
   description: z.string(),
   color: z.string(),
-  type: z.nativeEnum(TagType),
+  type: z.enum(['PROJECT', 'PHOTO']),
 })
 
 export interface CompleteTag extends z.infer<typeof TagModel> {

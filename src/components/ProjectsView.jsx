@@ -19,6 +19,7 @@ export const ProjectsView = () => {
                                     className={cn(
                                         'transition-all duration-700 delay-500 opacity-100 translate-y-0 pointer-events-auto'
                                     )}
+                                    key={`${index}_projects_view_div`}
                                 >
                                     <Link
                                         href={`projects/${project.id}`}

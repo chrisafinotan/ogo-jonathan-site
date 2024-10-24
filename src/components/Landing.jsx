@@ -533,6 +533,7 @@ export const Landing3 = ({ showcasePhotos }) => {
                     {showcasePhotos.slice(0, 10).map((photo, index) => {
                         return (
                             <Link
+                                key={`${index}_projectImage_link`}
                                 href={photo.projectUrl}
                                 onClick={(e) => e.stopPropagation()}
                                 className={cn(

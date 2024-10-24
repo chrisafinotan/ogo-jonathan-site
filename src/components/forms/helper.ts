@@ -203,9 +203,8 @@ const addShowcaseData = (data: ProjectPhotoShape[]) => {
     return parseResponse(response);
 };
 
-const loginUser = async (data) => {
+const loginUser = async (data: any) => {
     return loginAction(data);
-    // console.log({ loginResult });
 }
 
 export {

@@ -1,14 +1,14 @@
+import { assign, find, groupBy, map, chain } from 'lodash';
 import { PrismaClient } from '@prisma/client';
 import { projects } from './seed-data/projects.js';
 import { tags } from './seed-data/tags.js';
+import { TagTypes as tagTypes } from '../src/utility/tag-types.js';
 import {
     getAllImages,
     getAllImagesByFolders,
 } from '../src/lib/firebase/storage.js';
 import { createImages } from '../src/lib/firebase/seedHelper.js';
-import { assign, find, groupBy, map } from 'lodash';
 
-const tagTypes = ['PROJECT', 'PHOTO'];
 const prisma = new PrismaClient();
 const now = new Date();
 const photoCount = 5;
@@ -53,7 +53,7 @@ async function createProjects(createdPhotos, projectTags) {
         let photos = createdPhotos;
         let additionalInfoString;
         if (project.additionalInfo) {
-            additionalInfoString = JSON.stringify(project.additionalInfo)
+            additionalInfoString = JSON.stringify(project.additionalInfo);
         }
         const selectedPhotos = Array(photoCount)
             .fill(null)
@@ -147,28 +147,31 @@ async function getLivePhotos(projects) {
 async function createLiveProjects(photosGroupedByProjectName) {
     const coversByProjectName = {};
     let additionalInfoString;
-    const projectsData = map(projects, (project) => {
-        if (project.additionalInfo) {
-            additionalInfoString = JSON.stringify(project.additionalInfo)
-        }
-        const matchingProject = photosGroupedByProjectName[project.files];
-        if (!matchingProject) {
-            console.log(
-                `cannot find match for project: ${project.title}, File: ${project.files} does not exist`
-            );
-            return;
-        }
-        const projectPhotos = matchingProject[0].prismaPhotoObjects;
-        if (matchingProject[0].cover)
-            coversByProjectName[project.files] = matchingProject[0].cover;
-        if (projectPhotos.length === 0) return project;
-        return {
-            ...project,
-            isPublished: true,
-            additionalInfoString,
-            photos: { create: projectPhotos },
-        };
-    });
+    const projectsData = chain(projects)
+        .map((project) => {
+            if (project.additionalInfo) {
+                additionalInfoString = JSON.stringify(project.additionalInfo);
+            }
+            const matchingProject = photosGroupedByProjectName[project.files];
+            if (!matchingProject) {
+                console.log(
+                    `cannot find match for project: ${project.title}, File: ${project.files} does not exist`
+                );
+                return;
+            }
+            const projectPhotos = matchingProject[0].prismaPhotoObjects;
+            if (matchingProject[0].cover)
+                coversByProjectName[project.files] = matchingProject[0].cover;
+            if (projectPhotos.length === 0) return project;
+            return {
+                ...project,
+                isPublished: true,
+                additionalInfoString,
+                photos: { create: projectPhotos },
+            };
+        })
+        .compact()
+        .value();
     const include = { cover: true, photos: true, tags: true };
     const createdProjects = [];
 
@@ -180,6 +183,7 @@ async function createLiveProjects(photosGroupedByProjectName) {
         const coverPhoto = find(createdProject.photos, { url: coverObj.url });
         if (coverPhoto) return coverPhoto.id;
     }
+    console.log(`Creating ${projectsData.length} projects`);
 
     for (const ogProject of projectsData) {
         const project = assign({}, ogProject);
@@ -226,7 +230,7 @@ function getFolderPhotos() {
     ];
     return folderPhotos.map((url, index) => {
         return {
-            isShowcase: (Math.random() > 0.75),
+            isShowcase: Math.random() > 0.75,
             title: 'sample photo record',
             extension: 'jpg',
             locationName: 'ottawa',
@@ -258,10 +262,10 @@ async function main() {
     }
     if (seedMode === 'development') {
         const { photoTags, projectTags } = await createTags();
-        
+
         let createdPhotos = useStoragePhotos
-        ? await getPhotos(photoTags)
-        : getFolderPhotos();
+            ? await getPhotos(photoTags)
+            : getFolderPhotos();
         const createdProjects = await createProjects(
             createdPhotos,
             projectTags

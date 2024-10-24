@@ -29,9 +29,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
 import { TagFormSchema } from '@/lib/validation';
 import { createTagData, updateTagData } from './helper';
-import { TagType } from '@prisma/client';
-const tagTypes = Object.values(TagType);
+import { TagTypes } from '@/utility/tag-types.js';
 
+const tagTypes = TagTypes;
 const tagDefaultValues = {
     text: '',
     description: '',

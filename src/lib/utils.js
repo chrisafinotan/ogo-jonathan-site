@@ -20,7 +20,7 @@ export const getAdjacentProjects = (index, projects) => {
     return [projects[previousIndex], projects[nextIndex]];
 };
 
-export const reorder = (arr, indexArr) => {
+export const reorder = (arr, indexArr = []) => {
     return sortBy(arr, [
         (el) => {
             if (indexArr.length === 0) return 0;
@@ -32,6 +32,6 @@ export const reorder = (arr, indexArr) => {
 };
 
 export const orderPhotos = (project) => {
-    project.photos = reorder(project.photos, project.photosOrder);
+    project.photos = reorder(project.photos, project.photosOrder?.split(','));
     return project;
 };

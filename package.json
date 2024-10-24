@@ -66,6 +66,8 @@
     "react-day-picker": "^8.8.2",
     "react-dom": "latest",
     "react-hook-form": "^7.46.2",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7",
     "swiper": "^11.0.5",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7",

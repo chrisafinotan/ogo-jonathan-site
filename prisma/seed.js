@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { projects } from './seed-data/projects.js';
 import { tags } from './seed-data/tags.js';
-import { TagType } from '@prisma/client';
 import {
     getAllImages,
     getAllImagesByFolders,
@@ -9,7 +8,7 @@ import {
 import { createImages } from '../src/lib/firebase/seedHelper.js';
 import { assign, find, groupBy, map } from 'lodash';
 
-const tagTypes = Object.values(TagType);
+const tagTypes = ['PROJECT', 'PHOTO'];
 const prisma = new PrismaClient();
 const now = new Date();
 const photoCount = 5;
@@ -77,6 +76,7 @@ async function createProjects(createdPhotos, projectTags) {
         delete project.files;
         delete project.Category;
         delete project.Tag;
+        delete project.additionalInfo;
         let createdProject = await prisma.project.create({
             data: project,
             include: include,

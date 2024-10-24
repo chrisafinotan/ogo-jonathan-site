@@ -2,12 +2,18 @@ import { prisma } from '@/services/prisma';
 import { orderPhotos } from '@/lib/utils';
 const DEFAULT_LIMIT = 30;
 
+function parseProjects(projects) {
+    return projects.map((project) => {
+        project.additionalInfo = JSON.parse(project.additionalInfoString)
+        project = orderPhotos(project)
+        return project;
+    })
+}
 export const getAllProjects = async () => {
     const projects = await prisma.project.findMany({
         include: INCLUDE_ALL,
     });
-    const orderedProjects = projects.map(orderPhotos);
-    return orderedProjects;
+    return parseProjects(projects);
 };
 
 export const getPublishedProjects = async (query = {}) => {
@@ -28,8 +34,7 @@ export const getPublishedProjects = async (query = {}) => {
         },
         include: INCLUDE_ALL,
     });
-    const orderedProjects = projects.map(orderPhotos);
-    return orderedProjects;
+    return parseProjects(projects);
 };
 
 export const getProjectById = async (projectId) => {

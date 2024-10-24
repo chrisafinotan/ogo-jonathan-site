@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider     = "postgresql"
-  url          = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = env("DATABASE_URL_SQLITE")
 }
 
 model Project {
@@ -15,19 +15,13 @@ model Project {
   description    String
   isPublished    Boolean
   photos         Photo[]  @relation("ProjectPhotos")
-  photosOrder    String[]
+  photosOrder    String?
   projectDate    DateTime
   displayOrder   Int?
-  additionalInfo Json?
   additionalInfoString String?
   tags           Tag[]
   cover          Photo?   @relation("CoverPhoto", fields: [coverId], references: [id])
   coverId        String?  @unique
-}
-
-enum TagType {
-  PROJECT
-  PHOTO
 }
 
 model Tag {
@@ -37,7 +31,7 @@ model Tag {
   text        String    @unique
   color       String?   @default("#edede9")
   description String
-  type        TagType
+  type        String
   photo       Photo[]
   project     Project[]
 }

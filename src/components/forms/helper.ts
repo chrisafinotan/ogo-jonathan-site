@@ -116,7 +116,7 @@ const updateProjectData = (
     data.additionalInfoFields?.forEach(({ key, value }) => {
         additionalInfoObject[key] = value as string;
     });
-    data.photosOrder = data.photos?.map((el) => el.id as string);
+    data.photosOrder = data.photos?.map((el) => el.id as string).join();
     console.log('update project data', data);
     const uploadData: ProjectFormShape = formatSaveData({
         ...data,

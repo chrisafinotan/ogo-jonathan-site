@@ -26,7 +26,7 @@ export const ProjectModel = z.object({
     additionalInfo: jsonSchema.optional(),
     additionalInfoString: z.string().optional(),
     coverId: z.string().nullish(),
-    photosOrder: z.string().array().optional(),
+    photosOrder: z.string().optional(),
 });
 
 export interface CompleteProject extends z.infer<typeof ProjectModel> {

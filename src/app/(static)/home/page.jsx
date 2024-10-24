@@ -1,7 +1,7 @@
 import { getShowcasePhotos } from '@/data/photo';
 import { Landing } from '@/components/Landing';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = 'force-static';
 
 export default async function Home() {
     const showcasePhotos = await getShowcasePhotos();

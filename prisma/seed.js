@@ -270,7 +270,6 @@ async function main() {
             createdPhotos,
             projectTags
         );
-        console.log({ createdProjects });
         return createdProjects;
     }
     throw new Error('unsupported mode', seedMode);

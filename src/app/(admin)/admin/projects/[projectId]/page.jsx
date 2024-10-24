@@ -2,6 +2,8 @@ import { ProjectForm } from '@/components/forms/ProjectForm.jsx';
 import { getProjectById } from '@/data/project';
 import { getAllTags } from '@/data/tag';
 
+// export const dynamic = 'force-dynamic';
+
 export default async function AdminProjectPage({ params: { projectId } }) {
     const project = (await getProjectById(projectId)) || undefined;
     const tags = await getAllTags();

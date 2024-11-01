@@ -621,12 +621,18 @@ export const ProjectForm = ({ initValues, tags = [] }) => {
                                     <div className='flex gap-4 justify-end w-full'>
                                         <div className='w-fit flex gap-4 justify-between'>
                                             <Button
-                                                type='submit'
+                                                // type='submit'
                                                 variant='default'
                                                 disabled={readMode}
-                                                onClick={form.handleSubmit(
-                                                    onUpdateProject
-                                                )}
+                                                onClick={(e) => {
+                                                    const data = form.getValues();
+                                                    console.log('trying submit', form, data);
+                                                    onUpdateProject(data)
+                                                    // form.handleSubmit(
+                                                    //     onUpdateProject
+                                                    // );
+                                                    e.preventDefault();
+                                                }}
                                             >
                                                 Update Project &nbsp;
                                                 <Icons.save />
@@ -635,6 +641,7 @@ export const ProjectForm = ({ initValues, tags = [] }) => {
                                                 type='button'
                                                 variant='secondary'
                                                 onClick={(e) => {
+                                                    console.log('');
                                                     e.preventDefault();
                                                     setReadMode(!readMode);
                                                 }}

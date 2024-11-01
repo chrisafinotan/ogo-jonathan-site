@@ -1,20 +1,13 @@
-'use client';
 
-import { useContext } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 import { Icons } from '@/components/icons';
-import { ProjectContext } from '@/site/ProjectsProvider';
-import { cn, getProject, getAdjacentProjects } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
-export const ProjectView = ({ projectId }) => {
-    const router = useRouter();
-    const projects = useContext(ProjectContext);
-    const { project, projectIndex } = getProject(projectId, projects) || {};
-    if (!project) router.push('/');
-    const [previous, next] = getAdjacentProjects(projectIndex, projects);
+export const ProjectView = ({ project, previous, next }) => {
+    if (!project) redirect('/');
     const { photos, description, title, additionalInfo } = project;
 
     return (

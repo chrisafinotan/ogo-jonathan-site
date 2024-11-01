@@ -1,6 +1,6 @@
 import { prisma } from '@/services/prisma';
 import { orderPhotos } from '@/lib/utils';
-const DEFAULT_LIMIT = 30;
+const DEFAULT_LIMIT = 15;
 
 function parseProjects(projects) {
     return projects.map((project) => {
@@ -9,6 +9,16 @@ function parseProjects(projects) {
         return project;
     })
 }
+
+export const getProjects = async () => {
+    const siteMode = process.env.NODE_ENV;
+    const projects =
+        siteMode === 'production'
+            ? await getPublishedProjects()
+            : await getAllProjects();
+    return projects;
+}
+
 export const getAllProjects = async () => {
     const projects = await prisma.project.findMany({
         include: INCLUDE_ALL,
@@ -44,6 +54,7 @@ export const getProjectById = async (projectId) => {
         },
         include: INCLUDE_ALL,
     });
+    if (!project) return
     return orderPhotos(project);
 };
 

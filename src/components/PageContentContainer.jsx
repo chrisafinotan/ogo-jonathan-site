@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { HeaderNav } from './HeaderNav';
 import { Nav } from './Nav';
 import { SocialsBar } from './SocialsBar';
@@ -9,9 +9,9 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { cn, isProjectPage } from '@/lib/utils';
 import { ADMIN_PATHS, PATHS } from '@/site/config';
 
-export function PageContentContainer({ children }) {
+export function PageContentContainerComponent({ children }) {
     const pathname = usePathname();
-    const searchParams = useSearchParams()
+    const searchParams = useSearchParams();
     const [isOpen, setOpen] = useState(false);
     const toggleMenu = () => setOpen(!isOpen);
     const closeMenu = () => setOpen(false);
@@ -54,7 +54,17 @@ export function PageContentContainer({ children }) {
     );
 }
 
-export function AdminPageContentContainer({ children }) {
+export function PageContentContainer({ children }) {
+    return (
+        <Suspense>
+            <PageContentContainerComponent>
+                {children}
+            </PageContentContainerComponent>
+        </Suspense>
+    );
+}
+
+export function AdminPageContentContainerComponent({ children }) {
     const paths = PATHS.concat(ADMIN_PATHS);
     const pathname = usePathname();
 
@@ -95,5 +105,15 @@ export function AdminPageContentContainer({ children }) {
                 </div>
             </div>
         </div>
+    );
+}
+
+export function AdminPageContentContainer({ children }) {
+    return (
+        <Suspense>
+            <AdminPageContentContainerComponent>
+                {children}
+            </AdminPageContentContainerComponent>
+        </Suspense>
     );
 }

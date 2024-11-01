@@ -9,7 +9,9 @@ const auth = getAuth(app);
 const storage = getStorage(app);
 
 if (process.env.NEXT_PUBLIC_APP_ENV === 'emulator') {
+    const useStoragePhotos = process.env.STORAGE_PHOTOS === 'true' || false;
     console.log('------------ emulating ----------')
+    console.log('----- USING STORAGE:', useStoragePhotos);
     const localhost = process.env.NEXT_PUBLIC_BASE
     const storageport = 9199;
     connectStorageEmulator(storage, localhost, storageport);

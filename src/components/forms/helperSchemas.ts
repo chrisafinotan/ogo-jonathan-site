@@ -10,6 +10,7 @@ import { FullMetadata } from 'firebase/storage';
 const ProjectFormSchema = initProjectFormSchema.extend({
     coverURL: z.string().optional(),
     photosPreview: z.instanceof(File).array().optional(),
+    additionalInfo: jsonSchema.optional(),
     additionalInfoFields: z
         .object({
             key: z.string(),

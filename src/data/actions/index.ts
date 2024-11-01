@@ -8,6 +8,8 @@ import { Prisma } from '@prisma/client';
 import {
     ProjectFormSchema,
     ProjectFormShape,
+    NewProjectFormSchema,
+    NewProjectFormShape,
     ExistingProjectFormSchema,
     ExistingProjectFormShape,
     FinalProjectFormSchema,
@@ -21,7 +23,7 @@ import {
     ShowcaseAddPhotosArraySchema,
     ShowcaseAddPhotosArrayShape,
 } from '@/lib/validation';
-import { ProjectFormShape as ModifiedProjectFormShape } from '@/components/forms/helperSchemas';
+import { ProjectFormShape as ClientProjectFormShape } from '@/components/forms/helperSchemas';
 import { login } from '@/lib/auth';
 
 const successResponse = (data: any) => {
@@ -29,6 +31,7 @@ const successResponse = (data: any) => {
 };
 
 const errorResponse = (message: string, e: unknown) => {
+    console.error(e, e[0]?.path)
     return {
         error: {
             message,
@@ -36,9 +39,11 @@ const errorResponse = (message: string, e: unknown) => {
     };
 };
 
-export async function createProjectAction(formData: ProjectFormShape) {
+export async function createProjectAction(formData: NewProjectFormShape) {
     try {
-        const data = ProjectFormSchema.parse(formData);
+        console.log('create', formData)
+        const data = NewProjectFormSchema.parse(formData);
+        console.log('create: done parse ', data)
         const { photos, tags } = data;
         delete data.tags;
         // delete photos?.tags;
@@ -64,17 +69,12 @@ export async function createProjectAction(formData: ProjectFormShape) {
 }
 
 export async function updateProjectAction(
-    formData: ModifiedProjectFormShape,
-    initialProjectData: ModifiedProjectFormShape
+    formData: ClientProjectFormShape,
+    initialProjectData: ClientProjectFormShape
 ) {
     const canPublish = FinalProjectFormSchema.safeParse(formData);
 
     try {
-        console.log('update project', {
-            photos: formData.photos,
-            t: formData.tags,
-            // project: _.omit(data, 'photos'),
-        });
         const data = ProjectFormSchema.parse(formData);
         const { photos: initialPhotos, tags: initialTags } = initialProjectData;
         const { id, photos, coverId, tags } = data;
@@ -126,11 +126,10 @@ export async function updateProjectAction(
             data: prismaData,
             include: include,
         });
-        console.log({ updatedProject });
         revalidatePath('/(admin)/admin/projects/[projectId]', 'page');
         return successResponse(updatedProject);
     } catch (e) {
-        console.log('publish ', e);
+        console.log('failed to update project', e);
         return errorResponse('failed to update project', e);
     }
 }

@@ -5,6 +5,10 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 });
 
 const nextConfig = {
+    compiler: {
+        removeConsole: process.env.NODE_ENV === "production" ? { exclude: ["error"] } : false,
+    },
+    productionBrowserSourceMaps: process.env.INCLUDE_SOURCE_MAP === 'true' || false,
     images: {
         deviceSizes: [600, 640, 750, 828, 1080, 1200, 1920, 2048, 3840, 4000],
         imageSizes: [16, 32, 48, 64, 96, 128, 200, 256, 384, 400, 1050],

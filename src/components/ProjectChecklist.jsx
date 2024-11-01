@@ -26,6 +26,7 @@ const ProjectChecklistFields = {
             return list['additionalInfoFields'];
         },
         validator: (v) => {
+            if (!v) return true;
             if (isPlainObject(v)) return true;
             const res = v.filter((e) => e.value.length > 0);
             return !isEmpty(res);

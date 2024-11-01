@@ -20,6 +20,11 @@ export const ProjectFormSchema = ProjectModel.omit({
 });
 export type ProjectFormShape = z.infer<typeof ProjectFormSchema>;
 
+export const NewProjectFormSchema = ProjectFormSchema.omit({
+    id: true,
+});
+export type NewProjectFormShape = z.infer<typeof NewProjectFormSchema>;
+
 export const ExistingProjectFormSchema = ProjectFormSchema.extend({
     id: z.string(),
     photos: ProjectPhotoSchema.array().optional(),

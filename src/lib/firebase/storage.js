@@ -8,14 +8,24 @@ import {
 } from 'firebase/storage';
 import { storage } from './client.js';
 
+const extensions = ['jpg', 'jpeg', 'png', 'webp'];
+
 export async function uploadImage(projectTitle, image) {
-    const filePath = `assets/${_.snakeCase(projectTitle)}/${image.name}`;
+    const imageNameValue = `${image.name}`.trim();
+    const extension = imageNameValue.split('.').pop().toLowerCase();
+    if (!extensions.includes(extension)) throw new Error('invalid image type')
+    const imageName = imageNameValue.substring(0, imageNameValue.length - extension.length - 1);
+    const filePath = `assets/${_.snakeCase(projectTitle)}/${_.snakeCase(
+        imageName
+    )}`;
+    const metadata = { contentType: `image/${extension}` };
     const newImageRef = ref(storage, filePath);
-    await uploadBytesResumable(newImageRef, image);
+    await uploadBytesResumable(newImageRef, image, metadata);
 
     const url = await getDownloadURL(newImageRef);
-    const metadata = await getMetadata(newImageRef);
-    return { url, metadata };
+    const savedMetadata = await getMetadata(newImageRef);
+    console.log({ url, metadata: savedMetadata });
+    return { url, metadata: savedMetadata };
 }
 
 const getItems = async (listRef) => {

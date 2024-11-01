@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-// import { cn } from '@/lib/utils';
 import {
     Modal,
     ModalContent,
@@ -9,17 +8,18 @@ import {
     ModalBody,
     useDisclosure,
 } from '@nextui-org/react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { TagForm } from './forms/TagForm';
 import { Icons } from './icons';
+import { cn } from '@/lib/utils';
 
 export const TagCard = ({ tag, showAsButton = false }) => {
+    const { id, color, type, text, description } = tag || {};
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [editMode, setEditMode] = useState(false);
 
-    const { color, type, text, description } = tag || {};
     return (
         <>
             {showAsButton ? (
@@ -31,20 +31,19 @@ export const TagCard = ({ tag, showAsButton = false }) => {
                 </div>
             ) : (
                 <Card
-                    className='w-full justify-self-center grid gap-2 p-2 relative'
+                    className={cn(
+                        'w-full justify-self-center flex flex-auto flex-col basis-96 gap-2 p-2 relative'
+                    )}
+                    style={{ backgroundColor: color }}
                     onClick={onOpen}
                 >
-                    <CardHeader className='flex'>
-                        <Badge variant='outline' className='w-min'>
-                            {type}
-                        </Badge>
-                        <CardTitle className='grid gap-2'>{text}</CardTitle>
-                    </CardHeader>
-                    <CardContent className='relative h-[80px] w-full flex flex-col justify-center'>
-                        <div className='grid justify-center'>
-                            <span>{description}</span>
-                        </div>
-                    </CardContent>
+                    <CardTitle className='grid gap-2'>{text}</CardTitle>
+                    <Badge variant='outline' className='w-min bg-background text-primary'>
+                        {type}
+                    </Badge>
+                    <div className='relative h-full max-h-[80px] w-full flex flex-col py-0 overflow-scroll'>
+                        {description}
+                    </div>
                 </Card>
             )}
 
@@ -72,27 +71,35 @@ export const TagCard = ({ tag, showAsButton = false }) => {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader>
-                                {editMode ? (
-                                    <Button
-                                        variant='destructive'
-                                        onClick={() => setEditMode(!editMode)}
-                                    >
-                                        <Icons.cancel />
-                                    </Button>
-                                ) : (
-                                    <Button
-                                        variant='primary'
-                                        onClick={() => setEditMode(!editMode)}
-                                    >
-                                        <Icons.edit />
-                                    </Button>
-                                )}
-                            </ModalHeader>
+                            {id && (
+                                <ModalHeader>
+                                    {editMode ? (
+                                        <Button
+                                            variant='destructive'
+                                            onClick={() =>
+                                                setEditMode(!editMode)
+                                            }
+                                        >
+                                            Cancel
+                                            <Icons.cancel />
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            variant='primary'
+                                            onClick={() =>
+                                                setEditMode(!editMode)
+                                            }
+                                        >
+                                            Edit &nbsp;
+                                            <Icons.edit />
+                                        </Button>
+                                    )}
+                                </ModalHeader>
+                            )}
                             <ModalBody>
                                 <TagForm
                                     initValues={tag}
-                                    showSubmit={editMode}
+                                    editMode={editMode}
                                     onSuccess={onClose}
                                 />
                             </ModalBody>

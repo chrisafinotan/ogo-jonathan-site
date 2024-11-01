@@ -1,12 +1,7 @@
-'use client';
-
-import { useContext } from 'react';
-import { ProjectContext } from '@/site/ProjectsProvider';
 import { ProjectCard } from '@/components/ProjectCard';
 import { CardTitle } from '@/components/ui/card';
 
-export const ProjectsContainer = () => {
-    const projects = useContext(ProjectContext);
+export const ProjectsContainer = ({projects}) => {
 
     return (
         <div className='grid gap-2 w-[80rem] max-w-[100vw] box-border p-6'>

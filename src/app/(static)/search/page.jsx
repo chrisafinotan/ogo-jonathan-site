@@ -3,8 +3,6 @@ import { SearchBar } from '@/components/SearchBar';
 import { SearchCard } from '@/components/SearchCard';
 import { searchProjects } from '@/data/project';
 
-export const dynamic = 'force-dynamic';
-
 export default async function SearchPage({ searchParams }) {
     const { q: query } = searchParams;
     const projects = query ? await searchProjects(query) : [];

@@ -14,6 +14,7 @@ import {
 } from '@/data/actions';
 import {
     ProjectFormShape as ClientProjectFormShape,
+    ProjectFormSchema as ClientProjectFormSchema,
     ShowcaseFormShape,
     ShowcaseUpdateArrayShape,
     AdditionalInfoShape,
@@ -21,14 +22,17 @@ import {
 } from './helperSchemas';
 import {
     ProjectPhotoShape,
+    NewProjectFormShape,
+    NewProjectFormSchema,
     ProjectFormShape,
+    ProjectFormSchema,
     FinalProjectFormShape,
+    FinalProjectFormSchema,
 } from '@/lib/validation';
 import { uploadImage as uploadToFirebase } from '@/lib/firebase/storage';
 
 const parseResponse = async (res: any) => {
     const { data, error } = await res;
-    console.log('parse', { data, error });
     if (error) {
         return { isError: true, error, message: error.message };
     }
@@ -65,7 +69,7 @@ const createProjectData = (
     blobs: UploadResultShape
 ) => {
     if (!blobs) return;
-    const photoObjects = blobs.map((blob, index) => {
+    const photos = blobs.map((blob, index) => {
         const { url, metadata } = blob;
         return {
             url,
@@ -79,18 +83,15 @@ const createProjectData = (
             takenAt: new Date(),
         };
     });
-
     const additionalInfoObject: AdditionalInfoShape = {};
     data.additionalInfoFields?.forEach(({ key, value }) => {
         additionalInfoObject[key] = value as string;
     });
-    const uploadData: ProjectFormShape = formatSaveData({
-        ...data,
-        photos: photoObjects,
-        additionalInfo: additionalInfoObject,
-    });
-
-    const response = createProjectAction(uploadData);
+    data.photos = photos;
+    data.additionalInfoString = JSON.stringify(additionalInfoObject);
+    const formattedData: ProjectFormShape = formatSaveData(data);
+    NewProjectFormSchema.parse(formattedData);
+    const response = createProjectAction(formattedData);
     return parseResponse(response);
 };
 
@@ -99,12 +100,14 @@ const updateProjectCover = (
     initialData: ClientProjectFormShape,
     coverIndex?: number
 ) => {
-    const uploadData = Object.assign({}, data);
-    console.log('update project cover');
-    uploadData.coverId =
+    data.photosOrder = data.photos?.map((el) => el.id as string).join();
+    data.coverId =
         data.photos?.find((photo) => photo.priorityOrder == coverIndex)?.id ||
         null;
-    const response = updateProjectAction(uploadData, initialData);
+    const formattedData: ProjectFormShape = formatSaveData(data);
+    ProjectFormSchema.parse(formattedData);
+    // ClientProjectFormSchema.parse(initialData);
+    const response = updateProjectAction(formattedData, initialData);
     return parseResponse(response);
 };
 
@@ -116,18 +119,16 @@ const updateProjectData = (
     data.additionalInfoFields?.forEach(({ key, value }) => {
         additionalInfoObject[key] = value as string;
     });
+    data.additionalInfoString = JSON.stringify(additionalInfoObject);
     data.photosOrder = data.photos?.map((el) => el.id as string).join();
-    console.log('update project data', data);
-    const uploadData: ProjectFormShape = formatSaveData({
-        ...data,
-        additionalInfo: additionalInfoObject,
-        additionalInfoString: JSON.stringify(additionalInfoObject),
-    });
-    const response = updateProjectAction(uploadData, initialData);
+    const formattedData: ProjectFormShape = formatSaveData(data);
+    ClientProjectFormSchema.parse(formattedData);
+    const response = updateProjectAction(formattedData, initialData);
     return parseResponse(response);
 };
 
 const publishProject = (data: FinalProjectFormShape) => {
+    FinalProjectFormSchema.parse(data);
     const response = publishProjectAction(data);
     return parseResponse(response);
 };
@@ -149,21 +150,19 @@ const createPhotoData = (data: ProjectFormShape, blobs: UploadResultShape) => {
         };
     });
     const response = createManyPhotosAction(photoObjects);
-    console.log('update many', { response });
     return parseResponse(response);
 };
 
 const linkPhotosToProject = (
-    data: ProjectPhotoShape[],
+    photos: ProjectPhotoShape[],
     project: ClientProjectFormShape,
     initialData: ClientProjectFormShape
 ) => {
-    console.log('link project data');
-    const uploadData: ProjectFormShape = formatSaveData({
-        ...project,
-        photos: data,
-    });
-    const response = updateProjectAction(uploadData, initialData);
+    project.photos = photos;
+    const formattedData: ProjectFormShape = formatSaveData(project);
+    ClientProjectFormSchema.parse(formattedData);
+    ClientProjectFormSchema.parse(initialData);
+    const response = updateProjectAction(formattedData, initialData);
     return parseResponse(response);
 };
 
@@ -205,7 +204,7 @@ const addShowcaseData = (data: ProjectPhotoShape[]) => {
 
 const loginUser = async (data: any) => {
     return loginAction(data);
-}
+};
 
 export {
     createProjectBlobs,

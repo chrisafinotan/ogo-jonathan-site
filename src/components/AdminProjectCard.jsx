@@ -1,13 +1,13 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 // components
 import { Icons } from '@/components/icons';
 import { ProjectForm } from '@/components/forms/ProjectForm';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardHeader } from '@/components/ui/card';
 import {
     Modal,
     ModalContent,
@@ -16,7 +16,6 @@ import {
 } from '@/components/ui/modal';
 
 export const AdminProjectCard = ({ project, showAsButton = false }) => {
-    const router = useRouter();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     return (
         <>
@@ -28,31 +27,32 @@ export const AdminProjectCard = ({ project, showAsButton = false }) => {
                     <Button onClick={onOpen}>NEW PROJECT</Button>
                 </div>
             ) : (
-                <Card
-                    className='w-full justify-self-center grid gap-2 justify-center p-2 relative'
-                    onClick={() => router.push(`/admin/projects/${project.id}`)}
-                >
-                    <CardHeader className='flex'>
-                        <CardTitle className='flex justify-between'>
-                            {project.title}
-                            <Icons.arrowNavigate />
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent className='relative h-[320px] w-full flex flex-col justify-center'>
+                <Card className='w-full justify-self-center grid gap-2 justify-center p-2 relative border-none'>
+                    <Link
+                        href={`/admin/projects/${project.id}`}
+                        className='group flex flex-col relative'
+                    >
+                        <CardHeader className='p-0 flex flex-row w-full justify-center text-xl absolute inset-0 items-center bg-tranparent '>
+                            <div className='p-2 flex flex-row items-center bg-blue-500 mix-blend'>
+                                {project.title}
+                                <Icons.arrow className='group-hover:-rotate-45 transition-transform' />
+                            </div>
+                        </CardHeader>
+
                         {project.cover?.url ? (
                             <Image
                                 src={project.cover.url}
                                 alt={`Cover photo for ${project.title}`}
                                 height={200}
                                 width={400}
-                                className='rounded-md object-contain max-h-[320px]'
+                                className='rounded-md object-cover max-h-[320px]'
                             />
                         ) : (
                             <div className='grid justify-center'>
                                 <Icons.missingPhoto className='justify-self-center h-[120px] w-[120px]' />
                             </div>
                         )}
-                    </CardContent>
+                    </Link>
                 </Card>
             )}
 

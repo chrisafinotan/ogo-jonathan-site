@@ -9,12 +9,15 @@ import {
 } from '../src/lib/firebase/storage.js';
 import { createImages } from '../src/lib/firebase/seedHelper.js';
 
+const seedMode = process.env.NODE_ENV;
+const useStoragePhotos = process.env.STORAGE_PHOTOS === 'true' || false;
+
 const prisma = new PrismaClient();
 const now = new Date();
 const photoCount = 5;
 
 // dev code
-async function getPhotos() {
+async function getEmulatorStoragePhotos() {
     let blobs = await getAllImages();
     if (blobs.length < photoCount) blobs = await createImages();
     else console.log(`Found ${blobs.length} photos`);
@@ -245,8 +248,6 @@ function getFolderPhotos() {
 }
 
 async function main() {
-    const seedMode = process.env.NODE_ENV;
-    const useStoragePhotos = process.env.STORAGE_PHOTOS === 'true' || false;
     console.log('----- MODE:', seedMode);
     console.log('----- USING STORAGE:', useStoragePhotos);
     if (seedMode === 'production') {
@@ -264,7 +265,7 @@ async function main() {
         const { photoTags, projectTags } = await createTags();
 
         let createdPhotos = useStoragePhotos
-            ? await getPhotos(photoTags)
+            ? await getEmulatorStoragePhotos(photoTags)
             : getFolderPhotos();
         const createdProjects = await createProjects(
             createdPhotos,

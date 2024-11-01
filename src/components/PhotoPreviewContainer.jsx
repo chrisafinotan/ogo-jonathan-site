@@ -11,7 +11,7 @@ export const PhotoPreviewContainer = ({
     swapItem,
     deleteItem,
 }) => {
-    const preview = field.value.photo;
+    const preview = field.photo;
     return (
         <div key={field.id} className='m-2'>
             <div>

@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useWatch } from 'react-hook-form';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { ItemMover } from '@/components/ItemMover';
+import { cn } from '@/lib/utils';
 
 export const PhotosContainer = ({
     control,
@@ -19,9 +20,17 @@ export const PhotosContainer = ({
         control,
         name: 'coverId',
     });
+    console.log({ field, coverIdWatch });
     return (
-        <div key={field.id} className='p-2 relative'>
-            <AspectRatio ratio={16 / 9} className='bg-muted'>
+        <div
+            key={field.id}
+            className={cn(
+                'p-2 relative',
+                coverIdWatch === field.id &&
+                    'border-blue-500 border-solid border-8'
+            )}
+        >
+            <AspectRatio ratio={16 / 9} className={cn('bg-muted')}>
                 <Image
                     src={field.url}
                     alt={field.title}
@@ -32,10 +41,13 @@ export const PhotosContainer = ({
                     disabled={readMode}
                 />
             </AspectRatio>
-            {coverIdWatch === field.id && (
+            {/* {coverIdWatch === field.id && (
                 <div className='absolute top-0 left-0 bg-green-600 opacity-50 w-full h-full text-white font-extrabold align-middle text-4xl flex justify-center items-center text-center'>
                     Cover
                 </div>
+            )} */}
+            {field.isShowcase && (
+                <div className='absolute top-0 left-0 bg-yellow-500 opacity-50 w-full h-full text-white font-extrabold align-middle text-4xl flex justify-center items-center text-center'></div>
             )}
             <ItemMover
                 swapItem={swapItem}

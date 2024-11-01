@@ -1,10 +1,11 @@
 'use client';
 
 // hooks
+import { isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
 // functions
 import {
     createProjectBlobs,
@@ -81,12 +82,12 @@ const createAdditionalInfoFields = (initValues) => {
     return initValues;
 };
 
-export const ProjectForm = ({ initValues = formDefaultValues, tags = [] }) => {
+export const ProjectForm = ({ initValues, tags = [] }) => {
+    const isNew = isEmpty(initValues);
+    if (isNew) initValues = formDefaultValues;
     createAdditionalInfoFields(initValues);
-    const router = useRouter()
+    const router = useRouter();
     const { toast } = useToast();
-    const [files, setFiles] = useState([]);
-    const [readMode, setReadMode] = useState(true);
 
     const uploadPhotosDisclosure = useDisclosure();
     const selectCoverDisclosure = useDisclosure();
@@ -115,7 +116,7 @@ export const ProjectForm = ({ initValues = formDefaultValues, tags = [] }) => {
     } = useFieldArray({
         control: form.control,
         name: 'photos',
-        keyName: 'photoFieldId'
+        keyName: 'photoFieldId',
     });
 
     const {
@@ -127,7 +128,8 @@ export const ProjectForm = ({ initValues = formDefaultValues, tags = [] }) => {
         name: 'additionalInfoFields',
     });
 
-    const checkResponse = (response, reload = false) => {
+    const checkResponse = (response, opts) => {
+        const { successMessage } = opts;
         const { data, error } = response;
         if (error) {
             toast({
@@ -136,9 +138,11 @@ export const ProjectForm = ({ initValues = formDefaultValues, tags = [] }) => {
             });
             return;
         }
-        if (data && data.id && reload) {
-            router.refresh()
-            return;
+        if (successMessage) {
+            toast({
+                variant: 'default',
+                title: successMessage,
+            });
         }
         return data;
     };
@@ -170,51 +174,114 @@ export const ProjectForm = ({ initValues = formDefaultValues, tags = [] }) => {
     };
 
     const createProject = async (data) => {
-        const photosToUpload = getUploadFiles();
-        const coverIndex = getCoverIndex();
-        const blobs = await createProjectBlobs(photosToUpload, data.title);
-        const project = await createProjectData(data, blobs);
-        return updateProjectCover(project, initValues, coverIndex);
+        try {
+            const photosToUpload = getUploadFiles();
+            const coverIndex = getCoverIndex();
+            console.log({ photosToUpload, coverIndex });
+            const blobs = await createProjectBlobs(photosToUpload, data.title);
+            console.log('created blobs', { blobs });
+            const { data: project } = await createProjectData(data, blobs);
+            console.log('created project', { project, initValues });
+            const projectWithCover = await updateProjectCover(
+                project,
+                initValues,
+                coverIndex
+            );
+            return projectWithCover;
+        } catch (e) {
+            console.log('create err', e);
+        }
     };
 
     const updateProject = async (data) => {
-        return updateProjectData(data, initValues);
+        try {
+            return updateProjectData(data, initValues);
+        } catch (e) {
+            console.error(e);
+        }
     };
 
     const uploadPhotos = async (e) => {
-        e.preventDefault();
-        const photosToUpload = _.map(getUploadFiles(), 'file');
-        const project = form.getValues();
-        const blobs = await createProjectBlobs(photosToUpload, project.title);
+        try {
+            e.preventDefault();
+            const photosToUpload = _.map(getUploadFiles(), 'file');
+            const project = form.getValues();
+            const blobs = await createProjectBlobs(
+                photosToUpload,
+                project.title
+            );
 
-        const photoData = await createPhotoData(project, blobs);
-        const photos = checkResponse(photoData);
+            const photoData = await createPhotoData(project, blobs);
+            const photos = checkResponse(photoData, { reload: false });
 
-        const updatedProject = await linkPhotosToProject(
-            photos,
-            project,
-            initValues
-        );
-        checkResponse(updatedProject, true);
+            const updatedProject = await linkPhotosToProject(
+                photos,
+                project,
+                initValues
+            );
+            checkResponse(updatedProject, {
+                successMessage: 'Photos uploaded',
+            });
+            setReadMode(true);
+        } catch (e) {
+            console.error(e);
+        }
     };
 
     const onPublish = async (e) => {
-        e.preventDefault();
-        const project = form.getValues();
-        const response = await publishProject(project);
-        checkResponse(response, true);
+        try {
+            e.preventDefault();
+            const project = form.getValues();
+            const response = await publishProject(project);
+            checkResponse(response, {
+                successMessage: 'Project published',
+            });
+            router.refresh();
+        } catch (e) {
+            console.error(e);
+        }
     };
 
     // use hook form allows for async function
-    const onSubmit = async (e) => {
-        const data = form.getValues();
-        const response = !data.id
-            ? await createProject(data)
-            : await updateProject(data);
-        checkResponse(response);
+    const onUpdateProject = async (xdata) => {
+        try {
+            const data = form.getValues();
+            const response = await updateProject(data);
+            console.log({ data, xdata, response });
+            checkResponse(response, {
+                successMessage: 'Project updated',
+            });
+            if (response?.data?.id) {
+                setReadMode(true);
+                // router.refresh();
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+    const onCreateProject = async (xdata) => {
+        try {
+            const data = form.getValues();
+            console.log('create 1', { data });
+            const response = await createProject(data);
+            console.log('create 2', { data, xdata, response });
+            checkResponse(response, {
+                successMessage: 'Project created',
+            });
+            router.push(`/admin/projects/${response.data.id}`);
+            // if (response?.data?.id) {
+            // setReadMode(true);
+            // router.refresh();
+            // }
+        } catch (e) {
+            console.error(e);
+        }
     };
 
     const isSaved = form.getValues('id');
+    const [files, setFiles] = useState([]);
+    const [readMode, setReadMode] = useState(isSaved ? true : false);
     const photosToPreviewMax = photosToPreview.length;
     const photosToPreviewOpts = {
         control: form.control,
@@ -239,6 +306,7 @@ export const ProjectForm = ({ initValues = formDefaultValues, tags = [] }) => {
             'name'
         );
         form.setValue('photosPreview', allSelectedPhotos);
+        console.log('changing files', allSelectedPhotos, files);
     }, [files]);
 
     const AddPhotosLabel = () => {
@@ -328,289 +396,292 @@ export const ProjectForm = ({ initValues = formDefaultValues, tags = [] }) => {
     };
 
     return (
-        <>
-            <Form {...form}>
-                <Card className='w-full'>
-                    <CardHeader>
-                        {isSaved ? (
-                            <CardTitle>
-                                {readMode
-                                    ? initValues.title
-                                    : 'Editing Project'}
-                            </CardTitle>
-                        ) : (
-                            <CardTitle>Create Project</CardTitle>
-                        )}
-                    </CardHeader>
-                    <CardContent>
-                        <form onSubmit={form.handleSubmit(onSubmit)}>
-                            <div className='overflow-auto grid gap-4 grid-cols-2'>
-                                <div className='flex flex-col gap-2'>
-                                    <FormField
-                                        disabled={readMode}
-                                        name='title'
-                                        control={form.control}
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Title</FormLabel>
-                                                <FormControl>
-                                                    <Input
-                                                        placeholder='title'
-                                                        required={true}
-                                                        {...field}
-                                                    />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        disabled={readMode}
-                                        name='description'
-                                        control={form.control}
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>
-                                                    Description
-                                                </FormLabel>
-                                                <FormControl>
-                                                    <Input
-                                                        placeholder='description'
-                                                        required={true}
-                                                        {...field}
-                                                    />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-
-                                    <FormField
-                                        disabled={readMode}
-                                        control={form.control}
-                                        name='projectDate'
-                                        render={({ field }) => (
-                                            <FormItem className='grid'>
-                                                <FormLabel>
-                                                    Project Date
-                                                </FormLabel>
-                                                <FormControl>
-                                                    <FormDatePicker
-                                                        readMode={readMode}
-                                                        field={field}
-                                                    />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormItem>
-                                        <FormLabel>Additional Info</FormLabel>
-                                        <div className='grid grid-cols-1 m-0'>
-                                            {additionalInfos.map(
-                                                (field, index) => (
-                                                    <div key={field.id}>
-                                                        <AdditionalInfoContainer
-                                                            readMode={readMode}
-                                                            key={field.id}
-                                                            {...{
-                                                                control:
-                                                                    form.control,
-                                                                index,
-                                                                field,
-                                                                deleteItem:
-                                                                    additionalRemove,
-                                                            }}
-                                                        />
-                                                    </div>
-                                                )
-                                            )}
-                                        </div>
-                                        <Button
-                                            disabled={readMode}
-                                            type='button'
-                                            variant='secondary'
-                                            onClick={() => {
-                                                additionalAppend({
-                                                    key: '',
-                                                    value: '',
-                                                });
-                                            }}
-                                        >
-                                            Add Info
-                                        </Button>
-                                    </FormItem>
-                                    <FormItem>
-                                        <FormLabel>Tags</FormLabel>
-                                        <ProjectTagSelector
-                                            form={form}
-                                            allTags={tags}
-                                            readMode={readMode}
-                                        />
-                                    </FormItem>
-                                </div>
-                                <div>
-                                    <FormItem>
-                                        <FormLabel>Photos</FormLabel>
-                                        {!isSaved ? (
-                                            <>
-                                                <AddPhotosLabel form={form} />
-                                                {!!photosToPreview.length && (
-                                                    <Button
-                                                        onClick={() => {
-                                                            form.resetField(
-                                                                'photosPreview'
-                                                            );
-                                                            setFiles([]);
-                                                            remove();
-                                                        }}
-                                                    >
-                                                        Clear All
-                                                    </Button>
-                                                )}
-                                                <FormMessage />
-                                                <FormItem>
-                                                    <div className='grid grid-cols-3 m-0'>
-                                                        {photosToPreview.map(
-                                                            (field, index) => (
-                                                                <PhotoPreviewContainer
-                                                                    key={
-                                                                        field.id
-                                                                    }
-                                                                    {...{
-                                                                        index,
-                                                                        field,
-                                                                        ...photosToPreviewOpts,
-                                                                    }}
-                                                                />
-                                                            )
-                                                        )}
-                                                    </div>
-                                                </FormItem>
-                                            </>
-                                        ) : (
-                                            <div className='flex flex-col justify-center'>
-                                                <UploadPhotosButtonComponent
-                                                    readMode={readMode}
+        <Form {...form}>
+            <Card className='w-full'>
+                <CardHeader>
+                    {isSaved ? (
+                        <CardTitle>
+                            {readMode ? initValues.title : 'Editing Project'}
+                        </CardTitle>
+                    ) : (
+                        <CardTitle>Create Project</CardTitle>
+                    )}
+                </CardHeader>
+                <CardContent>
+                    <form>
+                        <div className='overflow-auto grid gap-4 grid-cols-2'>
+                            <div className='flex flex-col gap-2'>
+                                <FormField
+                                    disabled={readMode}
+                                    name='title'
+                                    control={form.control}
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Title</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    placeholder='title'
+                                                    required={true}
+                                                    {...field}
                                                 />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    disabled={readMode}
+                                    name='description'
+                                    control={form.control}
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Description</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    placeholder='description'
+                                                    required={true}
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <FormField
+                                    disabled={readMode}
+                                    control={form.control}
+                                    name='projectDate'
+                                    render={({ field }) => (
+                                        <FormItem className='grid'>
+                                            <FormLabel>Project Date</FormLabel>
+                                            <FormControl>
+                                                <FormDatePicker
+                                                    readMode={readMode}
+                                                    field={field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormItem>
+                                    <FormLabel>Additional Info</FormLabel>
+                                    <div className='grid grid-cols-1 m-0'>
+                                        {additionalInfos.map((field, index) => (
+                                            <div key={field.id}>
+                                                <AdditionalInfoContainer
+                                                    readMode={readMode}
+                                                    key={field.id}
+                                                    {...{
+                                                        control: form.control,
+                                                        index,
+                                                        field,
+                                                        deleteItem:
+                                                            additionalRemove,
+                                                    }}
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <Button
+                                        disabled={readMode}
+                                        type='button'
+                                        variant='secondary'
+                                        onClick={() => {
+                                            additionalAppend({
+                                                key: '',
+                                                value: '',
+                                            });
+                                        }}
+                                    >
+                                        Add Info
+                                    </Button>
+                                </FormItem>
+                                <FormItem>
+                                    <FormLabel>Tags</FormLabel>
+                                    <ProjectTagSelector
+                                        form={form}
+                                        allTags={tags}
+                                        readMode={readMode}
+                                    />
+                                </FormItem>
+                            </div>
+                            <div>
+                                <FormItem>
+                                    <FormLabel>Photos</FormLabel>
+                                    {!isSaved ? (
+                                        <>
+                                            <AddPhotosLabel form={form} />
+                                            {!!photosToPreview.length && (
+                                                <Button
+                                                    onClick={() => {
+                                                        form.resetField(
+                                                            'photosPreview'
+                                                        );
+                                                        setFiles([]);
+                                                        remove();
+                                                    }}
+                                                >
+                                                    Clear All
+                                                </Button>
+                                            )}
+                                            <FormMessage />
+                                            <FormItem>
                                                 <div className='grid grid-cols-3 m-0'>
-                                                    {photoFields.map(
+                                                    {photosToPreview.map(
                                                         (field, index) => (
-                                                            <PhotosContainer
-                                                                readMode={
-                                                                    readMode
-                                                                }
-                                                                key={`${field.id}__savedProjectPhotos`}
+                                                            <PhotoPreviewContainer
+                                                                key={field.id}
                                                                 {...{
                                                                     index,
                                                                     field,
-                                                                    ...photosOpts,
+                                                                    ...photosToPreviewOpts,
                                                                 }}
                                                             />
                                                         )
                                                     )}
                                                 </div>
-                                            </div>
-                                        )}
-                                    </FormItem>
-                                    <FormItem>
-                                        <Button
-                                            variant='secondary'
-                                            type='button'
-                                            onClick={onOpen}
-                                            disabled={readMode}
-                                        >
-                                            {form.getValues('cover')
-                                                ? 'Change'
-                                                : 'Select'}{' '}
-                                            Cover
-                                        </Button>
-                                        <Modal
-                                            isOpen={isOpen}
-                                            onOpenChange={onOpenChange}
-                                            size='5xl'
-                                            backdrop='blur'
-                                            placement='top'
-                                            classNames={{
-                                                body: 'min-h-[50vh]',
-                                                base: 'bg-card text-card-foreground shadow-sm',
-                                            }}
-                                        >
-                                            <ModalContent className='max-w-7xl max-h-fit'>
-                                                {(onClose) => (
-                                                    <>
-                                                        <ModalHeader>
-                                                            {form.getValues(
-                                                                'cover'
-                                                            )
-                                                                ? 'Change'
-                                                                : 'Select'}{' '}
-                                                            Cover
-                                                        </ModalHeader>
-                                                        <ModalBody>
-                                                            <ProjectCoverSelector
-                                                                form={form}
-                                                                initCover={form.getValues(
-                                                                    'cover'
-                                                                )}
-                                                                onClose={
-                                                                    onClose
-                                                                }
-                                                            />
-                                                        </ModalBody>
-                                                    </>
+                                            </FormItem>
+                                        </>
+                                    ) : (
+                                        <div className='flex flex-col justify-center'>
+                                            <UploadPhotosButtonComponent
+                                                readMode={readMode}
+                                            />
+                                            <div className='grid grid-cols-3 m-0'>
+                                                {photoFields.map(
+                                                    (field, index) => (
+                                                        <PhotosContainer
+                                                            readMode={readMode}
+                                                            key={`${field.id}__savedProjectPhotos`}
+                                                            {...{
+                                                                index,
+                                                                field,
+                                                                ...photosOpts,
+                                                            }}
+                                                        />
+                                                    )
                                                 )}
-                                            </ModalContent>
-                                        </Modal>
-                                    </FormItem>
-                                </div>
-                            </div>
-                            <CardFooter className='block m-2'>
-                                <div className='flex gap-4 justify-between'>
-                                    {isSaved ? (
-                                        <div className='flex gap-4 justify-end w-full'>
-                                            <div className='w-fit flex gap-4 justify-between'>
-                                                <Button
-                                                    type='submit'
-                                                    variant='default'
-                                                    disabled={readMode}
-                                                >
-                                                    Save Changes &nbsp;
-                                                    <Icons.save />
-                                                </Button>
-                                                <Button
-                                                    type='button'
-                                                    variant='secondary'
-                                                    onClick={(e) => {
-                                                        e.preventDefault();
-                                                        setReadMode(!readMode);
-                                                    }}
-                                                >
-                                                    {readMode ? (
-                                                        <>
-                                                            Edit &nbsp;
-                                                            <Icons.edit />
-                                                        </>
-                                                    ) : (
-                                                        <>
-                                                            Done &nbsp;
-                                                            <Icons.check className='scale-[2.5]' />
-                                                        </>
-                                                    )}
-                                                </Button>
                                             </div>
                                         </div>
-                                    ) : (
-                                        <Button type='submit'>Submit</Button>
                                     )}
-                                </div>
-                            </CardFooter>
-                        </form>
+                                </FormItem>
+                                <FormItem>
+                                    <Button
+                                        variant='secondary'
+                                        type='button'
+                                        onClick={onOpen}
+                                        disabled={readMode}
+                                    >
+                                        {form.getValues('cover')
+                                            ? 'Change'
+                                            : 'Select'}{' '}
+                                        Cover
+                                    </Button>
+                                    <Modal
+                                        isOpen={isOpen}
+                                        onOpenChange={onOpenChange}
+                                        size='5xl'
+                                        backdrop='blur'
+                                        placement='top'
+                                        classNames={{
+                                            body: 'min-h-[50vh]',
+                                            base: 'bg-card text-card-foreground shadow-sm',
+                                        }}
+                                    >
+                                        <ModalContent className='max-w-7xl max-h-fit'>
+                                            {(onClose) => (
+                                                <>
+                                                    <ModalHeader>
+                                                        {form.getValues('cover')
+                                                            ? 'Change'
+                                                            : 'Select'}{' '}
+                                                        Cover
+                                                    </ModalHeader>
+                                                    <ModalBody>
+                                                        <ProjectCoverSelector
+                                                            form={form}
+                                                            initCover={form.getValues(
+                                                                'cover'
+                                                            )}
+                                                            onClose={onClose}
+                                                        />
+                                                    </ModalBody>
+                                                </>
+                                            )}
+                                        </ModalContent>
+                                    </Modal>
+                                </FormItem>
+                            </div>
+                        </div>
+                        <CardFooter className='block m-2'>
+                            <div className='flex gap-4 justify-between'>
+                                {isSaved ? (
+                                    <div className='flex gap-4 justify-end w-full'>
+                                        <div className='w-fit flex gap-4 justify-between'>
+                                            <Button
+                                                type='submit'
+                                                variant='default'
+                                                disabled={readMode}
+                                                onClick={form.handleSubmit(
+                                                    onUpdateProject
+                                                )}
+                                            >
+                                                Update Project &nbsp;
+                                                <Icons.save />
+                                            </Button>
+                                            <Button
+                                                type='button'
+                                                variant='secondary'
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    setReadMode(!readMode);
+                                                }}
+                                            >
+                                                {readMode ? (
+                                                    <>
+                                                        Edit &nbsp;
+                                                        <Icons.edit />
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        Done &nbsp;
+                                                        <Icons.check className='scale-[2.5]' />
+                                                    </>
+                                                )}
+                                            </Button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <Button
+                                        // type='submit'
+                                        variant='default'
+                                        // disabled={readMode}
+                                        onClick={(e) => {
+                                            const data = form.getValues();
+                                            console.log('click', form, data);
+                                            onCreateProject(data);
+                                            // form.handleSubmit(
+                                            //     onCreateProject
+                                            // );
+                                            e.preventDefault();
+                                        }}
+                                    >
+                                        Create Project &nbsp;
+                                        <Icons.save />
+                                    </Button>
+                                )}
+                            </div>
+                        </CardFooter>
+                    </form>
 
-                        <ProjectChecklist readMode={readMode} onPublish={onPublish} />
-                    </CardContent>
-                </Card>
-            </Form>
-        </>
+                    <ProjectChecklist
+                        readMode={readMode}
+                        onPublish={onPublish}
+                    />
+                </CardContent>
+            </Card>
+        </Form>
     );
 };

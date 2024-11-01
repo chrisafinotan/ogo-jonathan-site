@@ -1,7 +1,8 @@
 'use client';
-
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { HexColorPicker, HexColorInput } from 'react-colorful';
 import { Button } from '@/components/ui/button';
 import {
     Form,
@@ -36,10 +37,11 @@ const tagDefaultValues = {
     text: '',
     description: '',
     type: tagTypes[0],
+    color: '#000000',
 };
 export const TagForm = ({
     initValues = tagDefaultValues,
-    showSubmit = true,
+    editMode = true,
     onSuccess,
 }) => {
     const router = useRouter();
@@ -47,6 +49,11 @@ export const TagForm = ({
         resolver: zodResolver(TagFormSchema),
         defaultValues: initValues,
     });
+    const [color, setColor] = useState(initValues.color);
+    const updateColor = (newColor) => {
+        form.setValue('color', newColor);
+        setColor(newColor);
+    };
     const isSaved = form.getValues('id');
     const onSubmit = async (data) => {
         try {
@@ -108,6 +115,30 @@ export const TagForm = ({
                                 </FormItem>
                             )}
                         />
+                        {(editMode || !isSaved) && (
+                            <FormField
+                                control={form.control}
+                                name='color'
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Color</FormLabel>
+                                        <div className=''>
+                                            <HexColorInput
+                                                className='flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 mb-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
+                                                onChange={updateColor}
+                                                color={color}
+                                                {...field}
+                                            />
+                                            <HexColorPicker
+                                                color={color}
+                                                onChange={updateColor}
+                                            />
+                                        </div>
+                                    </FormItem>
+                                )}
+                            />
+                        )}
+
                         <FormField
                             control={form.control}
                             name='type'
@@ -140,11 +171,15 @@ export const TagForm = ({
                                 </FormItem>
                             )}
                         />
-                        {showSubmit && (
-                            <CardFooter className='flex justify-center'>
-                                <Button type='submit'>Submit</Button>
-                            </CardFooter>
-                        )}
+                        <CardFooter className='flex justify-center'>
+                            {isSaved ? (
+                                editMode && (
+                                    <Button type='submit'>Submit</Button>
+                                )
+                            ) : (
+                                <Button type='submit'>Create</Button>
+                            )}
+                        </CardFooter>
                     </form>
                 </CardContent>
             </Card>

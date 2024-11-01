@@ -1,7 +1,7 @@
 'use client';
 
 import _ from 'lodash';
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import {
     Modal,
@@ -11,15 +11,13 @@ import {
     ModalFooter,
 } from '@nextui-org/react';
 import { Button } from './ui/button';
-import { ProjectContext } from '@/site/ProjectsProvider';
 import { Icons } from './icons';
 import { addShowcaseData } from './forms/helper';
 
-export const ShowcasePhotosSelector = ({ showcasePhotos }) => {
-    const projects = useContext(ProjectContext);
+export const ShowcasePhotosSelector = ({ showcasePhotos, allProjects: projects }) => {
     const initShowcasePhotos = _.keyBy(showcasePhotos, 'id');
     const [selectedShowcasePhotos, setSelectedPhotos] = useState({});
-    const [selectedProject, setSelectedProject] = useState(projects[0]);
+    const [selectedProject, setSelectedProject] = useState(projects[0] || {});
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const keyedProjects = _.keyBy(projects, 'id');
 

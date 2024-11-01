@@ -6,7 +6,7 @@ export const TagsContainer = async () => {
     return (
         <>
             <TagCard showAsButton={true} />
-            <div className='grid grid-cols-3 gap-2 max-w-7xl w-full border-2 justify-items-center'>
+            <div className='grid grid-cols-3 auto-rows-fr gap-2 max-w-7xl w-full justify-items-center'>
                 {tags.map((tag) => (
                     <TagCard tag={tag} key={`${tag.id}_tagCard`} />
                 ))}

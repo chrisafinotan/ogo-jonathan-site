@@ -7,7 +7,8 @@ import { storage } from './client.js';
 import { getAllImages } from './storage.js';
 
 const upload = async (folderRef, { file, name, ext }, index) => {
-    const fileref = ref(folderRef, `picture_${index}`);
+    console.log({ folderRef, file, name, ext, index });
+    const fileref = ref(folderRef, name);
     const blob = await openAsBlob(file);
     const metadata = { contentType: `image/${ext.substring(1)}` };
     const uploadPromise = new Promise((resolve, reject) => {
@@ -24,7 +25,7 @@ const upload = async (folderRef, { file, name, ext }, index) => {
 const putItems = async (folderRef) => {
     const folderPath = 'testAssets';
     const __dirname = path.resolve(path.dirname(''));
-    const extensions = ['.jpg', '.jpeg', '.png'];
+    const extensions = ['.jpg', '.jpeg', '.png', '.webp'];
 
     const getFileName = (name) => path.join(__dirname, folderPath, name);
     const getFileInfo = (file) => {

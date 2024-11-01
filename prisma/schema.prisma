@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL_SQLITE")
+  provider    = "postgres"
+  url         = env("DATABASE_URL")
+  directUrl   = env("DIRECT_URL")
 }
 
 model Project {
@@ -54,23 +55,4 @@ model Photo {
   createdAt     DateTime? @default(now())
   updatedAt     DateTime? @updatedAt
   takenAt       DateTime?
-}
-
-model PhotoExif {
-  id                      String  @id @unique @default(cuid())
-  aspectRatio             Float
-  make                    String?
-  model                   String?
-  focalLength             Float?
-  focalLengthIn35MmFormat Float?
-  fNumber                 Float?
-  iso                     Float?
-  exposureTime            Float?
-  exposureCompensation    Float?
-  latitude                Float?
-  longitude               Float?
-  filmSimulation          String?
-  takenAt                 String
-  takenAtNaive            String
-  photoId                 String  @unique
 }

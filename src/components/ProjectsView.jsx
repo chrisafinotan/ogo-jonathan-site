@@ -1,13 +1,8 @@
-'use client';
-
-import { useContext } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ProjectContext } from '@/site/ProjectsProvider';
 import { cn } from '@/lib/utils';
 
-export const ProjectsView = () => {
-    const projects = useContext(ProjectContext);
+export const ProjectsView = ({projects}) => {
     return (
         <div className='pb-12 flex flex-col flex-1'>
             <div className='flex-1'>

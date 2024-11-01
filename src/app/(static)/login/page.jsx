@@ -35,7 +35,7 @@ export default function LoginPage() {
     }
 
     const onError = (errors) => {
-        console.log('error', { errors });
+        console.error('login error', { errors });
     };
 
     return (

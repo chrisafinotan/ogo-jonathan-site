@@ -31,7 +31,7 @@ const successResponse = (data: any) => {
 };
 
 const errorResponse = (message: string, e: unknown) => {
-    console.error(e, e[0]?.path)
+    console.error(e, e[0]?.path);
     return {
         error: {
             message,
@@ -41,9 +41,9 @@ const errorResponse = (message: string, e: unknown) => {
 
 export async function createProjectAction(formData: NewProjectFormShape) {
     try {
-        console.log('create', formData)
+        console.log('create', formData);
         const data = NewProjectFormSchema.parse(formData);
-        console.log('create: done parse ', data)
+        console.log('create: done parse ', data);
         const { photos, tags } = data;
         delete data.tags;
         // delete photos?.tags;
@@ -65,6 +65,33 @@ export async function createProjectAction(formData: NewProjectFormShape) {
         return successResponse(res);
     } catch (e) {
         return errorResponse('failed to create project', e);
+    }
+}
+
+export async function deleteProjectAction(id: String) {
+    try {
+        console.log('delete', id);
+        const deletedDate = new Date();
+        const projectDelete = await prisma.project.update({
+            where: {
+                id,
+            },
+            data: {
+                deletedDate,
+            },
+        });
+        const photoDelete = await prisma.photo.updateMany({
+            where: {
+                projectId: id,
+            },
+            data: {
+                deletedDate,
+            },
+        });
+        revalidatePath('/(admin)/admin', 'layout');
+        return successResponse(projectDelete);
+    } catch (e) {
+        return errorResponse('failed to delete project', e);
     }
 }
 

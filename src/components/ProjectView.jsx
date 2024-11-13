@@ -27,7 +27,7 @@ export const ProjectView = ({ project, previous, next }) => {
                     </div>
                     <div className='px-2 sm:px-9 pt-2 sm:pt-0'>
                         {/* projectLinksContainer */}
-                        <div className='bg-background sm:bg-transparent sticky right-0 sm:sticky flex sm:mb-[calc(100vh-6rem-1px)] sm:top-0 bottom-0 sm:bottom-0 w-full sm:w-auto sm:h-24 p-4 sm:p-0 sm:pt-6 py-0 sm:py-7'>
+                        <div className='bg-background sm:bg-transparent sticky right-0 sm:sticky flex sm:mb-[calc(100vh-6rem-1px)] sm:top-0 bottom-0 sm:bottom-0 w-full sm:w-auto sm:h-24 p-4 sm:p-0 sm:pt-16 py-0 sm:py-7'>
                             {/* projectLinks */}
                             <div id='projectLinks' className='grid w-full -z-0'>
                                 <div className='w-full sm:w-1/2 flex sm:justify-self-start right-0 relative justify-between'>

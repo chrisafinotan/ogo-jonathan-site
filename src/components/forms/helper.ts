@@ -3,6 +3,7 @@
 import { concat, differenceBy } from 'lodash';
 import {
     createProjectAction,
+    deleteProjectAction,
     updateProjectAction,
     publishProjectAction,
     updateTagAction,
@@ -92,6 +93,13 @@ const createProjectData = (
     const formattedData: ProjectFormShape = formatSaveData(data);
     NewProjectFormSchema.parse(formattedData);
     const response = createProjectAction(formattedData);
+    return parseResponse(response);
+};
+
+const deleteProjectData = (
+    id: String,
+) => {
+    const response = deleteProjectAction(id);
     return parseResponse(response);
 };
 
@@ -209,6 +217,7 @@ const loginUser = async (data: any) => {
 export {
     createProjectBlobs,
     createProjectData,
+    deleteProjectData,
     updateProjectCover,
     updateProjectData,
     createTagData,

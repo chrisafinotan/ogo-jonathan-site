@@ -7,16 +7,20 @@ import Link from 'next/link';
 import { Icons } from '@/components/icons';
 import { ProjectForm } from '@/components/forms/ProjectForm';
 import { Button } from '@/components/ui/button';
-import { Card, CardHeader } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import {
     Modal,
     ModalContent,
     ModalBody,
     useDisclosure,
 } from '@/components/ui/modal';
+import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 
 export const AdminProjectCard = ({ project, showAsButton = false }) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const formatter = new Intl.DateTimeFormat('en-US', { dateStyle: 'long' });
+    const formattedDate = formatter.format(project?.projectDate);
     return (
         <>
             {showAsButton ? (
@@ -32,12 +36,25 @@ export const AdminProjectCard = ({ project, showAsButton = false }) => {
                         href={`/admin/projects/${project.id}`}
                         className='group flex flex-col relative'
                     >
-                        <CardHeader className='p-0 flex flex-row w-full justify-center text-xl absolute inset-0 items-center bg-tranparent '>
-                            <div className='p-2 flex flex-row items-center bg-blue-500 mix-blend'>
-                                {project.title}
-                                <Icons.arrow className='group-hover:-rotate-45 transition-transform' />
+                        <div className='p-0 flex flex-row w-full  text-xl absolute inset-0 items-end bg-tranparent'>
+                            <div className='p-2 flex flex-col items-center bg-background rounded-tr-md mix-blend'>
+                                <h2 className=''>{project.title}</h2>
+                                <span className='text-sm'>{formattedDate}</span>
+                                <Badge
+                                    variant={cn('outline')}
+                                    className={cn(
+                                        'w-min text-primary',
+                                        project.isPublished
+                                            ? 'bg-success'
+                                            : 'bg-danger'
+                                    )}
+                                >
+                                    {project.isPublished
+                                        ? 'Published'
+                                        : 'Unpublished'}
+                                </Badge>
                             </div>
-                        </CardHeader>
+                        </div>
 
                         {project.cover?.url ? (
                             <Image

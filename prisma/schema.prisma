@@ -3,26 +3,27 @@ generator client {
 }
 
 datasource db {
-  provider    = "postgres"
-  url         = env("DATABASE_URL")
-  directUrl   = env("DIRECT_URL")
+  provider  = "postgres"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Project {
-  id             String   @id @unique @default(cuid())
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  title          String   @unique
-  description    String
-  isPublished    Boolean
-  photos         Photo[]  @relation("ProjectPhotos")
-  photosOrder    String?
-  projectDate    DateTime
-  displayOrder   Int?
+  id                   String    @id @unique @default(cuid())
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  deletedDate          DateTime?
+  title                String    @unique
+  description          String
+  isPublished          Boolean
+  photos               Photo[]   @relation("ProjectPhotos")
+  photosOrder          String?
+  projectDate          DateTime
+  displayOrder         Int?
   additionalInfoString String?
-  tags           Tag[]
-  cover          Photo?   @relation("CoverPhoto", fields: [coverId], references: [id])
-  coverId        String?  @unique
+  tags                 Tag[]
+  cover                Photo?    @relation("CoverPhoto", fields: [coverId], references: [id])
+  coverId              String?   @unique
 }
 
 model Tag {
@@ -55,4 +56,5 @@ model Photo {
   createdAt     DateTime? @default(now())
   updatedAt     DateTime? @updatedAt
   takenAt       DateTime?
+  deletedDate   DateTime?
 }

@@ -83,22 +83,27 @@ export const Nav = ({ isOpen, toggleMenu, pathname, paths }) => {
 
     return (
         <>
-            <nav className='pt-2 sm:pt-0 pb-6 sm:pb-0 bottom-0 sm:top-0 w-full h-auto sm:h-0 z-20 fixed bg-background'>
+            <nav
+                className={cn(
+                    'pt-2 sm:pt-0 pb-6 sm:pb-0 bottom-0 sm:top-0 w-full h-auto sm:h-0 z-20 fixed',
+                    isOpen ? 'bg-background mix-blend-normal' : 'bg-transparent'
+                )}
+            >
                 <div
                     className={cn(
                         'px-2 pt-0 sm:pt-6 sm:px-9 top-0 right-0 flex justify-center sm:grid sm:grid-cols-6 w-full z-10',
                         isOpen ? 'bg-background' : 'bg-transparent'
                     )}
                 >
-                    <div className='col-start-5 justify-self-end'>
-                        {caption}
-                    </div>
                     <button
                         onClick={toggleMenu}
-                        className='sm:col-start-6 justify-self-end z-10'
+                        className='col-start-1 col-end-5 justify-self-start z-10 text-primary'
                     >
                         {isOpen ? 'CLOSE' : 'MENU'}
                     </button>
+                    <div className='hidden sm:block col-start-5 justify-self-end'>
+                        {caption}
+                    </div>
                 </div>
                 <div
                     className={cn(

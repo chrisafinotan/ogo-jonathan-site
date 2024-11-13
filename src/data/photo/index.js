@@ -1,6 +1,11 @@
 import { prisma } from '@/services/prisma';
+import { parseProject } from '@/data/project';
 
 const DEFAULT__PHOTOS_LIMIT = 50;
+
+function getProjectUrl(id) {
+    return `projects/${id}`;
+}
 
 export const getShowcasePhotos = async (query = {}) => {
     const { limit = DEFAULT__PHOTOS_LIMIT, order = { takenAt: 'desc' } } =
@@ -10,15 +15,21 @@ export const getShowcasePhotos = async (query = {}) => {
         orderBy: order,
         where: {
             isShowcase: true,
+            deletedDate: null,
         },
         include: {
-            Project: true,
+            Project: {
+                where: {
+                    deletedDate: null,
+                },
+            },
         },
     });
     return showcasePhotos.map((photo) => {
-        photo.projectUrl = getProjectUrl(photo.projectId)
+        photo.projectUrl = getProjectUrl(photo.projectId);
+        photo.Project = parseProject(photo.Project);
         return photo;
-    })
+    });
 };
 
 export const addShowcasePhotos = async (photosIdList) => {
@@ -30,8 +41,4 @@ export const addShowcasePhotos = async (photosIdList) => {
             isShowcase: true,
         },
     });
-};
-
-export const getProjectUrl = (id) => {
-    return `projects/${id}`;
 };

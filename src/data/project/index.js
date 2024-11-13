@@ -2,12 +2,18 @@ import { prisma } from '@/services/prisma';
 import { orderPhotos } from '@/lib/utils';
 const DEFAULT_LIMIT = 15;
 
+export function parseProject(project) {
+    project.additionalInfo = JSON.parse(project.additionalInfoString);
+    project = orderPhotos(project);
+    return project;
+}
+
 function parseProjects(projects) {
     return projects.map((project) => {
-        project.additionalInfo = JSON.parse(project.additionalInfoString)
-        project = orderPhotos(project)
+        project.additionalInfo = JSON.parse(project.additionalInfoString);
+        project = orderPhotos(project);
         return project;
-    })
+    });
 }
 
 export const getProjects = async () => {
@@ -17,11 +23,17 @@ export const getProjects = async () => {
             ? await getPublishedProjects()
             : await getAllProjects();
     return projects;
-}
+};
 
 export const getAllProjects = async () => {
+    const order = { projectDate: 'desc' };
+
     const projects = await prisma.project.findMany({
+        orderBy: order,
         include: INCLUDE_ALL,
+        where: {
+            deletedDate: null,
+        },
     });
     return parseProjects(projects);
 };
@@ -36,11 +48,13 @@ export const getPublishedProjects = async (query = {}) => {
     const projects = await prisma.project.findMany({
         take: limit,
         skip: offsetId && 1,
+        orderBy: order,
         cursor: offsetId && {
             id: offsetId,
         },
         where: {
             isPublished: true,
+            deletedDate: null,
         },
         include: INCLUDE_ALL,
     });
@@ -54,7 +68,7 @@ export const getProjectById = async (projectId) => {
         },
         include: INCLUDE_ALL,
     });
-    if (!project) return
+    if (!project) return;
     return orderPhotos(project);
 };
 

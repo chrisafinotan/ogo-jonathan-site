@@ -4,10 +4,9 @@ import { cn } from '@/lib/utils';
 
 export const ProjectsView = ({projects}) => {
     return (
-        <div className='pb-12 flex flex-col flex-1'>
-            <div className='flex-1'>
-                <div className='px-9 pt-9 sm:pt-[calc(2.25rem+3rem)] sm:pb-9 fixed top-0 h-screen w-full pointer-events-none'>
-                    <div className='pt-3 pb-28 h-full flex flex-wrap justify-between overflow-scroll no-scrollbar ml-auto w-1/2 gap-2'>
+        <div className='pb-12 w-svw h-svh'>
+                <div className='px-9 pt-9 sm:pt-[calc(2.25rem+3rem)] sm:pb-9 fixed top-0 h-full w-full pointer-events-none'>
+                    <div className='pt-3 pb-28 h-svh grid grid-cols-2 sm:flex flex-wrap justify-between overflow-scroll no-scrollbar ml-auto sm:w-1/2 gap-2'>
                         {projects.map((project, index) => {
                             return (
                                 <div
@@ -46,7 +45,6 @@ export const ProjectsView = ({projects}) => {
                         })}
                     </div>
                 </div>
-            </div>
         </div>
     );
 };

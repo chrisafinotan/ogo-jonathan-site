@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import {
     createProjectBlobs,
     createProjectData,
+    deleteProjectData,
     updateProjectData,
     updateProjectCover,
     createPhotoData,
@@ -89,6 +90,8 @@ export const ProjectForm = ({ initValues, tags = [] }) => {
     const router = useRouter();
     const { toast } = useToast();
 
+    const publishProjectDisclosure = useDisclosure();
+    const deleteProjectDisclosure = useDisclosure();
     const uploadPhotosDisclosure = useDisclosure();
     const selectCoverDisclosure = useDisclosure();
     const { isOpen, onOpen, onOpenChange } = selectCoverDisclosure;
@@ -98,6 +101,7 @@ export const ProjectForm = ({ initValues, tags = [] }) => {
         defaultValues: initValues,
         criteriaMode: 'all',
     });
+    console.log({ form, initValues, a: form.getValues() });
 
     const {
         fields: photosToPreview,
@@ -193,6 +197,17 @@ export const ProjectForm = ({ initValues, tags = [] }) => {
         }
     };
 
+    const deleteProject = async (data) => {
+        try {
+            const { id } = data;
+            const res = await deleteProjectData(id);
+            console.log('deleted project', data, id, res);
+            return res;
+        } catch (e) {
+            console.log('delete error', e);
+        }
+    };
+
     const updateProject = async (data) => {
         try {
             return updateProjectData(data, initValues);
@@ -274,6 +289,19 @@ export const ProjectForm = ({ initValues, tags = [] }) => {
             // setReadMode(true);
             // router.refresh();
             // }
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+    const onDeleteProject = async (data) => {
+        try {
+            console.log(form, data);
+            const response = await deleteProject(data);
+            checkResponse(response, {
+                successMessage: 'Project deleted',
+            });
+            router.push(`/admin/projects`);
         } catch (e) {
             console.error(e);
         }
@@ -384,6 +412,134 @@ export const ProjectForm = ({ initValues, tags = [] }) => {
                                             onClick={(e) => uploadPhotos(e)}
                                         >
                                             Upload Photos
+                                        </Button>
+                                    </div>
+                                </ModalFooter>
+                            </>
+                        )}
+                    </ModalContent>
+                </Modal>
+            </>
+        );
+    };
+
+    const DeleteProjectButtonComponent = () => {
+        const { isOpen, onOpen, onOpenChange } = deleteProjectDisclosure;
+        console.log({ form, a: form.getValues() });
+        return (
+            <>
+                <Button
+                    onClick={onOpen}
+                    // type='submit'
+                    variant='destructive'
+                >
+                    Delete Project &nbsp;
+                    <Icons.delete />
+                </Button>
+                <Modal
+                    isOpen={isOpen}
+                    onOpenChange={onOpenChange}
+                    size='sm'
+                    backdrop='blur'
+                    // placement='top'
+                    classNames={{
+                        // body: 'min-h-[50vh]',
+                        base: 'bg-card text-card-foreground shadow-sm',
+                    }}
+                >
+                    <ModalContent>
+                        {(onClose) => (
+                            <>
+                                <ModalHeader>Delete Project</ModalHeader>
+                                <ModalBody>
+                                    <div className='m-0'>
+                                        Are you sure you want to delete the
+                                        project ?
+                                    </div>
+                                </ModalBody>
+                                <ModalFooter>
+                                    <div className='w-full flex justify-between'>
+                                        <Button
+                                            variant='default'
+                                            onClick={onClose}
+                                        >
+                                            Cancel
+                                        </Button>
+                                        <Button
+                                            variant='destructive'
+                                            // type='submit'
+                                            onClick={(e) => {
+                                                const data = form.getValues();
+                                                onDeleteProject(data);
+                                                onClose();
+                                                e.preventDefault();
+                                            }}
+                                        >
+                                            Confirm
+                                        </Button>
+                                    </div>
+                                </ModalFooter>
+                            </>
+                        )}
+                    </ModalContent>
+                </Modal>
+            </>
+        );
+    };
+
+    const PublishProjectButtonComponent = () => {
+        const { isOpen, onOpen, onOpenChange } = publishProjectDisclosure;
+        console.log({ form, a: form.getValues() });
+        return (
+            <>
+                <Button
+                    onClick={onOpen}
+                    // type='submit'
+                    variant='sparkle'
+                >
+                    Publish Project &nbsp;
+                    <Icons.publish />
+                </Button>
+                <Modal
+                    isOpen={isOpen}
+                    onOpenChange={onOpenChange}
+                    size='sm'
+                    backdrop='blur'
+                    // placement='top'
+                    classNames={{
+                        // body: 'min-h-[50vh]',
+                        base: 'bg-card text-card-foreground shadow-sm',
+                    }}
+                >
+                    <ModalContent>
+                        {(onClose) => (
+                            <>
+                                <ModalHeader>Publish Project</ModalHeader>
+                                <ModalBody>
+                                    <div className='m-0'>
+                                        Are you sure you want to publish the
+                                        project ?
+                                    </div>
+                                </ModalBody>
+                                <ModalFooter>
+                                    <div className='w-full flex justify-between'>
+                                        <Button
+                                            variant='default'
+                                            onClick={onClose}
+                                        >
+                                            Cancel
+                                        </Button>
+                                        <Button
+                                            variant='sparkle'
+                                            // type='submit'
+                                            // onClick={(e) => {
+                                            //     const data = form.getValues();
+                                            //     onDeleteProject(data);
+                                            //     onClose();
+                                            //     e.preventDefault();
+                                            // }}
+                                        >
+                                            Confirm
                                         </Button>
                                     </div>
                                 </ModalFooter>
@@ -618,16 +774,24 @@ export const ProjectForm = ({ initValues, tags = [] }) => {
                         <CardFooter className='block m-2'>
                             <div className='flex gap-4 justify-between'>
                                 {isSaved ? (
-                                    <div className='flex gap-4 justify-end w-full'>
+                                    <div className='flex gap-4 justify-center w-full'>
                                         <div className='w-fit flex gap-4 justify-between'>
+                                            {readMode && (
+                                                <PublishProjectButtonComponent />
+                                            )}
                                             <Button
                                                 // type='submit'
                                                 variant='default'
                                                 disabled={readMode}
                                                 onClick={(e) => {
-                                                    const data = form.getValues();
-                                                    console.log('trying submit', form, data);
-                                                    onUpdateProject(data)
+                                                    const data =
+                                                        form.getValues();
+                                                    console.log(
+                                                        'trying submit',
+                                                        form,
+                                                        data
+                                                    );
+                                                    onUpdateProject(data);
                                                     // form.handleSubmit(
                                                     //     onUpdateProject
                                                     // );
@@ -658,6 +822,9 @@ export const ProjectForm = ({ initValues, tags = [] }) => {
                                                     </>
                                                 )}
                                             </Button>
+                                            {readMode && (
+                                                <DeleteProjectButtonComponent />
+                                            )}
                                         </div>
                                     </div>
                                 ) : (
@@ -683,10 +850,10 @@ export const ProjectForm = ({ initValues, tags = [] }) => {
                         </CardFooter>
                     </form>
 
-                    <ProjectChecklist
+                    {/* <ProjectChecklist
                         readMode={readMode}
                         onPublish={onPublish}
-                    />
+                    /> */}
                 </CardContent>
             </Card>
         </Form>

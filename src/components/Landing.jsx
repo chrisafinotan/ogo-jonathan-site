@@ -1,12 +1,6 @@
 'use client';
 
-import styles from './styles/landing.module.css';
-import gsap from 'gsap';
-// import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Flip } from 'gsap/Flip';
-import ScrollToPlugin from 'gsap/ScrollToPlugin';
-import CustomEase from 'gsap/CustomEase';
-import { useGSAP } from '@gsap/react';
+import SplitType from 'split-type';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import {
     Navigation,
@@ -16,40 +10,13 @@ import {
     Mousewheel,
     FreeMode,
 } from 'swiper/modules';
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { Icons } from '@/components/icons';
 
-// gsap.registerPlugin(useGSAP, Flip, ScrollToPlugin, CustomEase);
-
-// CustomEase.create(
-//     'hop',
-//     'M0,0 C0,0 0.056,0.442 0.175,0.442 0.294,0.442 0.332,0 0.332,0 0.332,0 0.414,1 0.671,1 0.991,1 1,0 1,0'
-// );
-
-// const rightAxisPlacement = {
-//     7: 'right-[15%]',
-//     8: 'right-[2em]',
-//     14: 'right-[2em]',
-// };
-// const leftAxisPlacement = {
-//     1: 'left-[2em]',
-//     2: 'left-[15%]',
-//     3: 'left-[45%]',
-//     4: 'left-[65%]',
-//     5: 'left-[2em]',
-//     6: 'left-[25%]',
-//     9: 'left-[45%]',
-//     10: 'left-[65%]',
-//     11: 'left-[2em]',
-//     12: 'left-[65%]',
-//     13: 'left-[75%]',
-//     15: 'left-[25%]',
-//     16: 'left-[5%]',
-// };
-
-export const Landing = ({ showcasePhotos }) => {
+export const Landing2 = ({ showcasePhotos }) => {
     const imageStyles = [
         {
             aspectRatio: '1.44928 / 1',
@@ -68,14 +35,8 @@ export const Landing = ({ showcasePhotos }) => {
         },
     ];
     const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
-    const isLeft = false;
     return (
-        <div
-            className={cn(
-                'fixed mb-12 w-full h-full',
-                isLeft ? 'left-0' : 'right-0'
-            )}
-        >
+        <div className={cn('fixed mb-12 w-full h-full right-0')}>
             <Swiper
                 id='mySwiperID'
                 className='w-full h-full text-2xs'
@@ -102,7 +63,6 @@ export const Landing = ({ showcasePhotos }) => {
                 onSlideChange={(swiperObj) =>
                     setCurrentProjectIndex(swiperObj.realIndex)
                 }
-                // loop={true}
             >
                 {showcasePhotos.map((photo, index) => {
                     return (
@@ -111,27 +71,20 @@ export const Landing = ({ showcasePhotos }) => {
                                 className={cn(
                                     'sm:ml-auto h-full max-h-screen sm:w-full flex flex-col align-end',
                                     'p-2 pt-[4rem] sm:pt-0 sm:p-9 sm:pb-[6rem]'
-                                    // 'my-4'
                                 )}
                             >
                                 <div className='relative h-full'>
                                     <Link
                                         href={photo.projectUrl}
                                         className={cn(
-                                            'h-full bottom-0',
-                                            isLeft ? 'left-0' : 'right-0'
+                                            'h-full bottom-0 right-0'
                                         )}
-                                        // style={{
-                                        //     ...imageStyles[
-                                        //         index % imageStyles.length
-                                        //     ],
-                                        // }}
                                     >
                                         <Image
                                             src={photo.url}
                                             alt={`Project photo for ${photo.title}`}
                                             className={cn(
-                                                'object-cover h-full w-full'
+                                                'object-contain h-full w-full absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 sm:w-3/4 sm:h-[90%]'
                                             )}
                                             key={`${index}_projectImage`}
                                             width={1080}
@@ -146,430 +99,250 @@ export const Landing = ({ showcasePhotos }) => {
                 })}
                 <div
                     className={cn(
-                        'swiper-mypagination-wrapper fixed sm:absolute bottom-0 right-0 w-full px-2 sm:px-9 pb-6 grid grid-cols-6 justify-between z-10',
-                        isLeft ? 'text-left' : 'text-right'
+                        'swiper-mypagination-wrapper fixed sm:absolute bottom-0 right-0 w-full px-2 sm:px-9 pb-6 grid grid-cols-6 justify-between items-center z-10 text-right'
                     )}
                 >
-                    <div className='col-span-5'>
+                    <div className='col-start-1 col-end-4 bottom-4 w-full text-4xl flex'>
+                        OGO JONATHAN
+                    </div>
+                    <div className='col-start-5'>
                         {showcasePhotos[currentProjectIndex] &&
                             showcasePhotos[currentProjectIndex]['Project']
                                 .title}
                     </div>
-                    <div className='swiper-mypagination w-fit'></div>
+                    <div className='swiper-mypagination col-start-6 text-end w-full'></div>
                 </div>
             </Swiper>
         </div>
     );
 };
 
-// export const Landing2 = ({ showcasePhotos }) => {
-//     const [layoutType, setLayoutType] = useState(0);
-//     const lenisRef = useRef();
-//     const galleryRef = useRef();
-//     const galleryContainerRef = useRef();
-//     const imagePreviewsRef = useRef();
-//     const minimapRef = useRef();
-//     function handleScroll() {
-//         console.log('scroll', { layoutType });
-//         if (layoutType !== 1) return;
-//         const imagePreviewsHeight = imagePreviewsRef.current.scrollHeight;
-//         const galleryHeight = galleryRef.current.scrollHeight;
-//         const { scrollY, innerHeight: windowHeight } = window;
+export const Landing = ({ showcasePhotos }) => {
+    const container = useRef();
+    const swiperRef = useRef();
 
-//         const scrollFraction = scrollY / (imagePreviewsHeight - windowHeight);
-//         const galleryTranslateY =
-//             -scrollFraction + (galleryHeight - windowHeight) * 1.525;
-//         const minimapTranslateY =
-//             (windowHeight - minimapRef.current.offsetHeight) * 0.425;
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const currentImage = showcasePhotos[currentImageIndex];
+    const length = showcasePhotos.length;
 
-//         gsap.to(galleryRef, {
-//             y: galleryTranslateY,
-//             ease: 'none',
-//             duration: 0.1,
-//         });
-
-//         gsap.to(minimapRef, {
-//             y: minimapTranslateY,
-//             ease: 'none',
-//             duration: 0.1,
-//         });
-//     }
-
-//     function updateLayoutTypeHandler(newLayoutType) {
-//         const state = Flip.getState(
-//             galleryRef.current?.querySelectorAll('.img')
-//         );
-//         let staggerVal = 0.025;
-//         if (
-//             (newLayoutType === 1 && layoutType === 0) ||
-//             (newLayoutType === 1 && layoutType === 2)
-//         ) {
-//             staggerVal = 0;
-//         }
-
-//         // Flip.from(state, {
-//         //     duration: 1.5,
-//         //     ease: 'bounce',
-//         //     stagger: staggerVal,
-//         // });
-//         setLayoutType(newLayoutType);
-//         console.log('hi 3', { state, newLayoutType });
-//         if (newLayoutType === 1) {
-//             gsap.to([imagePreviewsRef, minimapRef], {
-//                 autoAlpha: 1,
-//                 duration: 0.3,
-//                 delay: 0.5,
-//             });
-//             window.addEventListener('scroll', handleScroll);
-//         } else {
-//             gsap.to([imagePreviewsRef, minimapRef], {
-//                 autoAlpha: 0,
-//                 duration: 0.3,
-//             });
-//             gsap.set(galleryRef, { clearProps: 'y' });
-//             gsap.set(minimapRef, { clearProps: 'y' });
-//             window.removeEventListener('scroll', handleScroll);
-//         }
-//     }
-
-//     function updateLayoutType() {
-//         console.log('hi 2');
-//         const newLayoutType = (layoutType + 1) % 3;
-//         if (newLayoutType === 1 && window.scrollY > 0) {
-//             gsap.to(window, {
-//                 scrollTo: { y: 0 },
-//                 duration: 0.5,
-//                 ease: 'power3.out',
-//                 onComplete: () => updateLayoutTypeHandler(newLayoutType),
-//             });
-//         } else updateLayoutTypeHandler(newLayoutType);
-//     }
-
-//     useEffect(() => {
-//         function update(time) {
-//             lenisRef.current?.lenis?.raf(time * 1000);
-//         }
-//         gsap.ticker.add(update);
-//         return () => {
-//             gsap.ticker.remove(update);
-//         };
-//     });
-
-//     useEffect(() => {
-//         if (layoutType !== 1) {
-//             if (window.scrollY > 0) {
-//                 gsap.to(window, {
-//                     scrollTo: { y: 0 },
-//                     duration: 0.5,
-//                     ease: 'power3.out',
-//                 });
-//             }
-//         }
-//         console.log('adding scroll');
-//         window.addEventListener('scroll', handleScroll);
-//     }, [layoutType]);
-
-//     return (
-//         <div ref={lenisRef} autoRaf={false} className='h-full'>
-//             <div
-//                 onClick={() => updateLayoutType((layoutType + 1) % 3)}
-//                 ref={galleryContainerRef}
-//                 className='gallery-container w-full h-full pt-[4em]'
-//             >
-//                 <div
-//                     ref={galleryRef}
-//                     className={cn(
-//                         'gallery',
-//                         layoutType === 0 &&
-//                             'relative w-full h-full translate-x-0',
-//                         layoutType === 1 &&
-//                             'fixed pt-[0.5em] top-1/4 left-[10%] translate-x-0',
-//                         layoutType === 2 &&
-//                             'relative w-full h-full translate-x-0'
-//                     )}
-//                 >
-//                     {showcasePhotos.slice(0, 16).map((photo, index) => {
-//                         let top = 'top-0';
-//                         if (index < 4) top = 'top-0';
-//                         else if (index < 8) top = 'top-1/4';
-//                         else if (index < 12) top = 'top-2/4';
-//                         else top = 'top-3/4';
-//                         return (
-//                             <div
-//                                 id={`img_${index}`}
-//                                 className={cn(
-//                                     'img',
-//                                     layoutType === 0 &&
-//                                         cn(
-//                                             'absolute w-[100px] h-[125px] translate-x-0',
-//                                             top,
-//                                             leftAxisPlacement[index + 1],
-//                                             rightAxisPlacement[index + 1]
-//                                         ),
-//                                     layoutType === 1 &&
-//                                         cn('w-[75px] h-[100px] mb-[1em]'),
-//                                     layoutType === 2 &&
-//                                         cn(
-//                                             'absolute w-[300px] h-[400px] right-[4em] top-[4em]'
-//                                         )
-//                                 )}
-//                             >
-//                                 <Link
-//                                     href={photo.projectUrl}
-//                                     className={cn('h-full bottom-0')}
-//                                 >
-//                                     <Image
-//                                         src={photo.url}
-//                                         alt={`Project photo for ${photo.title}`}
-//                                         className={cn(
-//                                             'object-cover h-full w-full'
-//                                         )}
-//                                         key={`${index}_projectImage`}
-//                                         width={1080}
-//                                         height={1280}
-//                                         loading={'lazy'}
-//                                     />
-//                                 </Link>
-//                             </div>
-//                         );
-//                     })}
-//                 </div>
-//             </div>
-
-//             <div
-//                 ref={minimapRef}
-//                 className='minimap fixed top-1/4 left-[12.5%] -translate-x-1/2 w-[140px] h-[90px] border-1 border-solid border-purple-600 border-r-2 z-2 invisible opacity-0'
-//             ></div>
-
-//             <div
-//                 ref={imagePreviewsRef}
-//                 className='image-previews absolute top-1/4 left-1/2 -translate-x-1/2 w-[30%] opacity-0'
-//             >
-//                 {showcasePhotos.map((photo, index) => {
-//                     return (
-//                         <Image
-//                             src={photo.url}
-//                             alt={`Project photo for ${photo.title}`}
-//                             className={cn(
-//                                 'object-cover h-[700px] w-[600px] py-[1em] px-0'
-//                             )}
-//                             key={`${index}_projectImage_minimap`}
-//                             width={1080}
-//                             height={1280}
-//                             loading={'lazy'}
-//                         />
-//                     );
-//                 })}
-//             </div>
-//         </div>
-//     );
-// };
-
-export const Landing3 = ({ showcasePhotos }) => {
-    const sliderRef = useRef();
-    const [isAnimating, setIsAnimating] = useState(false);
-    const [isClient, setIsClient] = useState(false);
-
-    const minDelta = -1;
-    const maxDelta = 1;
-    let currDelta = 0;
-
-    useEffect(() => {
-        setIsClient(true);
-    }, []);
-
-    useEffect(() => {
-        if (isClient && sliderRef.current) {
-            initializeCards();
-        }
-    }, [isClient, sliderRef]);
-
-    function initializeCards(from = 'none') {
-        if (isAnimating) return;
-        const cards = Array.from(sliderRef.current.querySelectorAll('.card'));
-        let specialCard, specialCardIndex;
-        if (from === 'next') {
-            specialCardIndex = 0;
-            specialCard = cards[specialCardIndex];
-        }
-        if (from === 'prev') {
-            specialCardIndex = cards.length - 1;
-            specialCard = cards[specialCardIndex];
-        }
-        const tl = gsap.timeline();
-
-        tl.to(cards, {
-            y: (i) => {
-                const yval = -(cards.length * 0.8) * (cards.length - i - 1);
-                return `${yval}%`;
-            },
-            z: (i) => {
-                const zval = -(cards.length - i - 1) * 15;
-                return zval;
-            },
-            duration: 0.7,
-            ease: 'power3.inOut',
-            stagger: -0.1,
+    function createSplitText(element) {
+        const splitText = new SplitType(element, { types: 'lines' });
+        element.innerHTML = '';
+        splitText.lines.forEach((line) => {
+            const lineDiv = document.createElement('div');
+            lineDiv.className = 'line';
+            const lineSpan = document.createElement('span');
+            lineSpan.textContent = line.textContent;
+            lineDiv.appendChild(lineSpan);
+            element.appendChild(lineDiv);
         });
-        tl.fromTo(
-            specialCard,
-            {
-                opacity: 0,
-                y: () => {
-                    const i = specialCardIndex;
-                    const yval = -(cards.length * 0.8) * (cards.length - i - 1);
-                    return `${yval + 10}%`;
-                },
-            },
-            {
-                opacity: 1,
-                y: () => {
-                    const i = specialCardIndex;
-                    const yval = -(cards.length * 0.8) * (cards.length - i - 1);
-                    return `${yval}%`;
-                },
-            },
-            '+=0.2'
+    }
+
+    function nextPhoto() {
+        const newIndex = (currentImageIndex + 1) % length;
+        setCurrentImageIndex(newIndex);
+        if (swiperRef.current) {
+            console.log('next photo');
+            swiperRef.current.slideNext();
+        }
+    }
+
+    function prevPhoto() {
+        let newIndex = (currentImageIndex - 1) % length;
+        if (newIndex < 0) newIndex = length - 1;
+        setCurrentImageIndex(newIndex);
+        if (swiperRef.current) {
+            console.log('next photo');
+            swiperRef.current.slidePrev();
+        }
+    }
+
+    function handleItemClick(e, index) {
+        e.preventDefault();
+        console.log(index, currentImageIndex, swiperRef?.current?.realIndex);
+        if (index === currentImageIndex) return;
+        setCurrentImageIndex(index);
+        if (swiperRef.current) {
+            console.log('next photo');
+            swiperRef.current.slideTo(index);
+        }
+    }
+
+    const BackgroundComp = () => {
+        return (
+            <div className='absolute top-0 left-0 w-full h-full'>
+                <img
+                    src={currentImage.url}
+                    alt={currentImage.description}
+                    className='w-full h-full object-cover'
+                />
+                <div className='absolute top-0 left-0 w-full h-full backdrop-blur-2xl'></div>
+            </div>
         );
-        // }
-    }
+    };
 
-    function finishCardTransition(from) {
-        initializeCards(from);
-        setTimeout(() => {
-            setIsAnimating(false);
-        }, 1000);
-    }
-
-    function showPrev() {
-        if (isAnimating) return;
-        setIsAnimating(true);
-        const slider = sliderRef.current;
-        const cards = Array.from(slider.querySelectorAll('.card'));
-        const firstCard = cards.shift();
-        const tl = gsap.timeline();
-        tl.to(firstCard, {
-            y: '-=50%',
-            duration: 0.75,
-            ease: 'power3.in',
-            onStart: () => {
-                setTimeout(() => {
-                    slider.append(firstCard);
-                    finishCardTransition('prev');
-                }, 300);
-            },
-        });
-        tl.to(firstCard, {
-            opacity: 0,
-        });
-    }
-
-    function showNext() {
-        if (isAnimating) return;
-        setIsAnimating(true);
-        const slider = sliderRef.current;
-        const cards = Array.from(slider.querySelectorAll('.card'));
-        const lastCard = cards.pop();
-        const tl = gsap.timeline();
-        tl.to(lastCard, {
-            y: '-=300%',
-            duration: 0.5,
-            ease: 'power3.inOut',
-            onStart: () => {
-                setTimeout(() => {
-                    slider.prepend(lastCard);
-                    finishCardTransition('next');
-                }, 300);
-            },
-        });
-        tl.to(
-            lastCard,
-            {
-                opacity: 0,
-            },
-            0.3
+    const SelectedImageComp = () => {
+        return (
+            <Link
+                href={currentImage.projectUrl}
+                className='flex justify-center items-center'
+            >
+                <Image
+                    src={currentImage.url}
+                    alt={`Project cover photo for ${currentImage.title}`}
+                    className='project-image will-change-transform h-full w-auto '
+                    width={1080}
+                    height={1280}
+                    loading={'lazy'}
+                />
+            </Link>
         );
-    }
-
-    function handleClick(event) {
-        console.log(event, window);
-        const {innerHeight} = window;
-        const {clientX} = event
-        if (clientX > innerHeight/2) {
-            showNext();
-        } else if (clientX <= innerHeight/2) {
-            showPrev();
-        }
-    }
-
-    function handleMouseWheel(event) {
-        if (isAnimating) return;
-        currDelta += event.deltaY * -0.01;
-        // Restrict currDelta
-        currDelta = Math.min(Math.max(minDelta, currDelta), maxDelta);
-        if (currDelta === minDelta) {
-            showNext();
-        } else if (currDelta === maxDelta) {
-            showPrev();
-        } else {
-            // do nothing
-        }
-    }
+    };
 
     return (
-        <>
-            <div
-                className='relative h-screen w-screen overflow-hidden'
-                onClick={handleClick}
-                // onWheel={(e) => handleMouseWheel(e)}
-            >
+        <div ref={container} className={cn('text-primary w-svw h-svh')}>
+            <div className='w-full h-full grid grid-rows-6 sm:flex-row sm:flex overflow-scroll sm:overflow-hidden p-4'>
                 <div
-                    ref={sliderRef}
-                    className={cn(
-                        styles.slider,
-                        'absolute bottom-[5vh] w-screen h-screen overflow-hidden'
-                    )}
+                    id='info-wrapper'
+                    className='sm:pt-12 relative row-span-1 sm:flex-[1] flex flex-col gap-2 sm:justify-between text-[1rem]'
                 >
-                    {showcasePhotos.slice(0, 10).map((photo, index) => {
-                        return (
-                            <Link
-                                key={`${index}_projectImage_link`}
-                                href={photo.projectUrl}
-                                onClick={(e) => e.stopPropagation()}
-                                className={cn(
-                                    styles.card,
-                                    'card absolute bottom-5 left-1/2 w-[65%] max-w-[50vw] max-h-[400px] bg-transparent border-r-1 border-solid border-gray-600 rounded overflow-hidden flex flex-col'
-                                )}
-                            >
-                                <div className='card-content relative '>
-                                    <Image
+                    <div className='w-full sm:top-1/2 sm:left-1/2 align-middle text-center'>
+                        <h1 className='animate sm:text-md lg:text-[5rem] lg:leading-[5.5rem]'>
+                            OGO JONATHAN
+                        </h1>
+                    </div>
+                    <div className=''>
+                        <div className='title'>
+                            <h1 className='animate split'>
+                                {currentImage.Project.title}
+                            </h1>
+                        </div>
+                        <div className='description'>
+                            <span className='animate split'>
+                                {currentImage.Project.description}
+                            </span>
+                        </div>
+                    </div>
+                    <div className='bottom-0 hidden sm:block'>
+                        <h2 className='animate split '>
+                            About you section ... Lorem, ipsum dolor sit amet
+                            consectetur adipisicing elit. Explicabo commodi odit
+                            porro eligendi. Cumque earum quam eligendi corporis
+                            et molestias iure officiis repudiandae error?
+                            Doloremque voluptatum optio iure magni esse?
+                        </h2>
+                    </div>
+                </div>
+                <div
+                    id='selected-wrapper'
+                    className='relative row-span-5 sm:flex-[3] grid grid-rows-12 gap-2 h-full'
+                >
+                    <div className='row-span-11 flex overflow-hidden will-change-transform justify-center'>
+                        <Swiper
+                            onSwiper={(swiper) => {
+                                swiperRef.current = swiper;
+                                console.log(swiper, swiperRef);
+                            }}
+                            id='mySwiperID'
+                            className='w-full h-full text-2xs'
+                            direction={'vertical'}
+                            modules={[
+                                Navigation,
+                                Keyboard,
+                                Pagination,
+                                Mousewheel,
+                                FreeMode,
+                                Autoplay,
+                            ]}
+                            keyboard={{ enabled: true }}
+                            mousewheel={{ releaseOnEdges: true }}
+                            pagination={{
+                                el: '.swiper-mypagination',
+                                type: 'fraction',
+                                renderFraction: function (
+                                    currentClass,
+                                    totalClass
+                                ) {
+                                    return `<span class="${currentClass}"></span>/<span class="${totalClass}"></span>`;
+                                },
+                            }}
+                            spacebetween={10}
+                            slidesPerView={1}
+                            onSlideChange={(swiperObj) =>
+                                setCurrentImageIndex(swiperObj.realIndex)
+                            }
+                            loop={true}
+                        >
+                            {showcasePhotos.map((photo, index) => {
+                                return (
+                                    <SwiperSlide key={`swiperSlide_${index}`}>
+                                        <div
+                                            className={cn(
+                                                'sm:m-0 h-full max-h-svh sm:w-full flex flex-col align-end',
+                                                'p-2 pt-[4rem] sm:p-0'
+                                            )}
+                                        >
+                                            <Link
+                                                href={photo.projectUrl}
+                                                className={cn(
+                                                    'h-full bottom-0 right-0'
+                                                )}
+                                            >
+                                                <Image
+                                                    src={photo.url}
+                                                    alt={`Project photo for ${photo.title}`}
+                                                    className={cn(
+                                                        'object-contain h-full w-full p-1 absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2'
+                                                    )}
+                                                    key={`${index}_projectImage`}
+                                                    width={1080}
+                                                    height={1280}
+                                                    loading={'lazy'}
+                                                />
+                                            </Link>
+                                        </div>
+                                    </SwiperSlide>
+                                );
+                            })}
+                        </Swiper>
+                    </div>
+                    <div className='w-full row-span-1 flex sm:justify-self-start right-0 relative justify-between sm:justify-center gap-32 sm:pt-4'>
+                        <Icons.arrowLeft
+                            className='group-hover:-rotate-45 ease-in-out duration-300'
+                            onClick={prevPhoto}
+                        />
+                        <Icons.arrow
+                            className=' group-hover:rotate-45 ease-in-out duration-300'
+                            onClick={nextPhoto}
+                        />
+                    </div>
+                </div>
+                <div
+                    id='showcase-wrapper'
+                    className='hidden md:block md:flex-[0.15] z-[2] overflow-auto p-3 bg-transparent backdrop-blur-md'
+                >
+                    <div className='w-full h-[300vh] flex flex-col gap-3'>
+                        {showcasePhotos.map((photo, index) => {
+                            return (
+                                <div
+                                    onClick={(e) => handleItemClick(e, index)}
+                                    className={cn(
+                                        "item opacity-30 hover:opacity-75 relative flex-1 bg-slate-300 after:content-[''] after:absolute after:top-0 after:left-0 after:w-full after:h-full after:transition-background after:ease-in-out after:delay-500",
+                                        currentImageIndex === index &&
+                                            'active opacity-100 hover:opacity-100'
+                                    )}
+                                >
+                                    <img
                                         src={photo.url}
-                                        alt={`Project photo for ${photo.title}`}
-                                        className={cn(
-                                            'object-cover w-full h-[350px]'
-                                        )}
-                                        key={`${index}_projectImage`}
-                                        width={1080}
-                                        height={1280}
-                                        loading={'lazy'}
+                                        alt={photo.title}
+                                        className='w-full h-full object-cover'
                                     />
                                 </div>
-                                <div className='card-info w-full py-[0.5em] px-[0.75em] flex justify-between items-baseline bg-transparent z-2'>
-                                    <span className='card-item flex-1 text-left'>
-                                        {photo.locationName}
-                                    </span>
-                                    <span className='card-item flex-1 text-center text-lg'>
-                                        {photo.Project.title}&nbsp;{index}
-                                    </span>
-                                    <span className='card-item flex-1 text-right'>
-                                        {photo.Project.createdAt.toDateString()}
-                                    </span>
-                                </div>
-                            </Link>
-                        );
-                    })}
+                            );
+                        })}
+                    </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
